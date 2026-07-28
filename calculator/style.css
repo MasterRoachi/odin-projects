@@ -1,0 +1,605 @@
+/* =========================
+   1. Design Tokens
+========================= */
+
+:root {
+  --calc-shell: #c9c3b0;
+  --calc-shell-light: #ded8c6;
+  --calc-shell-dark: #8d8674;
+
+  --calc-screen-border: #3f3f3f;
+  --calc-screen-bg: #b8b7a3;
+  --calc-screen-text: #1b1f1b;
+
+  --calc-button-number: #212121;
+  --calc-button-operator: #6f4a5f;
+  --calc-button-control: #c2c2c2;
+  --calc-button-rubber: #787878;
+
+  --calc-text-light: #f2f2f2;
+  --calc-text-dark: #1a1a1a;
+}
+
+/* =========================
+   2. Reset / Base
+========================= */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+@font-face {
+  font-family: "digital7";
+  src:
+    local("Digital-7 Mono"),
+    url("./fonts/digital7.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "thelasttrunks";
+  src:
+    local("THE LAST TRUNKS"),
+    url("./fonts/thelasttrunks.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "scribbles";
+  src:
+    local("OverScribble"),
+    url("./fonts/overscrible.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "besties";
+  src:
+    local("Estie Bestie"),
+    url("./fonts/estiebestie.ttf") format("truetype");
+}
+
+/* =========================
+   3. Page Layout
+========================= */
+
+.big-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100vw;
+  height: 100vh;
+
+  background-image: url(https://i.postimg.cc/c4vbf23k/background.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-color: #2f2f2f;
+}
+
+.small-container {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+  gap: 25px;
+
+  width: 1300px;
+  height: 780px;
+  padding: 25px;
+
+  border-radius: 25px;
+  overflow: hidden;
+}
+
+/* =========================
+   4. Desk / Scene
+========================= */
+
+.small-container {
+  background-image:
+    radial-gradient(
+      ellipse at 18% 40%,
+      rgba(58, 31, 15, 1) 0%,
+      rgba(107, 68, 35, 0.5) 10%,
+      transparent 18%
+    ),
+    radial-gradient(
+      ellipse at 72% 62%,
+      rgba(58, 31, 15, 0.35) 0%,
+      rgba(151, 112, 79, 0.18) 7%,
+      transparent 16%
+    ),
+    repeating-linear-gradient(
+      2deg,
+      rgba(58, 31, 15, 0.05) 0px,
+      rgba(58, 31, 15, 0.06) 5px,
+      transparent 12px,
+      transparent 15px
+    ),
+    repeating-linear-gradient(
+      1deg,
+      rgba(101, 67, 33, 0.16) 29px,
+      rgba(101, 67, 33, 0.14) 30px,
+      rgba(152, 118, 84, 0.12) 40px,
+      transparent 50px
+    ),
+    repeating-linear-gradient(
+      2deg,
+      rgba(152, 118, 84, 0.18) 0px,
+      rgba(152, 118, 84, 0.18) 80px,
+      rgba(68, 38, 20, 0.16) 140px,
+      rgba(107, 68, 35, 0.2) 250px,
+      transparent 270px,
+      transparent 275px,
+      rgba(68, 38, 20, 0.16) 280px,
+      rgba(107, 68, 35, 0.2) 300px
+    ),
+    linear-gradient(
+      90deg,
+      #5a321b 0%,
+      #6b4423 40%,
+      #97704f 70%,
+      #6b4423 90%,
+      #4a2816 100%
+    );
+
+  box-shadow:
+    inset 0 3px 8px rgba(255, 220, 170, 0.25),
+    inset 0 -12px 25px rgba(35, 18, 8, 0.55),
+    inset 12px 0 22px rgba(35, 18, 8, 0.35),
+    inset -12px 0 22px rgba(35, 18, 8, 0.35),
+    50px 50px 40px rgba(0, 0, 0, 0.65);
+}
+
+/* =========================
+   5. Calculator Layout
+========================= */
+
+.calculator-body {
+  --calc-gap: 12px;
+  --calc-screen-height: 95px;
+  --calc-control-row-height: 58px;
+  --calc-operator-width: 96px;
+
+  display: flex;
+  flex-direction: column;
+
+  width: 540px;
+  height: 730px;
+  padding: 20px;
+
+  border-radius: 28px;
+}
+
+.screen {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  flex: 0 0 var(--calc-screen-height);
+
+  width: 100%;
+  padding: 8px 10px;
+
+  border-radius: 12px;
+}
+
+.screen p {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  width: 100%;
+  height: 100%;
+  padding: 0 14px;
+
+  border-radius: 6px;
+}
+
+.button-container {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+
+  width: 100%;
+  padding-top: var(--calc-gap);
+  padding-bottom: var(--calc-gap);
+  gap: var(--calc-gap);
+}
+
+.clears,
+.equals {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  flex: 0 0 var(--calc-control-row-height);
+}
+
+.main-buttons {
+  display: flex;
+  flex: 1;
+
+  gap: var(--calc-gap);
+  min-height: 0;
+}
+
+.numbers {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+
+  gap: var(--calc-gap);
+  min-width: 0;
+}
+
+.operators {
+  display: flex;
+  flex: 0 0 var(--calc-operator-width);
+  flex-direction: column;
+
+  gap: var(--calc-gap);
+}
+
+.numbers button {
+  width: calc((100% - (2 * var(--calc-gap))) / 3);
+  height: calc((100% - (4 * var(--calc-gap))) / 5);
+}
+
+.operators button {
+  flex: 1;
+
+  width: 100%;
+}
+
+#clear-button,
+#equals-button {
+  width: 70%;
+  height: 100%;
+}
+
+/* =========================
+   6. Calculator Skin
+========================= */
+
+.calculator-body {
+  background:
+    repeating-linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.025) 0px,
+      rgba(255, 255, 255, 0.025) 2px,
+      transparent 2px,
+      transparent 6px
+    ),
+    linear-gradient(
+      145deg,
+      var(--calc-shell-light) 0%,
+      var(--calc-shell) 52%,
+      var(--calc-shell-dark) 100%
+    );
+
+  outline: 2px solid rgba(55, 52, 43, 0.45);
+
+  box-shadow:
+    inset 2px 2px 4px rgba(255, 255, 255, 0.12),
+    inset -5px -6px 10px rgba(55, 52, 43, 0.28),
+    12px 16px 22px rgba(0, 0, 0, 0.38);
+}
+
+/* =========================
+   7. Screen
+========================= */
+
+.screen {
+  background: linear-gradient(
+    145deg,
+    #3f3f3f,
+    var(--calc-screen-border)
+  );
+
+  box-shadow:
+    inset 4px 4px 8px rgba(0, 0, 0, 0.55),
+    inset -2px -2px 4px rgba(255, 255, 255, 0.08);
+}
+
+.screen p {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.12),
+      transparent 42%
+    ),
+    var(--calc-screen-bg);
+
+  color: var(--calc-screen-text);
+  font-family: "digital7";
+  font-size: 60px;
+
+  box-shadow:
+    inset 3px 3px 7px rgba(0, 0, 0, 0.45),
+    inset -2px -2px 4px rgba(255, 255, 255, 0.15);
+}
+
+/* =========================
+   8. Buttons
+========================= */
+
+.calculator-body button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border: none;
+  border-radius: 12px;
+
+  font-family: "digital7";
+  font-size: 30px;
+  font-weight: 700;
+
+  cursor: pointer;
+  transform: translateY(0);
+
+  box-shadow:
+    inset 1px 1px 2px rgba(255, 255, 255, 0.12),
+    inset -2px -2px 4px rgba(0, 0, 0, 0.38),
+    0 2px 1px rgba(0, 0, 0, 0.32);
+
+  transition:
+    transform 80ms ease,
+    box-shadow 80ms ease,
+    filter 120ms ease;
+}
+
+/* Button Colors */
+
+.numbers .number {
+  background: var(--calc-button-number);
+  color: var(--calc-text-light);
+}
+
+.numbers .function,
+.numbers .decimal {
+  background: var(--calc-button-rubber);
+  color: var(--calc-text-light);
+}
+
+.operators .operator,
+.operators .back {
+  background: var(--calc-button-operator);
+  color: var(--calc-text-light);
+}
+
+#clear-button,
+#equals-button {
+  background: var(--calc-button-control);
+  color: var(--calc-text-dark);
+}
+
+/* Button Shapes */
+
+.numbers .number {
+  border-radius: 10px;
+}
+
+.numbers .function,
+.numbers .decimal,
+.operators .back,
+.operators .operator,
+#clear-button,
+#equals-button {
+  border-radius: 999px;
+}
+
+.operators .operator {
+  font-size: 34px;
+}
+
+#clear-button,
+#equals-button {
+  letter-spacing: 1px;
+}
+
+/* Basic Press Feedback */
+
+.calculator-body button:active {
+  transform: translateY(3px);
+
+  box-shadow:
+    inset 2px 3px 5px rgba(0, 0, 0, 0.42),
+    inset -1px -1px 2px rgba(255, 255, 255, 0.08),
+    0 1px 0 rgba(0, 0, 0, 0.3);
+}
+
+/* =========================
+   9. Notebook
+========================= */
+
+.info-container {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+
+  min-width: 0;
+  max-width: 50%;
+}
+
+.heading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+h1 {
+  font-family: "thelasttrunks";
+  font-size: 100px;
+  font-weight: 200;
+  color: rgba(35, 18, 8, 0.35);
+
+  text-shadow:
+    -2px -2px 0 rgba(8, 4, 2, 0.65),
+    2px 2px 0 rgba(190, 140, 85, 0.18);
+}
+
+.notebook {
+  display: flex;
+  position: relative;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+
+  background-image: linear-gradient(
+    to bottom right,
+    rgb(31, 30, 29),
+    rgb(82, 82, 82)
+  );
+
+  box-shadow: 2px 2px 5px black;
+}
+
+.text-container {
+  display: flex;
+  position: relative;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  z-index: 1;
+
+  margin: 25px 25px 15px 5px;
+  padding: 50px 37.5px 50px 75px;
+
+  background-color: rgb(253, 242, 227);
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent 0px,
+      transparent 20px,
+      rgba(31, 33, 196, 0.5) 21px,
+      rgba(31, 33, 196, 0.5) 21.5px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0px,
+      transparent 65px,
+      rgba(220, 129, 223, 0.5) 66px,
+      rgba(220, 129, 223, 0.5) 67px,
+      transparent 68px,
+      transparent 100%
+    ),
+    linear-gradient(
+      to right,
+      rgba(44, 44, 44, 0.6) 0%,
+      rgba(122, 108, 95, 0.5) 10%,
+      rgb(253, 242, 227) 30%,
+      rgb(253, 242, 227) 80%,
+      rgba(197, 171, 149, 0.5) 98%
+    );
+
+  box-shadow:
+    2px 6px rgb(119, 119, 119),
+    4px 8px rgb(100, 100, 100),
+    6px 10px rgb(83, 83, 83),
+    8px 12px rgb(59, 59, 59),
+    9px 14px rgb(42, 42, 42);
+}
+
+.rings {
+  display: flex;
+  position: absolute;
+  top: -50px;
+  right: 90px;
+  gap: 10px;
+
+  padding: 10px;
+}
+
+.binding-point {
+  position: relative;
+}
+
+.ring {
+  position: relative;
+  top: 22px;
+  z-index: 10;
+
+  width: 50px;
+  height: 80px;
+  rotate: 7deg;
+
+  border-top: 15px ridge #c0c0c0;
+  border-left: 15px ridge #c0c0c0;
+  border-bottom: 0;
+  border-right: 0;
+  border-radius: 50px;
+
+  box-shadow:
+    inset 5px 5px 5px #2f2f2f,
+    inset 2px 2px #2f2f2f,
+    -3px -3px 2px #2f2f2f;
+}
+
+.hole {
+  position: relative;
+  z-index: 2;
+
+  width: 25px;
+  height: 25px;
+
+  border: 2px solid black;
+  border-radius: 50px;
+
+  background-image: radial-gradient(
+    ellipse at 85% 85%,
+    rgb(180, 180, 180) 0%,
+    rgb(126, 126, 126) 35%,
+    rgb(37, 37, 37) 40%
+  );
+}
+
+.text-container p {
+  overflow-wrap: break-word;
+
+  line-height: 21.5px;
+  font-size: 11px;
+  text-align: center;
+}
+
+h2 {
+  font-family: "scribbles";
+  font-size: 50px;
+  font-weight: 100;
+  text-align: center;
+  color: red;
+
+  transform: scale(1.6);
+  transform-origin: 0%;
+}
+
+.codeword {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.letter {
+  font-family: "scribbles";
+  font-size: 30px;
+  color: blue;
+  text-align: center;
+
+  transform: scale(2);
+  transform-origin: center;
+}
+
+.word {
+  display: flex;
+  flex-shrink: 1;
+
+  font-family: "besties";
+  font-size: 30px;
+  font-weight: 300;
+}
+
+/* =========================
+   10. Responsive / Polish
+========================= */

@@ -6,7 +6,7 @@ This project uses JavaScript to generate a dynamic drawing grid in the browser. 
 
 ## Live Preview
 
-[View the live project](https://masterroachi.github.io/etch-a-sketch/)
+[View the live project](https://masterroachi.github.io/odin-projects/etch-a-sketch/)
 
 ## Overview
 

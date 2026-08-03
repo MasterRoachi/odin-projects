@@ -9,32 +9,81 @@
   </head>
   <body>
     <main>
-        <h1>Library</h1>
+      <div class="header">
+        <h1>The Ark</h1>
         <button id="new-book" type="button">Add Book</button>
-        <section id="bookshelf"></section>
-        <dialog id="dialog">
-          <form id="form" method="post">
-            <fieldset>
-              <label for="title">Title:</label>
-              <input type="text" id="title" name="title" required>
-              <label for="author">Author:</label>
-              <input type="text" id="author" name="author" required>
-              <label for="genre">Genre:</label>
-              <input type="text" id="genre" name="genre" required>
-              <label for="description">Describe the book briefly:</label>
-              <input type="text" id="description" name="description">
-            </fieldset>
-            <fieldset>
-              <label for="pages">How many pages does the book have?</label>
-              <input type="number" id="pages" name="pages">
-              <label for="read">I've read this!:</label>
-              <input type="radio" id="read" name="read">
-              <label for="cover">Cover:</label>
-              <input type="file" id="cover" name="cover">
-              </fieldset>
-              <button type="submit" id="submit-book"> Add to Library</button>
-          </form>
-        </dialog>
+      </div>
+      <section id="bookshelf"></section>
+      <dialog id="dialog">
+        <form id="form" method="post">
+          <header class="dialog-header">
+            <h2>Add A New Book</h2>
+            <button type="button" id="close-dialog">x</button>
+          </header>
+          <div class="form-fields">
+              <div class="form-field">
+                <label for="title">Title:</label>
+                <input
+                  type="text"
+                  id="title"
+                  name="title"
+                  placeholder="What's the name of the book?"
+                  required
+                />
+              </div>
+              <div class="form-field">
+                <label for="author">Author:</label>
+                <input
+                  type="text"
+                  id="author"
+                  name="author"
+                  placeholder="Who wrote the book?"
+                  required
+                />
+              </div>
+              <div class="form-field">
+                <label for="genre">Genre:</label>
+                <input
+                  type="text"
+                  id="genre"
+                  name="genre"
+                  placeholder="What kind of book is it?"
+                  required
+                />
+              </div>
+              <div class="form-field">
+                <label for="description">Description: </label>
+                <textarea
+                  type="text"
+                  id="description"
+                  name="description"
+                  placeholder="Briefly describe what the book is about..."
+                ></textarea>
+              </div>
+              <div class="form-field">
+                <label for="pages">How many pages does the book have?</label>
+                <input type="number" id="pages" name="pages" min="1" />
+              </div>
+              <div class="checkbox-field">
+                <label for="read">I've read this!:</label>
+                <input type="checkbox" id="read" name="read" />
+              </div>
+              <div class="cover-field">
+                <label for="cover">Cover:</label>
+                <input
+                  type="text"
+                  id="cover"
+                  name="cover"
+                  placeholder="https://example.com/cover.jpg"
+                />
+              </div>
+          </div>
+          <div class="form-buttons">
+          <button type="submit" id="submit-book">Submit</button>
+          <button type="button" id="cancel">Cancel</button>
+          </div>
+        </form>
+      </dialog>
     </main>
   </body>
 </html>

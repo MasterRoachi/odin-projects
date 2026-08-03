@@ -45,50 +45,57 @@ function populateLibrary() {
   bookshelf.replaceChildren();
 
   myLibrary.forEach((book) => {
+    
     const newBook = document.createElement("div");
     newBook.classList.add("book");
     newBook.style.backgroundImage = book.cover;
+    newBook.tabIndex = 0;
 
+    const bookDetails = document.createElement("div");
+    bookDetails.classList.add("book-details"); 
     const bookTitle = document.createElement("h2");
     bookTitle.textContent = `${book.title}`;
-
     const bookAuthor = document.createElement("p");
     bookAuthor.textContent = `${book.author}`;
-
-    const bookGenre = document.createElement("h3");
+    const bookGenre = document.createElement("p");
     bookGenre.textContent = `${book.genre}`;
-
     const bookDescription = document.createElement("p");
     bookDescription.textContent = `${book.description}`;
+    const bookPages = document.createElement("p");
+    bookPages.textContent = `${book.pages}`;
 
+    const bookButtons = document.createElement("div");
+    bookButtons.classList.add("buttons")
     const bookRead = document.createElement("button");
-    bookRead.textContent = book.read ? "Mark as unread" : "Mark as read";
+    bookRead.textContent = book.read ? "Read" : "Unread";
     bookRead.type = "button";
     bookRead.classList.add("read-button");
     bookRead.addEventListener("click", () => {
       book.toggleRead();
     });
 
-    const bookPages = document.createElement("p");
-    bookPages.textContent = `${book.pages}`;
-
     const deleteButton = document.createElement("button");
-    deleteButton.textContent = "Remove from Library";
+    deleteButton.textContent = "Delete";
     deleteButton.type = "button";
     deleteButton.classList.add("delete-button");
     deleteButton.addEventListener("click", () => {
       book.delete();
     });
-
+    
     newBook.append(
       bookTitle,
+      bookDetails
+    );
+
+    bookDetails.append(
       bookAuthor,
       bookGenre,
       bookDescription,
       bookPages,
-      bookRead,
-      deleteButton,
+      bookButtons
     );
+
+    bookButtons.append(bookRead,deleteButton);
     bookshelf.appendChild(newBook);
   });
 }
@@ -113,7 +120,7 @@ form.addEventListener("submit", (event) => {
     authorInput.value,
     genreInput.value,
     descriptionInput.value,
-    Number(pagesInput.value),
+    `Pages: ${Number(pagesInput.value)}`,
     readInput.checked,
     bookCover.value,
   );
@@ -121,3 +128,14 @@ form.addEventListener("submit", (event) => {
   populateLibrary();
   dialog.close();
 });
+
+const closeButton = document.querySelector("#close-dialog")
+const cancelButton = document.querySelector("#cancel")
+
+closeButton.addEventListener("click", () => {
+  dialog.close();
+})
+
+cancelButton.addEventListener("click", () => {
+  dialog.close();
+})

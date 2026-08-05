@@ -10,8 +10,10 @@
   <body>
     <section class="header">
       <h1>Tic-Tac-Toe</h1>
-      <button class="swap">Swap Tokens</button>
-      <button class="new">New Players</button>
+      <div class="buttons">
+      <button class="headbtn" id="swap">Swap Tokens</button>
+      <button class="headbtn" id="new">New Players</button>
+      </div>
     </section>
     <main>
       <p class="active-player"></p>
@@ -21,13 +23,13 @@
         <form class="player-form">
           <input type="text" id="player-one" placeholder="Player One (X)" required />
           <input type="text" id="player-two" placeholder="Player Two (O)" required />
-          <button type="submit">Start Game</button>
+          <button class="dialog-button" type="submit">Start Game</button>
         </form>
       </dialog>
       <dialog class="winner-box">
         <h2 class="yay">Yay!!</h2>
         <p class="winner"></p>
-        <button class="play-again">Play Again</button>
+        <button class="dialog-button" id="play-again">Play Again</button>
       </dialog>
     </main>
   </body>

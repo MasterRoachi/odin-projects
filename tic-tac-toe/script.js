@@ -153,10 +153,10 @@ function screenController() {
   const winnerBox = document.querySelector(".winner-box");
   const winner = document.querySelector(".winner");
   const winnerHeading = document.querySelector(".yay");
-  const playAgainButton = document.querySelector(".play-again");
+  const playAgainButton = document.querySelector("#play-again");
 
-  const swapButton = document.querySelector(".swap");
-  const newPlayersButton = document.querySelector(".new");
+  const swapButton = document.querySelector("#swap");
+  const newPlayersButton = document.querySelector("#new");
 
   function renderBoard() {
     const board = game.getBoard();
@@ -196,7 +196,7 @@ function screenController() {
     } else {
       winnerHeading.textContent = "Yayy";
       winner.textContent =
-        `${game.getWinningPlayer().playerName} is the winner`;
+        `${game.getWinningPlayer().playerName} is the Winner!`;
     }
 
     winnerBox.showModal();

@@ -231,6 +231,19 @@ function screenController() {
     playerSetupDialog.showModal();
   });
 
+  playerSetupDialog.addEventListener("cancel", (event) => {
+  if (!game) {
+    event.preventDefault();
+  }
+});
+
+winnerBox.addEventListener("cancel", (event) => {
+  event.preventDefault();
+  game.resetGame();
+  renderBoard();
+  winnerBox.close();
+});
+
   playerSetupDialog.showModal();
 }
 

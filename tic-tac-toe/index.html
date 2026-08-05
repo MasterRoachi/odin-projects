@@ -1,26 +1,34 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tic-Tac-Toe</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
     <script src="script.js" defer></script>
-</head>
-<body>
+  </head>
+  <body>
     <section class="header">
-        <h1>Tic-Tac-Toe</h1>
+      <h1>Tic-Tac-Toe</h1>
+      <button class="swap">Swap Tokens</button>
+      <button class="new">New Players</button>
     </section>
     <main>
-        <p class="active-player"></p>
-        <div class="gameboard">
-
-        </div>
-        <dialog class="winner-box">
-            <h2 class="yay">Yay!!</h2>
-            <p class="winner"></p>
-            <button class="play-again">Play Again</button>
-        </dialog>
+      <p class="active-player"></p>
+      <div class="gameboard"></div>
+      <dialog class="player-setup">
+        <h2 class="question">What are your names?</h2>
+        <form class="player-form">
+          <input type="text" id="player-one" placeholder="Player One (X)" required />
+          <input type="text" id="player-two" placeholder="Player Two (O)" required />
+          <button type="submit">Start Game</button>
+        </form>
+      </dialog>
+      <dialog class="winner-box">
+        <h2 class="yay">Yay!!</h2>
+        <p class="winner"></p>
+        <button class="play-again">Play Again</button>
+      </dialog>
     </main>
-</body>
+  </body>
 </html>

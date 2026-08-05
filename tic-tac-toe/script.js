@@ -19,58 +19,75 @@ function Gameboard() {
       board[squareIndex] = token;
       return true;
     }
+
     return false;
   };
 
-  return { getBoard, placeToken, resetBoard };
+  return {
+    getBoard,
+    placeToken,
+    resetBoard,
+  };
 }
 
-function playGame() {
+function playGame(playerOneName, playerTwoName) {
   const gameboard = Gameboard();
 
   function Player(playerName, playerToken) {
     return {
-      playerName: playerName,
-      playerToken: playerToken,
+      playerName,
+      playerToken,
     };
   }
-  const getBoard = () => gameboard.getBoard();
-  const playerOne = Player("Player One", "X");
-  const playerTwo = Player("Player Two", "O");
-  let winningPlayer = null;
-  const getWinningPlayer = () => winningPlayer;
-  let gameOver = false;
-  const getGameOver = () => gameOver;
-  let activePlayer = playerOne;
 
+  const playerOne = Player(playerOneName, "X");
+  const playerTwo = Player(playerTwoName, "O");
+
+  let activePlayer = playerOne;
+  let winningPlayer = null;
+  let gameOver = false;
+
+  const getBoard = () => gameboard.getBoard();
   const getActivePlayer = () => activePlayer;
+  const getWinningPlayer = () => winningPlayer;
+  const getGameOver = () => gameOver;
 
   const switchPlayerTurn = () => {
     activePlayer = activePlayer === playerOne ? playerTwo : playerOne;
   };
 
+  function swapTokens() {
+    const oldPlayerOneToken = playerOne.playerToken;
+
+    playerOne.playerToken = playerTwo.playerToken;
+    playerTwo.playerToken = oldPlayerOneToken;
+  }
+
   function placePlayerToken(squareIndex) {
     if (gameOver) {
       return;
     }
+
     const board = gameboard.getBoard();
-    const playerToken = getActivePlayer().playerToken;
+    const playerToken = activePlayer.playerToken;
+    const tokenWasPlaced = gameboard.placeToken(squareIndex, playerToken);
 
-    if (gameboard.placeToken(squareIndex, playerToken) === true) {
-      if (checkForWin()) {
-        gameOver = true;
-        winningPlayer = activePlayer;
-        console.log(`${activePlayer.playerName} is the winner!`);
-        return;
-      }
-      if (!board.includes("")) {
-        gameOver = true;
-        console.log("It's a Draw");
-        return;
-      }
-
-      switchPlayerTurn();
+    if (!tokenWasPlaced) {
+      return;
     }
+
+    if (checkForWin()) {
+      gameOver = true;
+      winningPlayer = activePlayer;
+      return;
+    }
+
+    if (!board.includes("")) {
+      gameOver = true;
+      return;
+    }
+
+    switchPlayerTurn();
   }
 
   function checkForWin() {
@@ -100,6 +117,7 @@ function playGame() {
         return true;
       }
     }
+
     return false;
   }
 
@@ -107,7 +125,9 @@ function playGame() {
     gameboard.resetBoard();
     gameOver = false;
     winningPlayer = null;
-    activePlayer = playerOne;
+
+    activePlayer =
+      playerOne.playerToken === "X" ? playerOne : playerTwo;
   }
 
   return {
@@ -115,58 +135,105 @@ function playGame() {
     getWinningPlayer,
     placePlayerToken,
     resetGame,
+    swapTokens,
     getBoard,
     getGameOver,
   };
 }
 
 function screenController() {
+  const playerSetupDialog = document.querySelector(".player-setup");
+  const playerSetupForm = document.querySelector(".player-form");
+  const playerOneInput = document.querySelector("#player-one");
+  const playerTwoInput = document.querySelector("#player-two");
+
   const gameboard = document.querySelector(".gameboard");
   const activeText = document.querySelector(".active-player");
-  const board = game.getBoard();
-
-  function renderBoard() {
-    gameboard.replaceChildren();
-    board.forEach((square, index) => {
-      const currentSquare = document.createElement("button");
-      currentSquare.classList.add("square");
-      currentSquare.dataset.index = index;
-      currentSquare.textContent = square;
-      currentSquare.addEventListener("click", () => {
-        game.placePlayerToken(index);
-        renderBoard();
-        showWinner();
-      });
-      gameboard.appendChild(currentSquare);
-    });
-    activeText.textContent = `It's ${game.getActivePlayer().playerName}'s Turn`;
-  }
-
-  renderBoard();
 
   const winnerBox = document.querySelector(".winner-box");
   const winner = document.querySelector(".winner");
   const winnerHeading = document.querySelector(".yay");
   const playAgainButton = document.querySelector(".play-again");
+
+  const swapButton = document.querySelector(".swap");
+  const newPlayersButton = document.querySelector(".new");
+
+  function renderBoard() {
+    const board = game.getBoard();
+
+    gameboard.replaceChildren();
+
+    board.forEach((square, index) => {
+      const currentSquare = document.createElement("button");
+
+      currentSquare.classList.add("square");
+      currentSquare.dataset.index = index;
+      currentSquare.textContent = square;
+
+      currentSquare.addEventListener("click", () => {
+        game.placePlayerToken(index);
+        renderBoard();
+        showWinner();
+      });
+
+      gameboard.appendChild(currentSquare);
+    });
+
+    const activePlayer = game.getActivePlayer();
+
+    activeText.textContent =
+      `It's ${activePlayer.playerName}'s Turn (${activePlayer.playerToken})`;
+  }
+
+  function showWinner() {
+    if (!game.getGameOver()) {
+      return;
+    }
+
+    if (game.getWinningPlayer() === null) {
+      winnerHeading.textContent = "Boo!!";
+      winner.textContent = "It's a draw!";
+    } else {
+      winnerHeading.textContent = "Yayy";
+      winner.textContent =
+        `${game.getWinningPlayer().playerName} is the winner`;
+    }
+
+    winnerBox.showModal();
+  }
+
+  playerSetupForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    game = playGame(
+      playerOneInput.value,
+      playerTwoInput.value,
+    );
+
+    playerSetupDialog.close();
+    renderBoard();
+  });
+
   playAgainButton.addEventListener("click", () => {
     game.resetGame();
     renderBoard();
     winnerBox.close();
   });
 
-  function showWinner() {
-    if (game.getGameOver()) {
-      if (game.getWinningPlayer() === null) {
-        winner.textContent = `It's a draw!`;
-        winnerHeading.textContent = `Boo!!`;
-      } else {
-        winnerHeading.textContent = "Yayy";
-        winner.textContent = `${game.getWinningPlayer().playerName} is the winner`;
-      }
-      winnerBox.showModal();
-    }
-  }
+  swapButton.addEventListener("click", () => {
+    game.swapTokens();
+    game.resetGame();
+    renderBoard();
+  });
+
+  newPlayersButton.addEventListener("click", () => {
+    playerSetupForm.reset();
+    playerSetupDialog.showModal();
+  });
+
+  playerSetupDialog.showModal();
 }
 
-const game = playGame();
+let game;
+
 screenController();

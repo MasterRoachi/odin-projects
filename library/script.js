@@ -1,31 +1,31 @@
 const myLibrary = [];
 const dialog = document.querySelector("#dialog");
 
-function Book(title, author, genre, description, pages, read = false, cover) {
-  this.id = crypto.randomUUID();
-  this.title = title.trim();
-  this.author = author.trim();
-  this.genre = genre;
-  this.pages = pages;
-  this.description = description;
-  this.read = read;
-  this.cover = `url(${cover})`;
-}
-
-Book.prototype.toggleRead = function () {
-  this.read = !this.read;
-  populateLibrary();
-};
-
-Book.prototype.delete = function () {
-  const index = myLibrary.findIndex((book) => book.id === this.id);
-
-  if (index > -1) {
-    myLibrary.splice(index, 1);
+class Book {
+  constructor(title, author, genre, description, pages, read = false, cover) {
+    this.id = crypto.randomUUID();
+    this.title = title.trim();
+    this.author = author.trim();
+    this.genre = genre;
+    this.pages = pages;
+    this.description = description;
+    this.read = read;
+    this.cover = `url(${cover})`;
   }
+  toggleRead() {
+    this.read = !this.read;
+    populateLibrary();
+  }
+  delete() {
+    const index = myLibrary.findIndex((book) => book.id === this.id);
 
-  populateLibrary();
-};
+    if (index > -1) {
+      myLibrary.splice(index, 1);
+    }
+
+    populateLibrary();
+  }
+}
 
 function addBookToLibrary(
   title,
@@ -45,14 +45,13 @@ function populateLibrary() {
   bookshelf.replaceChildren();
 
   myLibrary.forEach((book) => {
-    
     const newBook = document.createElement("div");
     newBook.classList.add("book");
     newBook.style.backgroundImage = book.cover;
     newBook.tabIndex = 0;
 
     const bookDetails = document.createElement("div");
-    bookDetails.classList.add("book-details"); 
+    bookDetails.classList.add("book-details");
     const bookTitle = document.createElement("h2");
     bookTitle.textContent = `${book.title}`;
     const bookAuthor = document.createElement("p");
@@ -65,7 +64,7 @@ function populateLibrary() {
     bookPages.textContent = `${book.pages}`;
 
     const bookButtons = document.createElement("div");
-    bookButtons.classList.add("buttons")
+    bookButtons.classList.add("buttons");
     const bookRead = document.createElement("button");
     bookRead.textContent = book.read ? "Read" : "Unread";
     bookRead.type = "button";
@@ -81,21 +80,18 @@ function populateLibrary() {
     deleteButton.addEventListener("click", () => {
       book.delete();
     });
-    
-    newBook.append(
-      bookTitle,
-      bookDetails
-    );
+
+    newBook.append(bookTitle, bookDetails);
 
     bookDetails.append(
       bookAuthor,
       bookGenre,
       bookDescription,
       bookPages,
-      bookButtons
+      bookButtons,
     );
 
-    bookButtons.append(bookRead,deleteButton);
+    bookButtons.append(bookRead, deleteButton);
     bookshelf.appendChild(newBook);
   });
 }
@@ -129,13 +125,13 @@ form.addEventListener("submit", (event) => {
   dialog.close();
 });
 
-const closeButton = document.querySelector("#close-dialog")
-const cancelButton = document.querySelector("#cancel")
+const closeButton = document.querySelector("#close-dialog");
+const cancelButton = document.querySelector("#cancel");
 
 closeButton.addEventListener("click", () => {
   dialog.close();
-})
+});
 
 cancelButton.addEventListener("click", () => {
   dialog.close();
-})
+});

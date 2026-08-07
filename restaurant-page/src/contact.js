@@ -19,11 +19,9 @@ export const loadContact = () => {
     phoneLink.textContent = "+27 11 000 0000";
     telephone.append("Telephone: ", phoneLink);
     const email = document.createElement("p");
-    email.textContent = "reservations@koi.example";
     email.classList.add("email");
     const emailLink = document.createElement("a");
     emailLink.href = "mailto:reservations@koi.example";
-    emailLink.textContent = "reservations@koi.example";
     email.append("Email: ", emailLink);
     const hours = document.createElement("h2");
     hours.textContent = "Operating Hours:";
@@ -38,6 +36,6 @@ export const loadContact = () => {
 
     hoursList.append(listItem1, listItem2, listItem3);
     address.append(telephone, email);
-    container.append(heading, intro, address, telephone, email, hours, hoursList);
+    container.append(heading, intro, address, hours, hoursList);
     content.appendChild(container);
 }

@@ -1,0 +1,263 @@
+:root {
+  --background: #f7f4ed;
+  --surface: rgba(255, 255, 255, 0.88);
+  --text: #191919;
+  --muted-text: #5f5a54;
+  --accent: #a8763d;
+  --border: rgba(25, 25, 25, 0.15);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  color: var(--text);
+  background-color: var(--background);
+  background-image: url("./assets/back.png");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  padding: 1.25rem;
+}
+
+.nav {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background-color: var(--surface);
+  backdrop-filter: blur(10px);
+}
+
+.nav button {
+  border: 0;
+  border-radius: 999px;
+  padding: 0.7rem 1.25rem;
+  color: var(--text);
+  background: transparent;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.nav button:hover,
+.nav button:focus-visible,
+.nav button.active {
+  color: white;
+  background-color: var(--accent);
+}
+
+.nav button:focus-visible,
+.address a:focus-visible {
+  outline: 3px solid var(--text);
+  outline-offset: 3px;
+}
+
+#content {
+  width: min(1100px, calc(100% - 2rem));
+  margin: 2rem auto;
+}
+
+.koi-logo {
+  display: block;
+  width: clamp(250px, 50vw, 450px);
+  max-width: 100%;
+  height: auto;
+  margin: 1.5rem auto;
+  object-fit: contain;
+}
+
+.home,
+.menu,
+.contact {
+  padding: clamp(1.5rem, 4vw, 3rem);
+  border: 1px solid var(--border);
+  border-radius: 1.5rem;
+  background-color: var(--surface);
+  box-shadow: 0 1.25rem 3rem rgba(0, 0, 0, 0.12);
+  backdrop-filter: blur(10px);
+}
+
+.home {
+  display: flex;
+  min-height: 60vh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.home > p {
+  max-width: 650px;
+  margin: 0 auto;
+  color: var(--muted-text);
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  line-height: 1.7;
+}
+
+.menu > h1 {
+  margin: 0;
+  text-align: center;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+}
+
+.menu > p {
+  max-width: 650px;
+  margin: 0.75rem auto 2rem;
+  color: var(--muted-text);
+  text-align: center;
+  line-height: 1.6;
+}
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  gap: 1.25rem;
+}
+
+.menu-item {
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  background-color: rgba(255, 255, 255, 0.72);
+}
+
+.category {
+  margin: 0 0 0.5rem;
+  color: var(--accent);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.name {
+  margin: 0;
+  font-size: 1.35rem;
+}
+
+.description {
+  margin: 0.75rem 0 1.5rem;
+  color: var(--muted-text);
+  line-height: 1.6;
+}
+
+.price {
+  margin: 0;
+  color: var(--accent);
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.contact {
+  max-width: 760px;
+  margin-inline: auto;
+}
+
+.contact > h1 {
+  margin: 0;
+  text-align: center;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+}
+
+.contact > .intro {
+  max-width: 620px;
+  margin: 0.75rem auto 2rem;
+  color: var(--muted-text);
+  text-align: center;
+  line-height: 1.6;
+}
+
+.address {
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  background-color: rgba(255, 255, 255, 0.72);
+  font-style: normal;
+  line-height: 1.6;
+}
+
+.address p {
+  margin: 0.75rem 0 0;
+}
+
+.address a {
+  color: var(--accent);
+  font-weight: 700;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.2rem;
+}
+
+.address a:hover,
+.address a:focus-visible {
+  color: var(--text);
+}
+
+.hours {
+  margin: 2rem 0 1rem;
+  font-size: 1.5rem;
+}
+
+.contact ul {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.contact li {
+  padding: 1rem 1.25rem;
+  border-left: 4px solid var(--accent);
+  border-radius: 0.5rem;
+  background-color: rgba(255, 255, 255, 0.72);
+}
+
+@media (max-width: 500px) {
+  .header {
+    padding: 0.75rem;
+  }
+
+  .nav {
+    width: 100%;
+    gap: 0.25rem;
+  }
+
+  .nav button {
+    flex: 1;
+    padding-inline: 0.5rem;
+  }
+
+  #content {
+    width: calc(100% - 1rem);
+    margin-block: 0.75rem;
+  }
+
+  .home,
+  .menu,
+  .contact {
+    padding: 1.25rem;
+    border-radius: 1rem;
+  }
+
+  body {
+    background-attachment: scroll;
+  }
+}

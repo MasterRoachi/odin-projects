@@ -19,6 +19,9 @@ function renderPage() {
   } else {
     loadHome();
   }
+  home.classList.toggle("active", active === "home");
+  contact.classList.toggle("active", active === "contact");
+  menu.classList.toggle("active", active === "menu");
 }
 
 home.addEventListener("click", () => {

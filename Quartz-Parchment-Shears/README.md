@@ -1,90 +1,84 @@
 # Quartz, Parchment, Shears
 
-A simple browser-based Rock Paper Scissors game built as part of **The Odin Project Foundations** JavaScript curriculum.
+Rock Paper Scissors, reskinned and rebuilt, from [The Odin Project Foundations](https://www.theodinproject.com/) curriculum.
 
-Instead of the traditional rock, paper, and scissors, this version uses a slightly more fantasy-themed set of choices:
+## Overview
 
-* **Quartz**
-* **Parchment**
-* **Shears**
+Quartz blunts shears. Shears cut parchment. Parchment wraps quartz. First to five takes the match.
 
-The project started as a simple console/prompt-based exercise and was later expanded into a full themed user interface with clickable buttons, score tracking, and round results displayed directly on the page.
+The Odin curriculum splits this project in two: a console-only version in the JavaScript Basics section, then a "Revisiting Rock Paper Scissors" lesson that adds a UI once DOM manipulation has been covered. This build is the finished article — buttons rather than `prompt()`, a running score, and a match that ends when someone reaches five.
 
-## How It Works
+The illustrations are original artwork, and they set the direction: cream cards with heavy ink borders want a dark table to sit on. The palette is sampled from the cards themselves — violet from the quartz, umber from the parchment, rust from the shears — with brass fittings for the scoreboard.
 
-The player is prompted to choose between Quartz, Parchment, or Shears.
+## Playing
 
-The computer randomly selects one of the three options.
+* Click a card, or press **Q**, **P** or **S**
+* First to five points wins
+* **New game** button, or press **Enter** once the match is over
 
-Each round is compared according to the following rules:
+## Structure
 
-* Quartz beats Shears
-* Shears beats Parchment
-* Parchment beats Quartz
+```
+Quartz-Parchment-Shears/
+├── index.html
+├── style.css
+├── script.js
+└── images/          original illustrations
+```
 
-After five rounds, the final score is displayed in the console, and the winner is announced with an alert.
+`script.js` is organised in five labelled sections, and the split that matters is the first one: **the rules never touch the DOM**. `getComputerChoice` and `playRound` take choices and return a plain description of what happened — an outcome, the two throws, and a message. Every consequence (incrementing a score, drawing a card, writing to the ledger) is the caller's job. The UI could be replaced wholesale without editing a line of the rules.
 
-## Features
+This anticipates the Single Responsibility lesson later in the JavaScript course, which uses almost exactly this example — game logic that reaches into the DOM — as the thing not to do.
 
-* Themed visual layout
-* Custom background artwork
-* Custom heading and choice card images
-* Clickable choice buttons
-* Random computer choice generation
-* Score tracking for both player and computer
-* Round result messages displayed on the page
-* Hover effects on player choices
-* First-to-5 win condition
-* No browser prompts or alerts required for gameplay
+## Built With
+
+* HTML
+* CSS — Grid, custom properties, `clamp()`, keyframe animation
+* JavaScript — no libraries, no build step
+
+## Going Beyond the Brief
+
+The lesson asks for three buttons, a results div, a running score, and a winner at five points. This build adds:
+
+* **A round ledger** — every round recorded with both throws and the outcome, newest first, colour-coded per card.
+* **Keyboard play** — Q, P and S as first-class input, with the binding shown on each card.
+* **A reveal beat** — your card is dealt immediately, the adversary's shuffles face-down for a moment before turning over. Skipped entirely under `prefers-reduced-motion`.
+* **A card back drawn in CSS** rather than shipped as another image.
+* **Responsive from 320px** — the arena reflows to two-up with the verdict above it, and the keycap badge moves clear of the card lettering.
+* **Score pips** alongside the numerals, so the state of the match reads at a glance.
+
+The adversary is honestly random, as the assignment requires — `Math.random` over the three choices, with no memory of what you have played.
+
+## Accessibility
+
+* The verdict line is an `aria-live` region, so outcomes are announced rather than only shown
+* Choice buttons carry screen-reader labels; the decorative card images have empty `alt`
+* Visible focus rings on every interactive element
+* Buttons disable during the reveal and after the match ends, so the state is never ambiguous
+
+## Design Tokens
+
+| Token       | Value     | Role                            |
+| ----------- | --------- | ------------------------------- |
+| `felt`      | `#23261D` | The table                       |
+| `cream`     | `#E8DCBC` | Card ground, sampled from art   |
+| `quartz`    | `#6E5F8C` | Quartz violet                   |
+| `parchment` | `#8A6A33` | Parchment umber                 |
+| `shears`    | `#A8574A` | Shears rust                     |
+| `brass`     | `#B39355` | Scoreboard fittings, focus ring |
 
 ## What I Practiced
 
-This project helped me practice the following concepts:
-
-### JavaScript
-* Variables
-* Arrays
-* Functions
-* Function parameters
-* Return values
-* Conditional logic
-* Event listeners
-* DOM selection
-* DOM text updates
-* Random number generation
-* Score tracking
-* Refactoring from console-based logic to UI-based logic
-
-### HTML
-
-* Semantic page structure
-* Buttons for user interaction
-* Image elements
-* Linking CSS and JavaScript files
-
-### CSS
-
-* Flexbox layout
-* Background images
-* Button styling
-* Hover effects
-* Responsive image sizing
-* Fixed-size UI elements
-* Layering a playable interface over a visual background
-
+* Separating game rules from rendering, and keeping the boundary honest
+* Driving state changes through a single render pass rather than patching the DOM ad hoc
+* `async`/`await` to sequence a reveal without nesting timeouts
+* Guarding against input during animation with a busy flag
+* Keyboard input as a real path, not an afterthought
 
 ## Project Status
 
-Completed as a playable browser game.
+Complete. Rebuilt from the earlier version, which remains in this repository's git history.
 
-Possible future improvements:
-* Add animations for wins, losses, and draws
-* Add sound effects
-* Improve mobile responsiveness
-* Add a final victory/defeat screen
+## Acknowledgements
 
-# Credits
-
-This project was completed as part of The Odin Project Foundations course.
-
-Custom visual assets were created for this themed version of the project.
+Illustrations by Master Roachi. Completed as part of The Odin Project Foundations curriculum.

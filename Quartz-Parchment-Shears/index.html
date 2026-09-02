@@ -1,47 +1,128 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Quartz, Parchment, Shears — a card-table take on Rock Paper Scissors. First to five."
+    />
     <title>Quartz, Parchment, Shears</title>
-    <link rel="stylesheet" href="./style.css">
-</head>
 
-<body>
-    <main class="game">
-        <section class="game-name">
-            <img src="./images/heading.png">
-        </section>
-        <section class="scoreboard">
-            <div class="info">
-                <div class="score">
-                    <p id="com">COM: </p>
-                    <span id="computer-score"> 0</span>
-                </div>
-                <div class="score">
-                    <p id="player">PLAYER: </p>
-                    <span id="human-score"> 0</span>
-                </div>
-            </div>
-            <div class="results"> 
-            <p id="round-result"></p>
-            </div>
-        </section>
-        <section class="choices">
-            <button class="quartz choice">
-                <img src="./images/Quartz.png">
-            </button>
-            <button class="parchment choice">
-                <img src="./images/Parchment.png">
-            </button>
-            <button class="shears choice">
-                <img src="./images/Shears.png">
-            </button>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Chivo:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
+    />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+
+  <body>
+    <div class="table">
+      <header class="masthead">
+        <img
+          class="masthead-art"
+          src="./images/heading.png"
+          alt="Quartz, Parchment, Shears — choose wisely"
+          width="727"
+          height="458"
+        />
+      </header>
+
+      <main class="game">
+        <!-- ========== SCOREBOARD ========== -->
+        <section class="scoreboard" aria-label="Score">
+          <div class="plaque">
+            <p class="plaque-name">You</p>
+            <p class="plaque-score" id="human-score">0</p>
+            <ol class="pips" id="human-pips" aria-hidden="true">
+              <li></li><li></li><li></li><li></li><li></li>
+            </ol>
+          </div>
+
+          <p class="target">First<br /><span>to 5</span></p>
+
+          <div class="plaque">
+            <p class="plaque-name">Adversary</p>
+            <p class="plaque-score" id="computer-score">0</p>
+            <ol class="pips" id="computer-pips" aria-hidden="true">
+              <li></li><li></li><li></li><li></li><li></li>
+            </ol>
+          </div>
         </section>
 
-    </main>
+        <!-- ========== ARENA ========== -->
+        <section class="arena" aria-label="This round">
+          <figure class="slot" id="slot-human">
+            <div class="slot-inner">
+              <div class="card-back" aria-hidden="true"></div>
+            </div>
+            <figcaption>Your play</figcaption>
+          </figure>
+
+          <div class="verdict">
+            <p class="verdict-line" id="verdict" role="status" aria-live="polite">
+              Choose wisely.
+            </p>
+            <p class="round-no" id="round-no">Round 1</p>
+          </div>
+
+          <figure class="slot" id="slot-computer">
+            <div class="slot-inner">
+              <div class="card-back" aria-hidden="true"></div>
+            </div>
+            <figcaption>Their play</figcaption>
+          </figure>
+        </section>
+
+        <!-- ========== CHOICES ========== -->
+        <section class="choices" aria-label="Make your play">
+          <button class="choice" data-choice="quartz" type="button">
+            <img src="./images/Quartz.png" alt="" width="802" height="900" />
+            <span class="sr-only">Play quartz</span>
+            <kbd>Q</kbd>
+          </button>
+
+          <button class="choice" data-choice="parchment" type="button">
+            <img src="./images/Parchment.png" alt="" width="786" height="884" />
+            <span class="sr-only">Play parchment</span>
+            <kbd>P</kbd>
+          </button>
+
+          <button class="choice" data-choice="shears" type="button">
+            <img src="./images/Shears.png" alt="" width="776" height="872" />
+            <span class="sr-only">Play shears</span>
+            <kbd>S</kbd>
+          </button>
+        </section>
+
+        <!-- ========== LEDGER ========== -->
+        <section class="ledger" aria-label="Round history">
+          <div class="ledger-head">
+            <h2>The Ledger</h2>
+            <button class="reset" id="reset" type="button">New game</button>
+          </div>
+
+          <ol class="ledger-list" id="ledger">
+            <li class="ledger-empty">No rounds played yet.</li>
+          </ol>
+        </section>
+      </main>
+
+      <footer class="colophon">
+        <p>
+          Quartz blunts shears &middot; Shears cut parchment &middot; Parchment
+          wraps quartz
+        </p>
+        <p class="colophon-credit">
+          Illustrations by Master Roachi. Built for
+          <a href="https://www.theodinproject.com/">The Odin Project</a>
+          Foundations.
+        </p>
+      </footer>
+    </div>
+
     <script src="./script.js"></script>
-</body>
-
+  </body>
 </html>

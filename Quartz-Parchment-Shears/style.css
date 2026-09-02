@@ -1,97 +1,582 @@
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+/* =========================================================
+   Quartz, Parchment, Shears
+   Odin Project Foundations — Rock Paper Scissors (rebuilt)
+
+   The card art dictates the direction: cream cards with heavy
+   ink borders want a dark table to sit on. Palette is sampled
+   from the illustrations themselves.
+
+   Single-theme by design — a card table is a card table.
+   ========================================================= */
+
+:root {
+  /* the table */
+  --felt: #23261d;
+  --felt-hi: #2f3427;
+  --felt-lo: #191b14;
+  --ink: #241d15;
+
+  /* sampled from the card art */
+  --cream: #e8dcbc;
+  --cream-dim: #cfc3a4;
+  --quartz: #6e5f8c;
+  --parchment: #8a6a33;
+  --shears: #a8574a;
+
+  /* fittings */
+  --brass: #b39355;
+  --brass-dim: #7d6739;
+  --muted: #a49b83;
+
+  /* outcome */
+  --won: #9fb46b;
+  --lost: #c47a68;
+
+  --display: "Baloo 2", "Trebuchet MS", system-ui, sans-serif;
+  --body: "Chivo", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+
+  --shell: 1080px;
+  --gutter: clamp(1rem, 4vw, 2.5rem);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
 body {
-    margin: 0;
-    min-height: 100vh;
-    background-image: url(./images/background.png);
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    font-family: 'Courier New', Courier, monospace;
+  margin: 0;
+  background: var(--felt-lo);
+  color: var(--cream);
+  font-family: var(--body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
 
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+:focus-visible {
+  outline: 3px solid var(--brass);
+  outline-offset: 3px;
+}
+
+/* the table surface: a warm radial pool of light on dark felt */
+.table {
+  min-height: 100vh;
+  background:
+    radial-gradient(
+      ellipse 120% 80% at 50% 0%,
+      var(--felt-hi) 0%,
+      var(--felt) 45%,
+      var(--felt-lo) 100%
+    );
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(1.5rem, 4vw, 2.75rem);
+  padding: clamp(1.5rem, 5vw, 3rem) var(--gutter) 2.5rem;
+}
+
+/* ---------- masthead ---------- */
+
+.masthead {
+  width: 100%;
+  max-width: 420px;
+}
+
+.masthead-art {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.55));
 }
 
 .game {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
-    padding: 25px;
+  width: 100%;
+  max-width: var(--shell);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.5rem, 4vw, 2.5rem);
 }
 
-.game-name img {
-    width: min(500px, 90vw);
-}
+/* ---------- scoreboard ---------- */
 
 .scoreboard {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: #e5d0a5;
-    padding: 15px 100px;
-    border: 3px solid black;
-    border-radius: 15px;
-    width: 500px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: clamp(0.75rem, 3vw, 2rem);
 }
 
-.score {
-    display: flex;
-    gap: 5px;
-    justify-content: space-around;
-    align-items: center;
-    font-weight: bold;
-    font-size: 1.3rem;
+.plaque {
+  background: linear-gradient(var(--felt-hi), var(--felt));
+  border: 1px solid var(--brass-dim);
+  border-radius: 4px;
+  padding: 0.85rem 1rem 0.9rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  box-shadow: inset 0 1px 0 rgba(179, 147, 85, 0.22);
 }
 
-.info {
-    width: 100%;
-    display: flex;
-    justify-content: space-around;
-    gap: 80px;
-
+.plaque-name {
+  font-family: var(--body);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--brass);
+  margin: 0;
 }
 
-#com {
-    color: #8f5140;
+.plaque-score {
+  font-family: var(--mono);
+  font-size: clamp(2rem, 7vw, 2.9rem);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--cream);
+  font-variant-numeric: tabular-nums;
+  margin: 0.1rem 0 0.35rem;
 }
 
-#player {
-    color: #665275;
+.pips {
+  display: flex;
+  gap: 0.3rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
-.results {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    margin-top: 10px;
-    font-size: 1rem;
-    text-align: center;
+.pips li {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 1px solid var(--brass-dim);
+  background: transparent;
+  transition: background-color 200ms ease;
 }
+
+.pips li.lit {
+  background: var(--brass);
+}
+
+.target {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 0.8rem;
+  line-height: 1.1;
+  text-align: center;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0;
+}
+
+.target span {
+  font-size: 1.35rem;
+  color: var(--brass);
+}
+
+/* ---------- arena ---------- */
+
+.arena {
+  display: grid;
+  /* capped, not auto: a long verdict line must wrap rather than
+     grow the middle column and squeeze the card slots */
+  grid-template-columns: 1fr minmax(9rem, 22rem) 1fr;
+  align-items: center;
+  gap: clamp(0.5rem, 3vw, 1.75rem);
+}
+
+.slot {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.slot-inner {
+  width: 100%;
+  max-width: 190px;
+  aspect-ratio: 786 / 884;
+  border-radius: 10px;
+  position: relative;
+  background: rgba(0, 0, 0, 0.22);
+  box-shadow: inset 0 0 0 2px rgba(179, 147, 85, 0.28);
+}
+
+.slot-inner img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.5));
+}
+
+/* a card back drawn in CSS, so it costs nothing to ship */
+.card-back {
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  border: 3px solid var(--ink);
+  background-color: var(--cream-dim);
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      rgba(110, 95, 140, 0.34) 0 6px,
+      transparent 6px 12px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      rgba(138, 106, 51, 0.28) 0 6px,
+      transparent 6px 12px
+    );
+  box-shadow: inset 0 0 0 6px var(--cream);
+}
+
+.slot figcaption {
+  font-family: var(--body);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.verdict {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.verdict-line {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(0.98rem, 2.6vw, 1.3rem);
+  line-height: 1.2;
+  color: var(--cream);
+  text-wrap: balance;
+  margin: 0;
+  min-height: 2.6em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.verdict-line.won {
+  color: var(--won);
+}
+
+.verdict-line.lost {
+  color: var(--lost);
+}
+
+.verdict-line.final {
+  font-size: clamp(1.15rem, 3.4vw, 1.6rem);
+}
+
+.round-no {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--brass-dim);
+  margin: 0;
+}
+
+/* ---------- choices ---------- */
 
 .choices {
-    display: flex;
-    gap: 50px;
-}
-
-.choices img {
-    width: min(250px, 28vw);
-    display: block;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(0.6rem, 2.5vw, 1.25rem);
 }
 
 .choice {
-    background: none;
-    border: none;
-    cursor: pointer;
-    transition: transform 0.2s ease;
+  position: relative;
+  appearance: none;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 12px;
+  transition: transform 160ms ease, filter 160ms ease;
 }
 
-.choice:hover {
-    transform: scale(1.05);
+.choice img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.5));
+}
+
+.choice:hover,
+.choice:focus-visible {
+  transform: translateY(-8px);
+}
+
+.choice:active {
+  transform: translateY(-2px);
+}
+
+.choice[disabled] {
+  cursor: not-allowed;
+  filter: grayscale(0.55) brightness(0.62);
+  transform: none;
+}
+
+.choice kbd {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--cream);
+  background: var(--ink);
+  border-radius: 4px;
+  padding: 0.1rem 0.4rem;
+  border: 1px solid var(--brass-dim);
+}
+
+/* ---------- ledger ---------- */
+
+.ledger {
+  background: rgba(0, 0, 0, 0.24);
+  border: 1px solid var(--brass-dim);
+  border-radius: 4px;
+  padding: 1rem 1.15rem 1.15rem;
+}
+
+.ledger-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding-bottom: 0.7rem;
+  border-bottom: 1px solid var(--brass-dim);
+}
+
+.ledger-head h2 {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: 0.02em;
+  color: var(--brass);
+  margin: 0;
+}
+
+.reset {
+  appearance: none;
+  cursor: pointer;
+  font-family: var(--body);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cream);
+  background: transparent;
+  border: 1px solid var(--brass-dim);
+  border-radius: 3px;
+  padding: 0.45rem 0.85rem;
+  transition: background-color 150ms ease, border-color 150ms ease;
+}
+
+.reset:hover {
+  background: var(--brass-dim);
+  border-color: var(--brass);
+}
+
+.ledger-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 13rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.ledger-list li {
+  display: grid;
+  grid-template-columns: 3.1rem 1fr auto;
+  align-items: baseline;
+  gap: 0.4rem 0.75rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(179, 147, 85, 0.16);
+  font-size: 0.84rem;
+}
+
+.ledger-list li:last-child {
+  border-bottom: 0;
+}
+
+.ledger-empty {
+  display: block !important;
+  color: var(--muted);
+  font-style: italic;
+  padding-top: 0.7rem !important;
+}
+
+.ledger-round {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--brass-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.ledger-throws {
+  color: var(--cream);
+}
+
+.ledger-throws b {
+  font-weight: 700;
+}
+
+.ledger-throws .q { color: #a293c4; }
+.ledger-throws .p { color: #c9a057; }
+.ledger-throws .s { color: #d18e7e; }
+
+.ledger-throws .vs {
+  color: var(--muted);
+  font-size: 0.76rem;
+  padding: 0 0.35rem;
+}
+
+.ledger-outcome {
+  font-family: var(--body);
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.ledger-outcome.won { color: var(--won); }
+.ledger-outcome.lost { color: var(--lost); }
+.ledger-outcome.drew { color: var(--muted); }
+
+/* ---------- colophon ---------- */
+
+.colophon {
+  text-align: center;
+  font-size: 0.76rem;
+  color: var(--muted);
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding-top: 0.5rem;
+}
+
+.colophon p {
+  margin: 0;
+}
+
+.colophon-credit {
+  font-size: 0.72rem;
+  color: var(--brass-dim);
+}
+
+.colophon a {
+  color: var(--brass);
+  text-underline-offset: 2px;
+}
+
+/* ---------- reveal motion ---------- */
+
+@keyframes deal {
+  from {
+    opacity: 0;
+    transform: translateY(14px) rotate(-3deg) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes shuffle {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-7px) rotate(-2.5deg); }
+  75% { transform: translateY(-7px) rotate(2.5deg); }
+}
+
+.slot-inner .dealt {
+  animation: deal 260ms ease-out both;
+}
+
+.slot-inner.shuffling {
+  animation: shuffle 200ms ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slot-inner .dealt,
+  .slot-inner.shuffling {
+    animation: none;
+  }
+
+  .choice,
+  .pips li,
+  .reset {
+    transition: none;
+  }
+
+  .choice:hover,
+  .choice:focus-visible,
+  .choice:active {
+    transform: none;
+  }
+}
+
+/* ---------- narrow screens ---------- */
+
+@media (max-width: 40rem) {
+  .arena {
+    grid-template-columns: 1fr 1fr;
+    row-gap: 1.1rem;
+  }
+
+  .verdict {
+    grid-column: 1 / -1;
+    order: -1;
+  }
+
+  .slot-inner {
+    max-width: 150px;
+  }
+
+  .ledger-list li {
+    grid-template-columns: 2.6rem 1fr;
+  }
+
+  .ledger-outcome {
+    grid-column: 2;
+  }
+
+  /* the cards are small here and the badge lands on the title
+     lettering, so drop it to the illustration instead */
+  .choice kbd {
+    top: auto;
+    bottom: 0.4rem;
+    right: 0.4rem;
+    font-size: 0.6rem;
+  }
 }

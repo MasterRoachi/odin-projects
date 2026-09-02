@@ -12,7 +12,7 @@ Each project is stored in its own folder and has an individual README describing
 | [Coolculator](./calculator/README.md)                            | A browser-based calculator with keyboard controls and chained operations.    |
 | [Etch-A-Sketch](./etch-a-sketch/README.md)                       | An interactive JavaScript drawing grid with custom sizing and drawing modes. |
 | [Odin Recipes](./odin-recipes/README.md)                         | A three-page recipe site built to practise structural HTML.                  |
-| [Questicles Landing Page](./landing-page/README.md)              | A gaming-themed landing page built with HTML, CSS, and Flexbox.              |
+| [Landing Page](./landing-page/README.md)                          | A personal landing page built from the Odin design brief.                    |
 | [Quartz, Parchment, Shears](./Quartz-Parchment-Shears/README.md) | A themed browser-based Rock Paper Scissors game.                             |
 
 ## Technologies Used

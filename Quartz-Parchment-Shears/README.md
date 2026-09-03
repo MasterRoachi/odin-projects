@@ -8,7 +8,7 @@ Quartz blunts shears. Shears cut parchment. Parchment wraps quartz. First to fiv
 
 The Odin curriculum splits this project in two: a console-only version in the JavaScript Basics section, then a "Revisiting Rock Paper Scissors" lesson that adds a UI once DOM manipulation has been covered. This build is the finished article — buttons rather than `prompt()`, a running score, and a match that ends when someone reaches five.
 
-The direction is Saturday-morning cartoon: flat colour, heavy ink outlines, and a park on a very blue afternoon. The whole background — sky, sun, clouds, hills — is CSS, so it costs nothing to ship.
+The direction is Saturday-morning cartoon: flat colour, heavy ink outlines, and a late afternoon somewhere outside town. The background is original artwork drawn as inline SVG — a far ridge, two scalloped treelines, a power line on leaning poles, and the near bank the objects float over — layered back to front so the scene has depth. Because it is drawn rather than photographed it scales to any window, stays sharp at any size, and adds nothing at all to the page weight.
 
 ## Playing
 
@@ -77,7 +77,7 @@ The lesson asks for three buttons, a results div, a running score, and a winner 
 * **A round ledger** — every round with both throws and the outcome, newest first, colour-coded
 * **Keyboard play** — Q, P and S, which trigger the same performance as hovering
 * **A reveal beat** before the adversary's play is turned over
-* **A CSS park** — sky, sun, clouds and hills, no image payload
+* **An original drawn landscape** — inline SVG, layered for depth, anchored to the bottom so a short window loses sky rather than squashing the drawing. Zero image payload.
 * **Locked to the viewport** — the game never scrolls. Object heights are driven by shared `--stage-h` and `--object-h` lengths in `vh`, the ledger becomes a full-height sidebar above 64rem and a short scrolling strip below it, and the masthead drops out entirely on very short screens. Verified for scroll and overlap at 1440x900, 1280x800, 1024x768, 844x390 and 390x844.
 * **Commentary that varies** — fifteen win lines, fifteen loss lines, twelve draws, plus separate lines for taking or dropping a match
 
@@ -96,8 +96,11 @@ The adversary is honestly random, as the assignment requires — `Math.random` o
 
 | Token     | Value     | Role                          |
 | --------- | --------- | ----------------------------- |
-| `sky-top` | `#58C8E8` | Sky, top of the gradient      |
-| `grass`   | `#7CC24A` | The near hill                 |
+| `sky-top` | `#3F97C4` | Sky, top of the gradient      |
+| `sky-horizon` | `#F2DDB6` | The warm band at the horizon |
+| `ridge`   | `#8AA896` | The far ridge                 |
+| `trees`   | `#3A6242` | The near treeline             |
+| `grass`   | `#74B843` | The near bank                 |
 | `ink`     | `#201C17` | Every outline, and body text  |
 | `wood-face` | `#F0D3A6` | Signs, tags and placards    |
 | `quartz`  | `#6E5F8C` | Sampled from the illustration |
@@ -111,7 +114,7 @@ The adversary is honestly random, as the assignment requires — `Math.random` o
 * Isolating artwork programmatically with flood fill and connected-component labelling
 * `async`/`await` to sequence a reveal without nesting timeouts
 * Guarding against input during animation with a busy flag
-* Building an illustrated scene entirely in CSS
+* Drawing an illustrated scene as SVG paths, including scalloped treelines built from a single arc sequence so no seams show between canopies
 
 ## Project Status
 

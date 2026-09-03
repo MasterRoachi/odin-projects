@@ -2,7 +2,6 @@ import { useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import ProductCard from "../components/ProductCard.jsx";
 import { priceOf } from "../lib/money.js";
-import { inCart } from "../cart/cartMath.js";
 
 /* =========================================================
    The grid, with the filter in the URL.
@@ -27,7 +26,7 @@ const SORTS = {
   title: { label: "Name", compare: (a, b) => a.title.localeCompare(b.title) },
 };
 
-export default function Shop({ catalogue, cart, onAdd }) {
+export default function Shop({ catalogue }) {
   const { status, products, error, retry } = catalogue;
   const [params, setParams] = useSearchParams();
 
@@ -118,12 +117,8 @@ export default function Shop({ catalogue, cart, onAdd }) {
       ) : (
         <ul className="grid">
           {shown.map((product) => (
-            <ProductCard
-              key={product.id}
-              product={product}
-              onAdd={onAdd}
-              inBasket={inCart(cart, product.id)}
-            />
+            /* ProductCard now asks the cart for itself; Shop is out of it */
+            <ProductCard key={product.id} product={product} />
           ))}
         </ul>
       )}

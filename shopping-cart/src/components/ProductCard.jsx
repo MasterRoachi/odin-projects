@@ -1,14 +1,18 @@
 import { Link } from "react-router-dom";
 import { money, priceOf } from "../lib/money.js";
+import { useCart } from "../cart/CartContext.jsx";
 
 /* =========================================================
    One product in the grid.
 
-   `onAdd` is passed in from Shop, which was passed it by App.
-   Shop never adds anything itself.
+   Takes only the product. It gets the cart itself, so nothing
+   between here and the provider has to carry it.
    ========================================================= */
 
-export default function ProductCard({ product, onAdd, inBasket }) {
+export default function ProductCard({ product }) {
+  const { add, has } = useCart();
+  const inBasket = has(product.id);
+
   return (
     <li className="card">
       <Link to={`/product/${product.id}`} className="card-media">
@@ -23,9 +27,19 @@ export default function ProductCard({ product, onAdd, inBasket }) {
 
         <div className="card-foot">
           <p className="price">{money(priceOf(product))}</p>
-          <button type="button" className="add" onClick={() => onAdd(product, 1)}>
+          {/*
+            The name is an aria-label rather than short visible text plus a
+            hidden span. Accessible-name computation trims each node before
+            joining them, so "Add" + " Canvas Backpack to basket" was
+            announced as "AddCanvas Backpack to basket". A test caught it.
+          */}
+          <button
+            type="button"
+            className="add"
+            onClick={() => add(product, 1)}
+            aria-label={`${inBasket ? "Add another" : "Add"} ${product.title} to basket`}
+          >
             {inBasket ? "Add another" : "Add"}
-            <span className="visually-hidden"> {product.title} to basket</span>
           </button>
         </div>
       </div>

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import QuantityStepper from "../components/QuantityStepper.jsx";
 import { money, priceOf } from "../lib/money.js";
-import { inCart } from "../cart/cartMath.js";
+import { useCart } from "../cart/CartContext.jsx";
 
 /* =========================================================
    One product, on its own route.
@@ -13,7 +13,8 @@ import { inCart } from "../cart/cartMath.js";
    look the same and be none of those things.
    ========================================================= */
 
-export default function Product({ catalogue, cart, onAdd }) {
+export default function Product({ catalogue }) {
+  const { add, has } = useCart();
   const { id } = useParams();
   const navigate = useNavigate();
   const { status, products } = catalogue;
@@ -50,7 +51,7 @@ export default function Product({ catalogue, cart, onAdd }) {
   }
 
   const handleAdd = () => {
-    onAdd(product, qty);
+    add(product, qty);
     setAdded(true);
   };
 
@@ -90,7 +91,7 @@ export default function Product({ catalogue, cart, onAdd }) {
 
           <p className="note" role="status" aria-live="polite">
             {added
-              ? `Added. ${inCart(cart, product.id) ? "It is in your basket." : ""}`
+              ? `Added. ${has(product.id) ? "It is in your basket." : ""}`
               : " "}
           </p>
 

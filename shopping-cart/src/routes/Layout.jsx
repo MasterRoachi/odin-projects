@@ -1,22 +1,22 @@
 import { NavLink, Link, Outlet } from "react-router-dom";
+import { useCart } from "../cart/CartContext.jsx";
 
 /* =========================================================
    The frame every page sits in.
 
-   Note what Layout does with `cartCount`: nothing. It takes
-   it only so that it can hand it to Nav, which hands it to
-   CartBadge. Two of those three components have no interest
-   in the cart whatsoever.
+   Layout and Nav used to take a `cartCount` prop purely to
+   forward it. Neither mentions the cart now — only CartBadge
+   does, and it asks for it directly.
    ========================================================= */
 
-export default function Layout({ cartCount }) {
+export default function Layout() {
   return (
     <>
       <a className="skip" href="#main">
         Skip to content
       </a>
 
-      <Nav cartCount={cartCount} />
+      <Nav />
 
       <main id="main" tabIndex={-1}>
         <Outlet />
@@ -38,7 +38,7 @@ export default function Layout({ cartCount }) {
   );
 }
 
-function Nav({ cartCount }) {
+function Nav() {
   return (
     <header className="site-head">
       <div className="hold nav-row">
@@ -59,23 +59,29 @@ function Nav({ cartCount }) {
           </ul>
         </nav>
 
-        <CartBadge count={cartCount} />
+        <CartBadge />
       </div>
     </header>
   );
 }
 
-function CartBadge({ count }) {
+function CartBadge() {
+  /* straight from the context: no prop, no parent involved */
+  const { count } = useCart();
+
+  const items = count === 1 ? "1 item" : `${count} items`;
+
   return (
-    <NavLink to="/cart" className="cart-link">
+    /*
+     * The count belongs in the accessible name, or a screen reader hears
+     * "Basket" and no number at all. It goes in as an aria-label rather than
+     * a hidden span for the same reason as the Add button: names are trimmed
+     * and joined with no separator, which gave "Basket0 items".
+     */
+    <NavLink to="/cart" className="cart-link" aria-label={`Basket, ${items}`}>
       <span>Basket</span>
-      {/* the count is in the accessible name, not only the visual pill, or a
-          screen reader hears "Basket" and no number */}
       <span className="pill" aria-hidden="true">
         {count}
-      </span>
-      <span className="visually-hidden">
-        {count === 1 ? "1 item" : `${count} items`}
       </span>
     </NavLink>
   );

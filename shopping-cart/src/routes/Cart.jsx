@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import QuantityStepper from "../components/QuantityStepper.jsx";
 import { money } from "../lib/money.js";
-import { countItems, subtotalCents, lineTotalCents } from "../cart/cartMath.js";
+import { lineTotalCents } from "../cart/cartMath.js";
+import { useCart } from "../cart/CartContext.jsx";
 
 /* =========================================================
    The basket.
@@ -17,9 +18,10 @@ import { countItems, subtotalCents, lineTotalCents } from "../cart/cartMath.js";
 const SHIPPING_THRESHOLD_CENTS = 5000;
 const SHIPPING_CENTS = 499;
 
-export default function Cart({ cart, onChangeQty, onRemove, onEmpty }) {
-  const count = countItems(cart);
-  const subtotal = subtotalCents(cart);
+export default function Cart() {
+  /* the count and subtotal are computed by the provider, from the same pure
+     functions, so there is exactly one place either number comes from */
+  const { cart, count, subtotal, changeQty, remove, empty } = useCart();
   const shipping = subtotal === 0 || subtotal >= SHIPPING_THRESHOLD_CENTS ? 0 : SHIPPING_CENTS;
 
   if (cart.length === 0) {
@@ -62,7 +64,7 @@ export default function Cart({ cart, onChangeQty, onRemove, onEmpty }) {
 
               <QuantityStepper
                 qty={line.qty}
-                onChange={(next) => onChangeQty(line.id, next)}
+                onChange={(next) => changeQty(line.id, next)}
                 label={`Quantity of ${line.title}`}
                 compact
               />
@@ -72,7 +74,7 @@ export default function Cart({ cart, onChangeQty, onRemove, onEmpty }) {
               <button
                 type="button"
                 className="remove"
-                onClick={() => onRemove(line.id)}
+                onClick={() => remove(line.id)}
                 aria-label={`Remove ${line.title} from basket`}
               >
                 ✕
@@ -110,7 +112,7 @@ export default function Cart({ cart, onChangeQty, onRemove, onEmpty }) {
           </button>
           <p className="note">Nothing here is for sale, so this button does nothing.</p>
 
-          <button type="button" className="quiet" onClick={onEmpty}>
+          <button type="button" className="quiet" onClick={empty}>
             Empty the basket
           </button>
         </aside>

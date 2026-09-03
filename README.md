@@ -23,6 +23,7 @@ Each project is stored in its own folder and has an individual README describing
 | [Recursion](./recursion/README.md)                               | Fibonacci and merge sort, recursively. Command line only.                 |
 | [Testing Practice](./testing-practice/README.md)                 | Five functions and 58 tests, verified by breaking the code on purpose.     |
 | [Weather](./weather-app/README.md)                               | A forecast that takes its colour from the conditions and local time.       |
+| [Tic-Tac-Toe](./tic-tac-toe/README.md)                            | Three in a row, built on factories and closures with nothing global.     |
 | [Things to do](./todo-list/README.md)                             | A todo list with projects, dates, checklists and keyboard control.          |
 | [Quarry Sign-up Form](./sign-up-form/README.md)                  | A sign-up form with live validation, for an invented service.                |
 

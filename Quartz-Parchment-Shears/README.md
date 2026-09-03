@@ -8,25 +8,54 @@ Quartz blunts shears. Shears cut parchment. Parchment wraps quartz. First to fiv
 
 The Odin curriculum splits this project in two: a console-only version in the JavaScript Basics section, then a "Revisiting Rock Paper Scissors" lesson that adds a UI once DOM manipulation has been covered. This build is the finished article — buttons rather than `prompt()`, a running score, and a match that ends when someone reaches five.
 
-The illustrations are original artwork, and they set the direction: cream cards with heavy ink borders want a dark table to sit on. The palette is sampled from the cards themselves — violet from the quartz, umber from the parchment, rust from the shears — with brass fittings for the scoreboard.
+The direction is Saturday-morning cartoon: flat colour, heavy ink outlines, and a park on a very blue afternoon. The whole background — sky, sun, clouds, hills — is CSS, so it costs nothing to ship.
 
 ## Playing
 
-* Click a card, or press **Q**, **P** or **S**
+* Click an object, or press **Q**, **P** or **S**
 * First to five points wins
-* **New game** button, or press **Enter** once the match is over
+* **New game**, or press **Enter** once the match is over
+* **Sound** toggles the audio; the preference persists
+
+## The objects
+
+The three illustrations were originally drawn as complete cards — the object, its name, and a cream parchment ground inside a heavy black border. For this build the objects needed to float free of their cards.
+
+Rather than redraw them, they were cut out programmatically. Each illustration has a heavy ink outline, which means a flood fill seeded inside the card border spreads across the cream ground and stops dead at the object's edge. The remaining pixels are grouped into connected components; the card border is discarded as the one component touching the frame, the baked-in title letters are discarded as small components sitting high in the image, and what survives is the object plus its sparkles. Quartz needed one extra pass to remove the mound of earth it was drawn standing on, which read as a dirt clod once it started floating.
+
+```
+images/
+├── heading.png          the banner logo, used as-is
+├── Quartz.png           original card art — kept as the source
+├── Parchment.png
+├── Shears.png
+└── cutouts/             generated: transparent, cropped, floating
+    ├── quartz.png
+    ├── parchment.png
+    └── shears.png
+```
+
+## Hover performances
+
+Each object animates in character when you hover, focus or play it, with a matching sound:
+
+| Object    | Motion                                   | Sound                                              |
+| --------- | ---------------------------------------- | -------------------------------------------------- |
+| Quartz    | Swells and glows                         | Three sine partials ringing out, like a struck crystal |
+| Parchment | Shakes out and settles, like an unfurl   | Three overlapping low-Q noise bursts — dry paper   |
+| Shears    | Two quick closes                         | Two filtered noise cracks with a metallic ring     |
+
+All three keep their idle bob running underneath, and everything is disabled under `prefers-reduced-motion`.
+
+## Sound
+
+There are no audio files in this project. Every sound is synthesised at runtime from oscillators and filtered noise through the Web Audio API — noise bursts shaped by a bandpass filter for the shears and parchment, stacked sine partials for the quartz, and short arpeggios for the win, loss and draw stingers.
+
+Browsers refuse to start an `AudioContext` until the user has actually interacted with the page, so the context is created lazily and resumed on the first real gesture. Hover sounds are throttled so sweeping the cursor across the row does not machine-gun them.
 
 ## Structure
 
-```
-Quartz-Parchment-Shears/
-├── index.html
-├── style.css
-├── script.js
-└── images/          original illustrations
-```
-
-`script.js` is organised in five labelled sections, and the split that matters is the first one: **the rules never touch the DOM**. `getComputerChoice` and `playRound` take choices and return a plain description of what happened — an outcome, the two throws, and a message. Every consequence (incrementing a score, drawing a card, writing to the ledger) is the caller's job. The UI could be replaced wholesale without editing a line of the rules.
+`script.js` is organised in six labelled sections, and the split that matters is the first: **the rules never touch the DOM and never make a noise.** `getComputerChoice` and `playRound` take choices and return a plain description of what happened — an outcome, the two throws, and a message. Every consequence (incrementing a score, showing an object, writing to the ledger, playing a stinger) is the caller's job.
 
 This anticipates the Single Responsibility lesson later in the JavaScript course, which uses almost exactly this example — game logic that reaches into the DOM — as the thing not to do.
 
@@ -34,50 +63,55 @@ This anticipates the Single Responsibility lesson later in the JavaScript course
 
 * HTML
 * CSS — Grid, custom properties, `clamp()`, keyframe animation
-* JavaScript — no libraries, no build step
+* JavaScript — Web Audio API, Canvas (for the one-off cutout extraction). No libraries, no build step.
 
 ## Going Beyond the Brief
 
 The lesson asks for three buttons, a results div, a running score, and a winner at five points. This build adds:
 
-* **A round ledger** — every round recorded with both throws and the outcome, newest first, colour-coded per card.
-* **Keyboard play** — Q, P and S as first-class input, with the binding shown on each card.
-* **A reveal beat** — your card is dealt immediately, the adversary's shuffles face-down for a moment before turning over. Skipped entirely under `prefers-reduced-motion`.
-* **A card back drawn in CSS** rather than shipped as another image.
-* **Responsive from 320px** — the arena reflows to two-up with the verdict above it, and the keycap badge moves clear of the card lettering.
-* **Score pips** alongside the numerals, so the state of the match reads at a glance.
+* **Objects cut free of their cards**, floating with a bob and a ground shadow that shrinks as they rise
+* **A performance per object** on hover, focus and play, each with its own synthesised sound
+* **A round ledger** — every round with both throws and the outcome, newest first, colour-coded
+* **Keyboard play** — Q, P and S, which trigger the same performance as hovering
+* **A reveal beat** before the adversary's play is turned over
+* **A CSS park** — sky, sun, clouds and hills, no image payload
+* **Responsive from 320px**, verified for horizontal overflow
 
 The adversary is honestly random, as the assignment requires — `Math.random` over the three choices, with no memory of what you have played.
 
 ## Accessibility
 
 * The verdict line is an `aria-live` region, so outcomes are announced rather than only shown
-* Choice buttons carry screen-reader labels; the decorative card images have empty `alt`
-* Visible focus rings on every interactive element
-* Buttons disable during the reveal and after the match ends, so the state is never ambiguous
+* The sound toggle reports state through `aria-pressed`
+* Decorative art carries empty `alt`; the park is `aria-hidden`
+* Visible focus rings, and focus triggers the same performance as hover
+* Buttons disable during the reveal and after the match ends
+* Every animation is disabled under `prefers-reduced-motion`
 
 ## Design Tokens
 
-| Token       | Value     | Role                            |
-| ----------- | --------- | ------------------------------- |
-| `felt`      | `#23261D` | The table                       |
-| `cream`     | `#E8DCBC` | Card ground, sampled from art   |
-| `quartz`    | `#6E5F8C` | Quartz violet                   |
-| `parchment` | `#8A6A33` | Parchment umber                 |
-| `shears`    | `#A8574A` | Shears rust                     |
-| `brass`     | `#B39355` | Scoreboard fittings, focus ring |
+| Token     | Value     | Role                          |
+| --------- | --------- | ----------------------------- |
+| `sky-top` | `#58C8E8` | Sky, top of the gradient      |
+| `grass`   | `#7CC24A` | The near hill                 |
+| `ink`     | `#201C17` | Every outline, and body text  |
+| `wood-face` | `#F0D3A6` | Signs, tags and placards    |
+| `quartz`  | `#6E5F8C` | Sampled from the illustration |
+| `parchment` | `#8A6A33` | Sampled from the illustration |
+| `shears`  | `#A8574A` | Sampled from the illustration |
 
 ## What I Practiced
 
-* Separating game rules from rendering, and keeping the boundary honest
-* Driving state changes through a single render pass rather than patching the DOM ad hoc
+* Separating game rules from rendering *and* from audio, keeping the boundary honest
+* Synthesising sound from scratch rather than shipping assets
+* Isolating artwork programmatically with flood fill and connected-component labelling
 * `async`/`await` to sequence a reveal without nesting timeouts
 * Guarding against input during animation with a busy flag
-* Keyboard input as a real path, not an afterthought
+* Building an illustrated scene entirely in CSS
 
 ## Project Status
 
-Complete. Rebuilt from the earlier version, which remains in this repository's git history.
+Complete. Rebuilt from the earlier card-table version, which remains in this repository's git history.
 
 ## Acknowledgements
 

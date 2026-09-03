@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Quartz, Parchment, Shears — a card-table take on Rock Paper Scissors. First to five."
+      content="Quartz, Parchment, Shears — Rock Paper Scissors, played in the park. First to five."
     />
     <title>Quartz, Parchment, Shears</title>
 
@@ -13,13 +13,23 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Chivo:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap"
     />
     <link rel="stylesheet" href="./style.css" />
   </head>
 
   <body>
-    <div class="table">
+    <!-- the park: sky, clouds, hills. all CSS, no image payload -->
+    <div class="sky" aria-hidden="true">
+      <span class="cloud cloud-1"></span>
+      <span class="cloud cloud-2"></span>
+      <span class="cloud cloud-3"></span>
+      <span class="sun"></span>
+      <span class="hill hill-back"></span>
+      <span class="hill hill-front"></span>
+    </div>
+
+    <div class="page">
       <header class="masthead">
         <img
           class="masthead-art"
@@ -33,9 +43,9 @@
       <main class="game">
         <!-- ========== SCOREBOARD ========== -->
         <section class="scoreboard" aria-label="Score">
-          <div class="plaque">
-            <p class="plaque-name">You</p>
-            <p class="plaque-score" id="human-score">0</p>
+          <div class="sign">
+            <p class="sign-name">You</p>
+            <p class="sign-score" id="human-score">0</p>
             <ol class="pips" id="human-pips" aria-hidden="true">
               <li></li><li></li><li></li><li></li><li></li>
             </ol>
@@ -43,9 +53,9 @@
 
           <p class="target">First<br /><span>to 5</span></p>
 
-          <div class="plaque">
-            <p class="plaque-name">Adversary</p>
-            <p class="plaque-score" id="computer-score">0</p>
+          <div class="sign">
+            <p class="sign-name">Adversary</p>
+            <p class="sign-score" id="computer-score">0</p>
             <ol class="pips" id="computer-pips" aria-hidden="true">
               <li></li><li></li><li></li><li></li><li></li>
             </ol>
@@ -54,9 +64,9 @@
 
         <!-- ========== ARENA ========== -->
         <section class="arena" aria-label="This round">
-          <figure class="slot" id="slot-human">
-            <div class="slot-inner">
-              <div class="card-back" aria-hidden="true"></div>
+          <figure class="slot">
+            <div class="stage" id="slot-human">
+              <span class="shadow" aria-hidden="true"></span>
             </div>
             <figcaption>Your play</figcaption>
           </figure>
@@ -68,9 +78,9 @@
             <p class="round-no" id="round-no">Round 1</p>
           </div>
 
-          <figure class="slot" id="slot-computer">
-            <div class="slot-inner">
-              <div class="card-back" aria-hidden="true"></div>
+          <figure class="slot">
+            <div class="stage" id="slot-computer">
+              <span class="shadow" aria-hidden="true"></span>
             </div>
             <figcaption>Their play</figcaption>
           </figure>
@@ -78,22 +88,28 @@
 
         <!-- ========== CHOICES ========== -->
         <section class="choices" aria-label="Make your play">
-          <button class="choice" data-choice="quartz" type="button">
-            <img src="./images/Quartz.png" alt="" width="802" height="900" />
-            <span class="sr-only">Play quartz</span>
-            <kbd>Q</kbd>
+          <button class="choice choice-quartz" data-choice="quartz" type="button">
+            <span class="choice-float">
+              <img src="./images/cutouts/quartz.png" alt="" width="433" height="554" />
+              <span class="shadow" aria-hidden="true"></span>
+            </span>
+            <span class="choice-name">Quartz <kbd>Q</kbd></span>
           </button>
 
-          <button class="choice" data-choice="parchment" type="button">
-            <img src="./images/Parchment.png" alt="" width="786" height="884" />
-            <span class="sr-only">Play parchment</span>
-            <kbd>P</kbd>
+          <button class="choice choice-parchment" data-choice="parchment" type="button">
+            <span class="choice-float">
+              <img src="./images/cutouts/parchment.png" alt="" width="567" height="577" />
+              <span class="shadow" aria-hidden="true"></span>
+            </span>
+            <span class="choice-name">Parchment <kbd>P</kbd></span>
           </button>
 
-          <button class="choice" data-choice="shears" type="button">
-            <img src="./images/Shears.png" alt="" width="776" height="872" />
-            <span class="sr-only">Play shears</span>
-            <kbd>S</kbd>
+          <button class="choice choice-shears" data-choice="shears" type="button">
+            <span class="choice-float">
+              <img src="./images/cutouts/shears.png" alt="" width="514" height="583" />
+              <span class="shadow" aria-hidden="true"></span>
+            </span>
+            <span class="choice-name">Shears <kbd>S</kbd></span>
           </button>
         </section>
 
@@ -101,7 +117,18 @@
         <section class="ledger" aria-label="Round history">
           <div class="ledger-head">
             <h2>The Ledger</h2>
-            <button class="reset" id="reset" type="button">New game</button>
+            <div class="ledger-actions">
+              <button
+                class="chip"
+                id="sound"
+                type="button"
+                aria-pressed="true"
+                title="Toggle sound"
+              >
+                <span aria-hidden="true">♪</span> Sound: on
+              </button>
+              <button class="chip" id="reset" type="button">New game</button>
+            </div>
           </div>
 
           <ol class="ledger-list" id="ledger">

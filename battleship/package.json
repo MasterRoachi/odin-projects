@@ -1,0 +1,16 @@
+{
+  "name": "battleship",
+  "version": "1.0.0",
+  "description": "Battleship, written test first. The Odin Project.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "watch": "vitest"
+  },
+  "author": "Master Roachi",
+  "license": "ISC",
+  "devDependencies": {
+    "vitest": "^3.0.5"
+  }
+}

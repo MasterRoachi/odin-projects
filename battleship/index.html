@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Battleship — squared paper and a biro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!--
+      The wobble. feTurbulence makes a field of noise and feDisplacementMap
+      pushes each pixel sideways by how much noise is under it, so a
+      dead-straight line comes out looking like it was drawn by a hand that
+      was not concentrating.
+    -->
+    <svg class="defs" aria-hidden="true" focusable="false">
+      <defs>
+        <filter id="wobble" x="-12%" y="-12%" width="124%" height="124%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.028" numOctaves="3" seed="7" result="noise" />
+          <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.4" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+        <filter id="wobble-hard" x="-20%" y="-20%" width="140%" height="140%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="2" seed="3" result="noise" />
+          <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.8" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+      </defs>
+    </svg>
+
+    <div class="sheet">
+      <header class="masthead">
+        <h1>Battleship</h1>
+        <p class="subtitle" id="subtitle">Drag your fleet onto the left grid. Press R to turn a ship.</p>
+      </header>
+
+      <section class="setup" id="setup">
+        <div class="tray" id="tray" aria-label="Ships still to place"></div>
+        <div class="setup-buttons">
+          <button type="button" class="pen" id="shuffle">shuffle</button>
+          <button type="button" class="pen" id="clear">clear</button>
+          <button type="button" class="pen strong" id="ready" disabled>ready</button>
+        </div>
+      </section>
+
+      <div class="boards">
+        <figure class="board-figure">
+          <figcaption>
+            <span class="board-name">My fleet</span>
+            <span class="board-note" id="note-mine">five ships to place</span>
+          </figcaption>
+          <div class="board" id="board-mine" data-side="mine"></div>
+        </figure>
+
+        <figure class="board-figure">
+          <figcaption>
+            <span class="board-name">Theirs</span>
+            <span class="board-note" id="note-theirs">hidden until you fire</span>
+          </figcaption>
+          <div class="board" id="board-theirs" data-side="theirs"></div>
+        </figure>
+      </div>
+
+      <section class="margin-notes">
+        <div class="scoreline">
+          <p class="score" id="score-mine"><span class="score-num">0</span> of 17 sunk</p>
+          <p class="score" id="score-theirs"><span class="score-num">0</span> of 17 sunk</p>
+        </div>
+        <ul class="log" id="log" aria-live="polite"></ul>
+        <button type="button" class="pen" id="again" hidden>play again</button>
+      </section>
+
+      <footer class="colophon">
+        <p>
+          <a href="../">back to the projects</a> · <a href="./README.md">README</a> ·
+          58 tests, none of which know what a pixel is
+        </p>
+      </footer>
+    </div>
+
+    <script type="module" src="./src/ui/main.js"></script>
+  </body>
+</html>

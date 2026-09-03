@@ -1,0 +1,497 @@
+/* =========================================================
+   Battleship, on squared paper.
+
+   Exercise-book paper with a red margin rule. The grids are
+   drawn in blue biro, the ships outlined by hand, the hits
+   crossed out in red. Everything the player "writes" is in a
+   handwriting face; everything the worksheet was printed with
+   is not.
+   ========================================================= */
+
+:root {
+  --paper: #fcfcf8;
+  --paper-shade: #f2f1ea;
+  --rule: #cddceb;
+  --rule-strong: #a9c3dc;
+  --margin-rule: #e8a9a2;
+
+  --biro: #22407e;
+  --biro-soft: #6a83b4;
+  --red-biro: #bf3b2f;
+  --pencil: #5f646b;
+
+  --hand: "Caveat", "Segoe Script", cursive;
+  --print: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  --cell: 34px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+.defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: var(--paper);
+  /* the faint ruled lines of an exercise book */
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0 27px,
+    rgba(169, 195, 220, 0.28) 27px 28px
+  );
+  color: var(--biro);
+  font-family: var(--print);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--red-biro);
+  outline-offset: 3px;
+}
+
+.sheet {
+  position: relative;
+  max-width: 1000px;
+  margin-inline: auto;
+  padding: 2rem clamp(1rem, 4vw, 2rem) 3rem clamp(2.75rem, 7vw, 4.5rem);
+}
+
+/* the red margin rule down the left of the page */
+.sheet::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: clamp(1.75rem, 5vw, 3.25rem);
+  width: 1.5px;
+  background: var(--margin-rule);
+  opacity: 0.85;
+}
+
+/* --- masthead --- */
+
+.masthead h1 {
+  margin: 0;
+  font-family: var(--hand);
+  font-weight: 700;
+  font-size: clamp(3rem, 9vw, 4.75rem);
+  line-height: 0.95;
+  letter-spacing: 0.01em;
+  color: var(--biro);
+  transform: rotate(-1.1deg);
+  transform-origin: left center;
+}
+
+.subtitle {
+  margin: 0.5rem 0 0;
+  max-width: 54ch;
+  color: var(--pencil);
+  min-height: 3em;
+}
+
+.subtitle b {
+  color: var(--biro);
+}
+
+/* --- the ship tray --- */
+
+.setup {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 1rem 1.5rem;
+  margin-top: 1.25rem;
+  min-height: 4.5rem;
+}
+
+.setup[hidden] {
+  display: none !important;
+}
+
+.tray {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.75rem 1rem;
+}
+
+.tray-ship {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  cursor: grab;
+  touch-action: none;
+}
+
+.tray-ship.is-placed {
+  opacity: 0.25;
+  pointer-events: none;
+}
+
+.tray-label {
+  font-family: var(--hand);
+  font-size: 1.05rem;
+  line-height: 1;
+  color: var(--pencil);
+}
+
+.hull {
+  width: calc(var(--len, 1) * var(--cell));
+  height: var(--cell);
+  border: 2px solid var(--biro);
+  border-radius: calc(var(--cell) / 2);
+  background: rgba(34, 64, 126, 0.06);
+  filter: url(#wobble);
+}
+
+.setup-buttons {
+  display: flex;
+  gap: 0.6rem;
+  margin-left: auto;
+}
+
+.pen {
+  font-family: var(--hand);
+  font-size: 1.35rem;
+  line-height: 1;
+  padding: 0.3rem 0.9rem 0.4rem;
+  background: transparent;
+  color: var(--biro);
+  border: 2px solid var(--biro);
+  border-radius: 14px 12px 15px 11px / 12px 15px 11px 14px;
+  filter: url(#wobble-hard);
+}
+
+.pen:hover:not(:disabled) {
+  background: rgba(34, 64, 126, 0.08);
+}
+
+.pen.strong {
+  color: var(--red-biro);
+  border-color: var(--red-biro);
+}
+
+.pen.strong:hover:not(:disabled) {
+  background: rgba(191, 59, 47, 0.08);
+}
+
+.pen:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.pen[hidden] {
+  display: none !important;
+}
+
+/* --- the boards --- */
+
+.boards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(1.25rem, 5vw, 3rem);
+  margin-top: 1.75rem;
+}
+
+.board-figure {
+  margin: 0;
+}
+
+.board-figure figcaption {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  margin-bottom: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.board-name {
+  font-family: var(--hand);
+  font-size: 1.7rem;
+  line-height: 1;
+  color: var(--biro);
+}
+
+.board-note {
+  font-family: var(--hand);
+  font-size: 1.15rem;
+  line-height: 1;
+  color: var(--pencil);
+}
+
+.board {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(10, var(--cell));
+  grid-template-rows: repeat(10, var(--cell));
+  width: calc(10 * var(--cell));
+  /* the page ruled lines would otherwise run straight through the grid and
+     fight with it; the paper still shows all around */
+  background: var(--paper);
+  border-left: 1.5px solid var(--rule-strong);
+  border-top: 1.5px solid var(--rule-strong);
+  touch-action: none;
+}
+
+.cell {
+  position: relative;
+  border-right: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  padding: 0;
+  background: transparent;
+  border-top: 0;
+  border-left: 0;
+  display: block;
+}
+
+/* every fifth line a little stronger, like real squared paper */
+.cell[data-x="4"],
+.cell[data-x="9"] {
+  border-right-color: var(--rule-strong);
+}
+
+.cell[data-y="4"],
+.cell[data-y="9"] {
+  border-bottom-color: var(--rule-strong);
+}
+
+.board[data-side="theirs"] .cell:not(:disabled) {
+  cursor: crosshair;
+}
+
+.board[data-side="theirs"] .cell:not(:disabled):hover {
+  background: rgba(191, 59, 47, 0.09);
+}
+
+.cell:disabled {
+  cursor: default;
+}
+
+/* --- what gets drawn on the squares --- */
+
+.mark {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* a biro dot for open water */
+.mark.miss::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  margin: -3.5px 0 0 -3.5px;
+  border-radius: 50%;
+  background: var(--biro-soft);
+}
+
+/* two hard strokes for a hit */
+.mark.hit::before,
+.mark.hit::after {
+  content: "";
+  position: absolute;
+  left: 14%;
+  right: 14%;
+  top: 50%;
+  height: 2.5px;
+  background: var(--red-biro);
+  border-radius: 2px;
+  filter: url(#wobble-hard);
+}
+
+.mark.hit::before {
+  transform: rotate(42deg);
+}
+
+.mark.hit::after {
+  transform: rotate(-42deg);
+}
+
+.mark.sunk {
+  background: rgba(191, 59, 47, 0.14);
+}
+
+/*
+ * The hull outline drawn over the squares a ship occupies.
+ *
+ * A grid item spanning the ship's tracks, so it is sized by the grid itself
+ * and stays right at any board size. It shares those tracks with the cells
+ * underneath, which is allowed — grid items may overlap.
+ */
+.hull-overlay {
+  position: relative;
+  z-index: 2;
+  margin: 2px;
+  border: 2.5px solid var(--biro);
+  border-radius: calc(var(--cell) / 2);
+  pointer-events: none;
+  filter: url(#wobble);
+}
+
+.hull-overlay.enemy {
+  border-color: var(--red-biro);
+  border-style: dashed;
+}
+
+/* live feedback while a ship is being dragged over the grid */
+.cell.drop-ok {
+  background: rgba(34, 64, 126, 0.16);
+}
+
+.cell.drop-bad {
+  background: rgba(191, 59, 47, 0.16);
+}
+
+/* the ship following the pointer */
+.ghost {
+  position: fixed;
+  z-index: 20;
+  pointer-events: none;
+  height: var(--cell);
+  border: 2px solid var(--biro);
+  border-radius: calc(var(--cell) / 2);
+  background: rgba(252, 252, 248, 0.85);
+  filter: url(#wobble);
+}
+
+.ghost.vertical {
+  height: auto;
+}
+
+/* the last square the computer fired at */
+.cell.last-shot::after {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border: 2px dashed var(--red-biro);
+  border-radius: 6px;
+  pointer-events: none;
+}
+
+/* --- margin notes --- */
+
+.margin-notes {
+  margin-top: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+
+.scoreline {
+  display: flex;
+  gap: clamp(1.25rem, 5vw, 3rem);
+}
+
+.score {
+  margin: 0;
+  font-family: var(--hand);
+  font-size: 1.3rem;
+  line-height: 1;
+  color: var(--pencil);
+}
+
+.score-num {
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: var(--biro);
+}
+
+#score-theirs .score-num {
+  color: var(--red-biro);
+}
+
+.log {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-family: var(--hand);
+  font-size: 1.25rem;
+  line-height: 1.35;
+  color: var(--pencil);
+  max-height: 9rem;
+  overflow-y: auto;
+  width: 100%;
+  max-width: 46ch;
+}
+
+.log li {
+  padding: 0.05rem 0;
+}
+
+.log li.theirs {
+  color: var(--red-biro);
+}
+
+.log li.mine {
+  color: var(--biro);
+}
+
+.colophon {
+  margin-top: 2.5rem;
+  font-size: 0.8rem;
+  color: var(--pencil);
+}
+
+.colophon p {
+  margin: 0;
+}
+
+.colophon a {
+  color: var(--biro);
+  text-underline-offset: 3px;
+}
+
+/* --- smaller screens --- */
+
+@media (max-width: 900px) {
+  :root {
+    --cell: 30px;
+  }
+}
+
+@media (max-width: 680px) {
+  :root {
+    --cell: 28px;
+  }
+
+  .boards {
+    gap: 1.5rem;
+  }
+
+  .setup-buttons {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 380px) {
+  :root {
+    --cell: 26px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}

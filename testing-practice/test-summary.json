@@ -1,0 +1,30 @@
+{
+  "numTotalTests": 58,
+  "numPassedTests": 58,
+  "numFailedTests": 0,
+  "numTotalTestSuites": 19,
+  "startTime": 1788426204662,
+  "success": true,
+  "files": [
+    {
+      "name": "analyzeArray.test.js",
+      "assertions": 10
+    },
+    {
+      "name": "caesarCipher.test.js",
+      "assertions": 15
+    },
+    {
+      "name": "calculator.test.js",
+      "assertions": 14
+    },
+    {
+      "name": "capitalize.test.js",
+      "assertions": 10
+    },
+    {
+      "name": "reverseString.test.js",
+      "assertions": 9
+    }
+  ]
+}

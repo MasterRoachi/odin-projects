@@ -1,0 +1,288 @@
+/* =========================================================
+   Testing Practice — the demo page
+
+   Near-monochrome on white, with one green for a pass and one
+   red for a refusal. No texture, no depth, nothing warm.
+   ========================================================= */
+
+:root {
+  --paper: #ffffff;
+  --sunk: #f6f7f8;
+  --ink: #0f1013;
+  --ink-2: #43464d;
+  --muted: #7a7e87;
+  --rule: #e4e6ea;
+
+  --pass: #146c43;
+  --pass-bg: #edf7f1;
+  --fail: #a52218;
+  --fail-bg: #fdf0ef;
+
+  --ui: "Sora", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--ui);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input,
+select {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.page {
+  max-width: 780px;
+  margin-inline: auto;
+  padding: clamp(2rem, 6vw, 4rem) clamp(1rem, 4vw, 2rem) 4rem;
+}
+
+/* ---------------------------------------------------------
+   masthead
+   --------------------------------------------------------- */
+
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  margin: 0;
+}
+
+.masthead h1 {
+  font-size: clamp(1.8rem, 5vw, 2.6rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+  margin: 0.5rem 0 0;
+  text-wrap: balance;
+}
+
+.lede {
+  max-width: 54ch;
+  color: var(--ink-2);
+  margin: 0.7rem 0 0;
+}
+
+/* --- the suite's verdict --- */
+
+.suite {
+  margin-top: 1.75rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  background: var(--sunk);
+}
+
+.verdict {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.verdict.is-pass { color: var(--pass); }
+.verdict.is-fail { color: var(--fail); }
+
+.tick {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.files {
+  list-style: none;
+  margin: 0.7rem 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: 0.1rem 1.25rem;
+}
+
+.files li {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  padding: 0.15rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.files code {
+  font-family: var(--mono);
+  color: var(--ink-2);
+}
+
+.files .n {
+  font-family: var(--mono);
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.when {
+  font-size: 0.76rem;
+  color: var(--muted);
+  margin: 0.7rem 0 0;
+}
+
+/* ---------------------------------------------------------
+   the demos
+   --------------------------------------------------------- */
+
+.demo {
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.demo:first-of-type {
+  padding-top: 2.25rem;
+}
+
+.demo-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.6rem;
+}
+
+.demo h2 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.sig {
+  font-family: var(--mono);
+  font-size: 0.76rem;
+  color: var(--muted);
+  background: var(--sunk);
+  border-radius: 3px;
+  padding: 0.1rem 0.4rem;
+}
+
+.blurb {
+  color: var(--ink-2);
+  font-size: 0.88rem;
+  margin: 0.25rem 0 0;
+  max-width: 58ch;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 0.9rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.field.wide {
+  flex: 1 1 18rem;
+}
+
+.field > span {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--muted);
+}
+
+.field input,
+.field select {
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  padding: 0.4rem 0.55rem;
+  background: var(--paper);
+  font-family: var(--mono);
+  font-size: 0.86rem;
+  min-width: 0;
+}
+
+.field input[type="number"] {
+  width: 6rem;
+}
+
+.field input:focus,
+.field select:focus {
+  outline: none;
+  border-color: var(--ink);
+}
+
+.result {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  margin-top: 0.8rem;
+}
+
+.arrow {
+  font-family: var(--mono);
+  color: var(--muted);
+  line-height: 1.6;
+  flex: none;
+}
+
+.output {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  padding: 0.5rem 0.7rem;
+  border-radius: 3px;
+  background: var(--pass-bg);
+  border: 1px solid #cfe6da;
+  color: var(--pass);
+  font-family: var(--mono);
+  font-size: 0.86rem;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* a refusal is a result, not a crash — it just looks different */
+.output.is-throw {
+  background: var(--fail-bg);
+  border-color: #f0cfcc;
+  color: var(--fail);
+}
+
+.colophon {
+  margin-top: 2rem;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.colophon code {
+  font-family: var(--mono);
+  background: var(--sunk);
+  border-radius: 3px;
+  padding: 0.05rem 0.3rem;
+}
+
+.colophon a {
+  color: var(--ink);
+  text-underline-offset: 2px;
+}

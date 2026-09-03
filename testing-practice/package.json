@@ -1,0 +1,17 @@
+{
+  "name": "testing-practice",
+  "version": "1.0.0",
+  "description": "Five small functions and the tests that hold them to account. The Odin Project.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "watch": "vitest",
+    "report": "vitest run --reporter=json --outputFile=test-results.json"
+  },
+  "author": "Master Roachi",
+  "license": "ISC",
+  "devDependencies": {
+    "vitest": "^3.0.5"
+  }
+}

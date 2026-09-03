@@ -1,0 +1,455 @@
+/* =========================================================
+   Knight's Travails
+
+   Light, editorial, cool greys. The board carries all the
+   colour: an indigo ramp for how far the search had got, and
+   one vermilion for the path it settled on.
+   ========================================================= */
+
+:root {
+  --paper: #f4f4f2;
+  --card: #ffffff;
+  --ink: #16181c;
+  --ink-2: #43474e;
+  --muted: #666b74;
+  --rule: #dedfdd;
+
+  --light-sq: #e7e8ea;
+  --dark-sq: #c6cad0;
+
+  --accent: #c74424;
+  --accent-soft: #fbe9e3;
+
+  --display: "Instrument Serif", Georgia, "Times New Roman", serif;
+  --ui: "Space Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--ui);
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+code {
+  font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+  font-size: 0.9em;
+  color: var(--ink-2);
+}
+
+.page {
+  max-width: 1080px;
+  margin-inline: auto;
+  padding: clamp(1.5rem, 5vw, 3.5rem) clamp(1rem, 4vw, 2rem) 3rem;
+}
+
+/* --- masthead --- */
+
+.kicker {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.masthead h1 {
+  margin: 0.5rem 0 0;
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(2.4rem, 7vw, 4.2rem);
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  max-width: 16ch;
+}
+
+.masthead h1 em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.lede {
+  max-width: 56ch;
+  margin: 1rem 0 0;
+  color: var(--ink-2);
+}
+
+/* --- layout --- */
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 20rem);
+  gap: clamp(1.25rem, 4vw, 2.5rem);
+  align-items: start;
+  margin-top: clamp(1.75rem, 5vw, 2.75rem);
+}
+
+/* --- board --- */
+
+.board-wrap {
+  display: grid;
+  grid-template-columns: 1.35rem minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr) 1.35rem;
+  grid-template-areas:
+    "ranks board"
+    ".     files";
+  gap: 0.35rem;
+}
+
+.ranks {
+  grid-area: ranks;
+  display: grid;
+  grid-template-rows: repeat(8, 1fr);
+}
+
+.files {
+  grid-area: files;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+}
+
+.ranks span,
+.files span {
+  display: grid;
+  place-items: center;
+  font-size: 0.68rem;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.board {
+  grid-area: board;
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  aspect-ratio: 1;
+  border: 1px solid var(--ink);
+  background: var(--light-sq);
+}
+
+.sq {
+  position: relative;
+  border: 0;
+  padding: 0;
+  background: var(--light-sq);
+  display: grid;
+  place-items: center;
+  font-size: clamp(0.6rem, 1.6vw, 0.78rem);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: transparent;
+  transition: background-color 160ms ease;
+}
+
+.sq.dark {
+  background: var(--dark-sq);
+}
+
+.sq:hover:not(:disabled) {
+  box-shadow: inset 0 0 0 2px var(--ink);
+}
+
+/*
+ * A square the search reached. The tint comes from --ring, set per square from
+ * its distance, so the board reads as bands radiating out from the knight.
+ */
+.sq.reached {
+  background: hsl(232 48% var(--ring-l));
+  color: var(--ink);
+}
+
+/*
+ * The ramp passes through a band where neither dark nor white text clears
+ * 4.5:1 against it — at ring 4 the two options measure 4.09 and 3.54. Near
+ * black rather than a tinted dark ink lifts that to 5.02, and rings 5 and 6
+ * are dark enough to take white at 4.80 and 6.58.
+ */
+.sq.reached[data-ring="5"],
+.sq.reached[data-ring="6"] {
+  color: #fff;
+}
+
+/* the knight is standing here; the 0 underneath it is just noise */
+.sq.reached[data-ring="0"] {
+  color: transparent;
+}
+
+.sq.on-path {
+  background: var(--accent);
+  color: #fff;
+}
+
+.sq.is-target {
+  box-shadow: inset 0 0 0 3px var(--ink);
+}
+
+.sq.is-start {
+  box-shadow: inset 0 0 0 3px var(--ink);
+}
+
+/* the knight itself, floating over the grid */
+
+.knight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 12.5%;
+  height: 12.5%;
+  display: grid;
+  place-items: center;
+  font-size: clamp(1.3rem, 5.5vw, 2.6rem);
+  line-height: 1;
+  color: var(--ink);
+  pointer-events: none;
+  transition: transform 280ms cubic-bezier(0.4, 1.4, 0.5, 1);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.65);
+}
+
+.knight[hidden] {
+  display: none !important;
+}
+
+/* --- status --- */
+
+.status {
+  margin: 0.85rem 0 0;
+  min-height: 2.8em;
+  color: var(--ink-2);
+  max-width: 54ch;
+}
+
+.status b {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* --- panel --- */
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.readout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.stat {
+  border-top: 1px solid var(--ink);
+  padding-top: 0.5rem;
+}
+
+.stat-label {
+  margin: 0;
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.stat-value {
+  margin: 0.1rem 0 0;
+  font-family: var(--display);
+  font-size: 2.6rem;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.route {
+  margin: 0;
+  padding: 0.6rem 0.75rem;
+  background: var(--card);
+  border: 1px solid var(--rule);
+  font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+  font-size: 0.78rem;
+  color: var(--ink-2);
+  word-break: break-word;
+  min-height: 3.4em;
+}
+
+.buttons {
+  display: flex;
+  gap: 0.45rem;
+}
+
+.primary,
+.quiet {
+  flex: 1;
+  padding: 0.5rem 0.8rem;
+  font-size: 0.82rem;
+  font-weight: 500;
+  border: 1px solid var(--ink);
+  border-radius: 2px;
+}
+
+.primary {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.primary:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.quiet {
+  background: transparent;
+  color: var(--ink);
+}
+
+.quiet:hover {
+  background: var(--card);
+}
+
+button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.toggle {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: 0.82rem;
+  color: var(--ink-2);
+  cursor: pointer;
+}
+
+.toggle input {
+  margin: 0.28rem 0 0;
+  accent-color: var(--accent);
+}
+
+.toggle em {
+  font-style: italic;
+  color: var(--ink);
+}
+
+.legend[hidden] {
+  display: none !important;
+}
+
+.legend-label {
+  margin: 0 0 0.3rem;
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.ramp {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 2px;
+}
+
+.ramp li {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  height: 1.6rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.ramp li[data-ring="5"],
+.ramp li[data-ring="6"] {
+  color: #fff;
+}
+
+.note {
+  border-top: 1px solid var(--rule);
+  padding-top: 0.75rem;
+}
+
+.note h2 {
+  margin: 0.9rem 0 0.3rem;
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 1.2rem;
+}
+
+.note h2:first-child {
+  margin-top: 0;
+}
+
+.note p {
+  margin: 0 0 0.6rem;
+  font-size: 0.83rem;
+  color: var(--ink-2);
+}
+
+.note em {
+  font-style: italic;
+  color: var(--ink);
+}
+
+.colophon {
+  margin-top: 2.5rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--rule);
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.colophon p {
+  margin: 0;
+}
+
+.colophon a {
+  color: var(--ink-2);
+  text-underline-offset: 3px;
+}
+
+/* --- narrow --- */
+
+@media (max-width: 820px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .masthead h1 {
+    max-width: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .knight,
+  .sq {
+    transition: none;
+  }
+}

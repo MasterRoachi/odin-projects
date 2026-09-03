@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Knight's Travails — the shortest way across a board</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="board.css" />
+  </head>
+  <body>
+    <main class="page">
+      <header class="masthead">
+        <p class="kicker">The Odin Project · Knight's Travails</p>
+        <h1>The knight takes <em>the shortest way</em></h1>
+        <p class="lede">
+          Pick a square for the knight, then pick where it should end up. The board fills in with
+          every square the search looked at, in the order it looked at them — and stops the moment
+          it arrives.
+        </p>
+      </header>
+
+      <div class="layout">
+        <section class="board-side">
+          <div class="board-wrap">
+            <div class="ranks" aria-hidden="true"></div>
+            <div class="board" id="board"></div>
+            <div class="files" aria-hidden="true"></div>
+          </div>
+          <p class="status" id="status" role="status" aria-live="polite"></p>
+        </section>
+
+        <aside class="panel">
+          <div class="readout">
+            <div class="stat">
+              <p class="stat-label">moves</p>
+              <p class="stat-value" id="moves">—</p>
+            </div>
+            <div class="stat">
+              <p class="stat-label">squares examined</p>
+              <p class="stat-value" id="looked">—</p>
+            </div>
+          </div>
+
+          <p class="route" id="route">Nothing yet.</p>
+
+          <div class="buttons">
+            <button class="primary" id="random" type="button">Random pair</button>
+            <button class="quiet" id="reset" type="button">Clear</button>
+          </div>
+
+          <label class="toggle">
+            <input type="checkbox" id="heat" />
+            <span>Show the distance to <em>every</em> square from the knight</span>
+          </label>
+
+          <div class="legend" id="legend" hidden>
+            <p class="legend-label">moves away</p>
+            <ul class="ramp"></ul>
+          </div>
+
+          <div class="note">
+            <h2>Why breadth first</h2>
+            <p>
+              Depth-first search would pick a move, then a move from there, and charge on until it
+              stumbled into the target. It would find <em>a</em> route. It would not find the
+              shortest one.
+            </p>
+            <p>
+              Breadth-first visits every square one move away, then every square two moves away, and
+              so on. So the first time it reaches a square it has reached it by the shortest route
+              there is, and it never has to go back and improve on an answer.
+            </p>
+            <h2>The board is not stored</h2>
+            <p>
+              There is no array of sixty-four things. A square's neighbours are worked out from the
+              square itself. The graph is implied by how the piece moves.
+            </p>
+          </div>
+        </aside>
+      </div>
+
+      <footer class="colophon">
+        <p>
+          <a href="../">← back to the projects</a> ·
+          <a href="./README.md">README</a> · run <code>node main.js</code> for the same thing in a
+          terminal
+        </p>
+      </footer>
+    </main>
+
+    <script type="module" src="board.js"></script>
+  </body>
+</html>

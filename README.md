@@ -17,6 +17,7 @@ Each project is stored in its own folder and has an individual README describing
 | [The Ark](./library/README.md)                                    | A personal library kept as spines on a shelf.                               |
 | [Binary Search Trees](./binary-search-trees/README.md)           | A balanced BST, raced against a degenerate one holding the same values.  |
 | [HashMap](./hash-map/README.md)                                  | A hash map with linked-list buckets, and a page to watch it grow.         |
+| [Knight’s Travails](./knights-travails/README.md)                 | The shortest path a knight can take, found breadth-first on a board.     |
 | [Linked Lists](./linked-lists/README.md)                         | A singly linked list with head, tail and size kept in step.               |
 | [Recursion](./recursion/README.md)                               | Fibonacci and merge sort, recursively. Command line only.                 |
 | [Testing Practice](./testing-practice/README.md)                 | Five functions and 58 tests, verified by breaking the code on purpose.     |

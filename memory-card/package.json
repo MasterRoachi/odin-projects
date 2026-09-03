@@ -1,0 +1,22 @@
+{
+  "name": "memory-card",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "A memory card game. Don't click the same one twice. The Odin Project.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "author": "Master Roachi",
+  "license": "ISC",
+  "dependencies": {
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.1.1",
+    "vite": "^8.2.2"
+  }
+}

@@ -12,6 +12,7 @@ Each project is stored in its own folder and has an individual README describing
 | [CV Builder](./cv-builder/README.md)                              | A CV with a live preview, built in React. Prints to a clean page.        |
 | [Coolculator](./calculator/README.md)                            | A browser-based calculator with keyboard controls and chained operations.    |
 | [Etch-A-Sketch](./etch-a-sketch/README.md)                       | An interactive JavaScript drawing grid with custom sizing and drawing modes. |
+| [Don’t Click Twice](./memory-card/README.md)                      | A memory game in React. Reshuffles every pick, and the board grows.      |
 | [Odin Recipes](./odin-recipes/README.md)                         | A three-page recipe site built to practise structural HTML.                  |
 | [Landing Page](./landing-page/README.md)                          | A personal landing page built from the Odin design brief.                    |
 | [Quartz, Parchment, Shears](./Quartz-Parchment-Shears/README.md) | A themed browser-based Rock Paper Scissors game.                             |

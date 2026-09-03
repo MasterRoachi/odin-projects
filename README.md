@@ -14,6 +14,7 @@ Each project is stored in its own folder and has an individual README describing
 | [Odin Recipes](./odin-recipes/README.md)                         | A three-page recipe site built to practise structural HTML.                  |
 | [Landing Page](./landing-page/README.md)                          | A personal landing page built from the Odin design brief.                    |
 | [Quartz, Parchment, Shears](./Quartz-Parchment-Shears/README.md) | A themed browser-based Rock Paper Scissors game.                             |
+| [Quarry Sign-up Form](./sign-up-form/README.md)                  | A sign-up form with live validation, for an invented service.                |
 
 ## Technologies Used
 

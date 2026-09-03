@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Quarry — keep every source, quote and half-formed idea in one searchable seam."
+    />
+    <title>Create your Quarry account</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Karla:wght@400;500;600;700&display=swap"
+    />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+
+  <body>
+    <div class="layout">
+      <!-- ============ image sidebar ============ -->
+      <aside class="sidebar">
+        <div class="wordmark">
+          <p class="logo">Quarry</p>
+          <p class="strapline">Everything you dig up, in one place.</p>
+        </div>
+
+        <p class="credit">
+          Photograph by W.carter,
+          <a
+            href="https://commons.wikimedia.org/wiki/File:Granite_cliff_with_feldspar_crystals_in_Loddebo_2.jpg"
+            >CC0, via Wikimedia Commons</a
+          >
+        </p>
+      </aside>
+
+      <!-- ============ form ============ -->
+      <main class="content">
+        <section class="pitch">
+          <h1>Start digging.</h1>
+          <p>
+            Quarry keeps your sources, quotes and half-formed ideas in one
+            searchable seam, so the paper you skimmed eight months ago is still
+            there when you finally need it.
+          </p>
+          <p class="pitch-note">
+            Free while we are in beta. No card, no trial countdown.
+          </p>
+        </section>
+
+        <form class="signup" id="signup" novalidate>
+          <h2>Create your account</h2>
+
+          <div class="fields">
+            <div class="field">
+              <label for="first">First name</label>
+              <input id="first" name="first" type="text" autocomplete="given-name" required />
+              <p class="error" id="first-error" aria-live="polite"></p>
+            </div>
+
+            <div class="field">
+              <label for="last">Last name</label>
+              <input id="last" name="last" type="text" autocomplete="family-name" required />
+              <p class="error" id="last-error" aria-live="polite"></p>
+            </div>
+
+            <div class="field">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" autocomplete="email" required />
+              <p class="error" id="email-error" aria-live="polite"></p>
+            </div>
+
+            <div class="field">
+              <label for="phone">Phone <span class="optional">optional</span></label>
+              <input id="phone" name="phone" type="tel" autocomplete="tel" />
+              <p class="error" id="phone-error" aria-live="polite"></p>
+            </div>
+
+            <div class="field">
+              <label for="password">Password</label>
+              <div class="secret">
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  autocomplete="new-password"
+                  minlength="8"
+                  required
+                  aria-describedby="strength-label"
+                />
+                <button class="reveal" type="button" data-reveals="password" aria-pressed="false">
+                  Show
+                </button>
+              </div>
+
+              <div class="strength" id="strength" hidden>
+                <div class="meter" role="presentation">
+                  <span class="meter-fill" id="meter-fill"></span>
+                </div>
+                <p class="strength-label" id="strength-label"></p>
+              </div>
+
+              <p class="error" id="password-error" aria-live="polite"></p>
+            </div>
+
+            <div class="field">
+              <label for="confirm">Confirm password</label>
+              <div class="secret">
+                <input
+                  id="confirm"
+                  name="confirm"
+                  type="password"
+                  autocomplete="new-password"
+                  required
+                />
+                <button class="reveal" type="button" data-reveals="confirm" aria-pressed="false">
+                  Show
+                </button>
+              </div>
+              <p class="error" id="confirm-error" aria-live="polite"></p>
+            </div>
+          </div>
+
+          <button class="submit" type="submit">Create account</button>
+
+          <p class="signin">
+            Already have an account? <a href="#">Log in</a>
+          </p>
+
+          <p class="done" id="done" hidden>
+            Account created. Welcome to Quarry.
+          </p>
+        </form>
+
+        <footer class="colophon">
+          Built for
+          <a href="https://www.theodinproject.com/">The Odin Project</a>
+          Intermediate HTML and CSS.
+        </footer>
+      </main>
+    </div>
+
+    <script src="./script.js"></script>
+  </body>
+</html>

@@ -18,7 +18,7 @@ const WINNING_SCORE = 5;
 const BEATS = {
   quartz: { loser: "shears", verb: "blunts" },
   parchment: { loser: "quartz", verb: "wraps" },
-  shears: { loser: "parchment", verb: "cuts" },
+  shears: { loser: "parchment", verb: "cut" },
 };
 
 const KEYS = { q: "quartz", p: "parchment", s: "shears" };
@@ -33,34 +33,67 @@ function getComputerChoice() {
   return CHOICES[Math.floor(Math.random() * CHOICES.length)];
 }
 
+/**
+ * Decides a single round. Pure and deterministic: the same two throws
+ * always produce the same result. The commentary lives in flavour()
+ * below, so the rules never have to care how loud the game is.
+ */
 function playRound(humanChoice, computerChoice) {
   const human = String(humanChoice).toLowerCase();
   const computer = String(computerChoice).toLowerCase();
 
-  if (human === computer) {
-    return {
-      outcome: "drew",
-      human,
-      computer,
-      message: `Dang flabbit, we drew! Two ${human}s and nothing to show for it.`,
-    };
+  if (human === computer) return { outcome: "drew", human, computer };
+  if (BEATS[human].loser === computer) return { outcome: "won", human, computer };
+  return { outcome: "lost", human, computer };
+}
+
+const pick = (lines) => lines[Math.floor(Math.random() * lines.length)];
+
+/** Turns a result into something worth reading. */
+function flavour({ outcome, human, computer }) {
+  if (outcome === "drew") {
+    return pick([
+      `Whoa. Same brain. Two ${human} and nothing to show for it.`,
+      `Seriously? Two ${human}. Nobody gets anything.`,
+      `Dang flabbit — two ${human}. Go again.`,
+      `Twinsies. Two ${human}. That round never happened.`,
+    ]);
   }
 
-  if (BEATS[human].loser === computer) {
-    return {
-      outcome: "won",
-      human,
-      computer,
-      message: `Jolly good show! ${title(human)} ${BEATS[human].verb} ${computer}.`,
-    };
-  }
+  const winner = outcome === "won" ? human : computer;
+  const loser = outcome === "won" ? computer : human;
+  const move = `${title(winner)} ${BEATS[winner].verb} ${loser}`;
 
-  return {
-    outcome: "lost",
-    human,
-    computer,
-    message: `Alas! ${title(computer)} ${BEATS[computer].verb} ${human}.`,
-  };
+  return outcome === "won"
+    ? pick([
+        `OOOOH! ${move}. Sit down.`,
+        `That is what I am talking about. ${move}.`,
+        `Boom. ${move}. Point me.`,
+        `${move}. You love to see it.`,
+        `Not even close. ${move}.`,
+      ])
+    : pick([
+        `Aw, come on! ${move}.`,
+        `Ugh. ${move}. That one is on you.`,
+        `Denied. ${move}.`,
+        `${move}. The adversary is smug about it now.`,
+        `Rough. ${move}. Shake it off.`,
+      ]);
+}
+
+/** The line for the end of a whole match. */
+function finalFlavour(won, human, computer) {
+  return won
+    ? pick([
+        `MATCH! You take it ${human}–${computer}. Total domination.`,
+        `That is the match, ${human}–${computer}. Absolutely mint.`,
+        `You win it ${human}–${computer}. The adversary needs a minute.`,
+      ])
+    : pick([
+        `Match over, ${computer}–${human}. The adversary is insufferable about it.`,
+        `${computer}–${human}. Rough day at the park. Run it back?`,
+        `Dropped it ${computer}–${human}. Shake it off and go again.`,
+      ]);
 }
 
 function title(word) {
@@ -405,7 +438,7 @@ async function takeTurn(humanChoice) {
 
   showObject(els.humanSlot, humanChoice, true);
   showWaiting(els.computerSlot);
-  renderVerdict("…", null, false);
+  renderVerdict(pick(["Here we go…", "Alright, alright…", "Locking it in…"]), null, false);
 
   if (REVEAL_MS > 0) {
     els.computerSlot.classList.add("shuffling");
@@ -414,6 +447,7 @@ async function takeTurn(humanChoice) {
   }
 
   const result = playRound(humanChoice, computerChoice);
+  const line = flavour(result);
   showObject(els.computerSlot, computerChoice, true);
 
   if (result.outcome === "won") state.humanScore += 1;
@@ -429,16 +463,14 @@ async function takeTurn(humanChoice) {
     state.over = true;
     const won = state.humanScore > state.computerScore;
     renderVerdict(
-      won
-        ? "The match is yours. Handsomely done."
-        : "The adversary takes the match. Regroup.",
+      finalFlavour(won, state.humanScore, state.computerScore),
       won ? "won" : "lost",
       true
     );
     Sound.play(won ? "win" : "lose");
     setChoicesEnabled(false);
   } else {
-    renderVerdict(result.message, result.outcome, false);
+    renderVerdict(line, result.outcome, false);
     Sound.play(result.outcome === "drew" ? "draw" : result.outcome === "won" ? "win" : "lose");
     setChoicesEnabled(true);
   }
@@ -463,7 +495,7 @@ function newGame() {
   showWaiting(els.computerSlot);
   renderScores();
   renderLedger();
-  renderVerdict("Choose wisely.", null, false);
+  renderVerdict(pick(["Choose wisely.", "Alright. Pick one.", "Your move, dude."]), null, false);
   renderRoundNumber();
   setChoicesEnabled(true);
 }

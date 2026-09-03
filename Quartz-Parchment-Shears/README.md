@@ -23,12 +23,15 @@ The three illustrations were originally drawn as complete cards — the object, 
 
 Rather than redraw them, they were cut out programmatically. Each illustration has a heavy ink outline, which means a flood fill seeded inside the card border spreads across the cream ground and stops dead at the object's edge. The remaining pixels are grouped into connected components; the card border is discarded as the one component touching the frame, the baked-in title letters are discarded as small components sitting high in the image, and what survives is the object plus its sparkles. Quartz needed one extra pass to remove the mound of earth it was drawn standing on, which read as a dirt clod once it started floating.
 
+The shears needed one more. Their finger holes are *enclosed* card ground, so an outside flood can never reach them and they came through as little scraps of page. Colour alone could not remove them either: the cream and the grey blades sit in the same brightness band, and cutting by brightness hollowed the blades out completely. What separates them is warmth. Measured on this art the trapped card reads R−B ≈ 51 while the blades are near-neutral at 13–17, so the punch removes enclosed regions above a warmth threshold and leaves the blades whole.
+
 ```
 images/
 ├── heading.png          the banner logo, used as-is
-├── Quartz.png           original card art — kept as the source
-├── Parchment.png
-├── Shears.png
+├── source/              the original card art, kept as the master
+│   ├── Quartz.png
+│   ├── Parchment.png
+│   └── Shears.png
 └── cutouts/             generated: transparent, cropped, floating
     ├── quartz.png
     ├── parchment.png
@@ -55,7 +58,7 @@ Browsers refuse to start an `AudioContext` until the user has actually interacte
 
 ## Structure
 
-`script.js` is organised in six labelled sections, and the split that matters is the first: **the rules never touch the DOM and never make a noise.** `getComputerChoice` and `playRound` take choices and return a plain description of what happened — an outcome, the two throws, and a message. Every consequence (incrementing a score, showing an object, writing to the ledger, playing a stinger) is the caller's job.
+`script.js` is organised in labelled sections, and the split that matters is the first: **the rules never touch the DOM, never make a noise, and never write a sentence.** `playRound` is pure and deterministic — the same two throws always return the same `{ outcome, human, computer }`. The commentary lives in a separate `flavour()`, which picks from a set of lines per outcome so the game does not repeat itself. Every consequence (incrementing a score, showing an object, writing to the ledger, playing a stinger) is the caller's job.
 
 This anticipates the Single Responsibility lesson later in the JavaScript course, which uses almost exactly this example — game logic that reaches into the DOM — as the thing not to do.
 
@@ -75,7 +78,8 @@ The lesson asks for three buttons, a results div, a running score, and a winner 
 * **Keyboard play** — Q, P and S, which trigger the same performance as hovering
 * **A reveal beat** before the adversary's play is turned over
 * **A CSS park** — sky, sun, clouds and hills, no image payload
-* **Responsive from 320px**, verified for horizontal overflow
+* **Locked to the viewport** — the game never scrolls. Object heights are driven by shared `--stage-h` and `--object-h` lengths in `vh`, the ledger becomes a full-height sidebar above 64rem and a short scrolling strip below it, and the masthead drops out entirely on very short screens. Verified for scroll and overlap at 1440x900, 1280x800, 1024x768, 844x390 and 390x844.
+* **Commentary that varies** — fifteen win lines, fifteen loss lines, twelve draws, plus separate lines for taking or dropping a match
 
 The adversary is honestly random, as the assignment requires — `Math.random` over the three choices, with no memory of what you have played.
 

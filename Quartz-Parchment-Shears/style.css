@@ -41,6 +41,11 @@
   --shell: 1060px;
   --gutter: clamp(1rem, 4vw, 2.5rem);
   --stroke: 3px;
+
+  /* how tall a floating object may be — used for both the box and
+     the image, so the art can never outgrow the space it sits in */
+  --stage-h: clamp(74px, 19vh, 190px);
+  --object-h: clamp(80px, 21vh, 200px);
 }
 
 *,
@@ -49,9 +54,14 @@
   box-sizing: border-box;
 }
 
+html {
+  height: 100%;
+}
+
 body {
   margin: 0;
-  min-height: 100vh;
+  height: 100%;
+  overflow: hidden;
   background: var(--sky-low);
   color: var(--ink);
   font-family: var(--body);
@@ -167,33 +177,44 @@ body {
    page frame
    --------------------------------------------------------- */
 
+/* The whole game is locked to the viewport: nothing scrolls but the
+   ledger list, and every piece of art is sized in vh so it shrinks with
+   the window rather than pushing the page taller. */
 .page {
+  height: 100dvh;
   max-width: var(--shell);
   margin-inline: auto;
-  padding: clamp(1.25rem, 4vw, 2.5rem) var(--gutter) 3rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: clamp(1.25rem, 3.5vw, 2.25rem);
+  padding: clamp(0.6rem, 2vh, 1.6rem) var(--gutter) clamp(0.5rem, 1.5vh, 1rem);
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto auto;
+  justify-items: center;
+  gap: clamp(0.5rem, 1.6vh, 1.1rem);
 }
 
 .masthead {
   width: 100%;
-  max-width: 400px;
+  max-width: 340px;
+  display: grid;
+  place-items: center;
+  min-height: 0;
 }
 
 .masthead-art {
   display: block;
-  width: 100%;
+  width: auto;
+  max-width: 100%;
+  max-height: clamp(64px, 15vh, 150px);
   height: auto;
   filter: drop-shadow(0 6px 0 rgba(32, 28, 23, 0.22));
 }
 
 .game {
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: clamp(1.25rem, 3.5vw, 2rem);
+  min-height: 0;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: clamp(0.4rem, 1.4vh, 1.1rem);
 }
 
 /* ---------------------------------------------------------
@@ -297,16 +318,15 @@ body {
 
 .stage {
   width: 100%;
-  max-width: 200px;
-  aspect-ratio: 1 / 1.05;
+  height: var(--stage-h);
   position: relative;
   display: grid;
   place-items: center;
 }
 
 .stage img {
-  max-width: 82%;
-  max-height: 82%;
+  max-width: 88%;
+  max-height: var(--stage-h);
   width: auto;
   height: auto;
   position: relative;
@@ -424,13 +444,13 @@ body {
   place-items: center;
   position: relative;
   width: 100%;
-  aspect-ratio: 1 / 1;
+  height: var(--object-h);
   z-index: 1;
 }
 
 .choice img {
-  max-width: 78%;
-  max-height: 78%;
+  max-width: 88%;
+  max-height: var(--object-h);
   width: auto;
   height: auto;
   transform-origin: 50% 60%;
@@ -591,11 +611,16 @@ body {
    --------------------------------------------------------- */
 
 .ledger {
+  width: 100%;
+  min-height: 0;
   background: rgba(255, 255, 255, 0.93);
   border: var(--stroke) solid var(--ink);
   border-radius: 14px;
   box-shadow: 0 5px 0 rgba(32, 28, 23, 0.18);
-  padding: 0.85rem 1.1rem 1rem;
+  padding: 0.6rem 0.9rem 0.7rem;
+  display: flex;
+  flex-direction: column;
+  max-height: clamp(80px, 20vh, 200px);
 }
 
 .ledger-head {
@@ -653,7 +678,8 @@ body {
   list-style: none;
   margin: 0;
   padding: 0;
-  max-height: 12.5rem;
+  flex: 1 1 auto;
+  min-height: 0;
   overflow-y: auto;
 }
 
@@ -755,4 +781,78 @@ body {
   .ledger-list li { grid-template-columns: 2.4rem 1fr; }
 
   .ledger-outcome { grid-column: 2; }
+}
+
+/* ---------------------------------------------------------
+   wide screens: the ledger moves to a sidebar so the board
+   keeps its height instead of being squeezed from below
+   --------------------------------------------------------- */
+
+@media (min-width: 64rem) {
+  .page {
+    max-width: 1220px;
+    grid-template-columns: minmax(0, 1fr) 19rem;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      "masthead ledger"
+      "game     ledger"
+      "colophon ledger";
+    column-gap: 1.75rem;
+    align-items: start;
+  }
+
+  .masthead { grid-area: masthead; }
+  .game { grid-area: game; }
+  .colophon { grid-area: colophon; }
+
+  .ledger {
+    grid-area: ledger;
+    max-height: none;
+    height: 100%;
+    align-self: stretch;
+  }
+
+  .masthead-art { max-height: clamp(80px, 17vh, 170px); }
+
+  .page {
+    --stage-h: clamp(90px, 21vh, 210px);
+    --object-h: clamp(100px, 24vh, 230px);
+  }
+}
+
+/* ---------------------------------------------------------
+   short viewports: shed the decoration before the game
+   --------------------------------------------------------- */
+
+@media (max-height: 44rem) {
+  .colophon-credit { display: none; }
+  .sign-score { font-size: clamp(1.5rem, 5vh, 2.1rem); }
+  .pips li { width: 9px; height: 9px; }
+  .verdict-line { min-height: 2.2em; }
+}
+
+@media (max-height: 34rem) {
+  .masthead { display: none; }
+  .colophon { display: none; }
+  .ledger { max-height: clamp(64px, 16vh, 120px); }
+}
+
+/* ---------------------------------------------------------
+   narrow screens: the ledger sits below the board rather than
+   beside it, so the art has to give up height to make room
+   --------------------------------------------------------- */
+
+@media (max-width: 64rem) {
+  .page {
+    --stage-h: clamp(58px, 13vh, 140px);
+    --object-h: clamp(68px, 16vh, 165px);
+  }
+
+  .masthead-art { max-height: clamp(54px, 11vh, 112px); }
+
+  .ledger { max-height: clamp(68px, 14vh, 145px); }
+
+  .slot figcaption { font-size: 0.6rem; letter-spacing: 0.1em; }
+
+  .verdict-line { min-height: 2em; }
 }

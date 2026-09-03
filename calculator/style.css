@@ -2,15 +2,34 @@
    Coolculator
    Odin Project Foundations — Calculator (rebuilt)
 
-   A desktop printing adding machine: enamelled body, paper
-   tape rolling out of the top, a readout, and a keypad.
+   A printing adding machine lying on a workbench, with the
+   project notebook open beside it and the title cut into the
+   tabletop.
 
-   Single-theme by design — the machine is the machine.
+   Single-theme by design — the bench is the bench.
    ========================================================= */
 
+@font-face {
+  font-family: "thelasttrunks";
+  src: local("THE LAST TRUNKS"), url("./fonts/thelasttrunks.ttf") format("truetype");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "scribbles";
+  src: local("OverScribble"), url("./fonts/overscrible.ttf") format("truetype");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "besties";
+  src: local("Estie Bestie"), url("./fonts/estiebestie.ttf") format("truetype");
+  font-display: swap;
+}
+
 :root {
-  --desk: #6d5f4e;
-  --desk-lo: #4c4238;
+  --wood: #8a5f36;
+  --wood-dark: #5d3d20;
 
   --body: #ddd4bf;
   --body-hi: #ece4d2;
@@ -38,6 +57,10 @@
   --clear: #c07a2c;
   --clear-lo: #8a5316;
 
+  --pad: #fdf2e3;
+  --pad-rule: rgba(31, 33, 196, 0.42);
+  --pad-margin: rgba(220, 129, 223, 0.6);
+
   --label: "Barlow Condensed", "Arial Narrow", sans-serif;
   --tape: "Courier Prime", "Courier New", monospace;
   --readout: "Share Tech Mono", ui-monospace, monospace;
@@ -51,9 +74,6 @@
 
 body {
   margin: 0;
-  min-height: 100vh;
-  background:
-    radial-gradient(ellipse 80% 60% at 50% 0%, #7d6e5b 0%, var(--desk) 45%, var(--desk-lo) 100%);
   color: var(--print);
   font-family: var(--label);
   -webkit-font-smoothing: antialiased;
@@ -64,27 +84,250 @@ body {
   outline-offset: 2px;
 }
 
+/* ---------------------------------------------------------
+   the bench
+   --------------------------------------------------------- */
+
 .desk {
   min-height: 100vh;
+  padding: clamp(1rem, 4vw, 2.5rem) clamp(0.75rem, 3vw, 2rem) 3rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  padding: clamp(1rem, 4vw, 2.5rem) 1rem 2rem;
+  gap: clamp(0.75rem, 3vw, 1.75rem);
+
+  background-color: var(--wood);
+  background-image:
+    /* knots, and the cathedral arcs that curve around them */
+    radial-gradient(ellipse 26px 9px at 19% 24%, rgba(46, 24, 10, 0.6), transparent 70%),
+    radial-gradient(ellipse 62px 22px at 19% 24%, rgba(46, 24, 10, 0.22), transparent 68%),
+    radial-gradient(ellipse 120px 44px at 19% 24%, rgba(46, 24, 10, 0.12), transparent 70%),
+    radial-gradient(ellipse 30px 11px at 78% 69%, rgba(46, 24, 10, 0.5), transparent 70%),
+    radial-gradient(ellipse 78px 30px at 78% 69%, rgba(46, 24, 10, 0.18), transparent 70%),
+    /* grain: several passes at slightly different angles and spacings so the
+       repeat never lines up into visible corduroy */
+    repeating-linear-gradient(
+      90.6deg,
+      rgba(46, 24, 10, 0.05) 0px,
+      rgba(46, 24, 10, 0.05) 1px,
+      transparent 1px,
+      transparent 9px
+    ),
+    repeating-linear-gradient(
+      89.4deg,
+      rgba(46, 24, 10, 0.035) 0px,
+      rgba(46, 24, 10, 0.035) 2px,
+      transparent 2px,
+      transparent 17px
+    ),
+    repeating-linear-gradient(
+      90.2deg,
+      rgba(255, 226, 182, 0.045) 0px,
+      rgba(255, 226, 182, 0.045) 1px,
+      transparent 1px,
+      transparent 23px
+    ),
+    /* the joins between boards */
+    repeating-linear-gradient(
+      90deg,
+      rgba(28, 15, 6, 0.34) 0px,
+      rgba(28, 15, 6, 0.34) 2px,
+      rgba(150, 110, 70, 0.14) 2px,
+      rgba(150, 110, 70, 0.14) 4px,
+      transparent 4px,
+      transparent 320px
+    ),
+    linear-gradient(100deg, #7b5330 0%, #97693d 32%, #7f5730 64%, #8f6238 100%);
 }
 
-.machine {
+/* the title, cut into the tabletop */
+.engraved {
+  font-family: "thelasttrunks", var(--label);
+  font-weight: 400;
+  font-size: clamp(2.6rem, 10vw, 5.5rem);
+  line-height: 1;
+  margin: 0;
+  color: rgba(40, 21, 9, 0.42);
+  text-shadow:
+    -2px -2px 0 rgba(10, 5, 2, 0.6),
+    2px 2px 0 rgba(214, 168, 110, 0.32);
+  text-align: center;
+}
+
+.scene {
   width: 100%;
+  max-width: 900px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: center;
+  gap: clamp(1.25rem, 4vw, 2.5rem);
+}
+
+/* ---------------------------------------------------------
+   the notebook
+   --------------------------------------------------------- */
+
+.notebook {
+  position: relative;
+  flex: 1 1 265px;
+  max-width: 330px;
+  margin-top: 1.6rem;
+  padding: 0.5rem 0.5rem 0.6rem;
+  border-radius: 3px;
+  background-image: linear-gradient(to bottom right, #26251f, #4f4e48);
+  box-shadow:
+    3px 10px 18px rgba(20, 10, 4, 0.5),
+    0 2px 0 rgba(255, 255, 255, 0.08) inset;
+  rotate: -1.4deg;
+}
+
+.rings {
+  position: absolute;
+  top: -18px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: clamp(14px, 5vw, 28px);
+  z-index: 3;
+}
+
+.binding {
+  position: relative;
+  display: block;
+}
+
+.ring {
+  position: relative;
+  top: 9px;
+  z-index: 3;
+  display: block;
+  width: 20px;
+  height: 32px;
+  rotate: 7deg;
+  border-top: 6px ridge #c0c0c0;
+  border-left: 6px ridge #c0c0c0;
+  border-radius: 20px;
+  box-shadow:
+    inset 2px 2px 3px #2f2f2f,
+    -2px -2px 2px rgba(20, 12, 6, 0.55);
+}
+
+.hole {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 11px;
+  height: 11px;
+  margin-inline: auto;
+  border: 1px solid #111;
+  border-radius: 50%;
+  background-image: radial-gradient(
+    ellipse at 85% 85%,
+    #b4b4b4 0%,
+    #7e7e7e 35%,
+    #252525 40%
+  );
+}
+
+/* ruled paper, with a margin line down the left */
+.page {
+  position: relative;
+  padding: 1.5rem 1rem 1rem 2.6rem;
+  background-color: var(--pad);
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent 0px,
+      transparent 25px,
+      var(--pad-rule) 25px,
+      var(--pad-rule) 26px
+    ),
+    linear-gradient(90deg, transparent 0 33px, var(--pad-margin) 33px 34px, transparent 34px);
+  box-shadow:
+    2px 4px rgba(119, 119, 119, 0.9),
+    4px 7px rgba(83, 83, 83, 0.75),
+    6px 10px rgba(42, 42, 42, 0.55);
+}
+
+.operation {
+  font-family: "scribbles", var(--label);
+  font-weight: 400;
+  font-size: clamp(1.5rem, 5vw, 2rem);
+  line-height: 1;
+  color: #c2261d;
+  margin: 0 0 0.6rem;
+  transform: rotate(-1.5deg);
+}
+
+.acrostic {
+  list-style: none;
+  margin: 0 0 0.9rem;
+  padding: 0;
+}
+
+.acrostic li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  min-height: 26px;
+}
+
+.letter {
+  font-family: "scribbles", var(--label);
+  font-size: 1.35rem;
+  line-height: 26px;
+  color: #1f21c4;
+  width: 1.1em;
+  flex: none;
+}
+
+.word {
+  font-family: "besties", var(--label);
+  font-size: 1.1rem;
+  line-height: 26px;
+  color: #2b2b2b;
+}
+
+.word::before {
+  content: "— ";
+  color: #6b6b6b;
+}
+
+.scrawl {
+  font-family: "besties", var(--label);
+  font-size: 0.95rem;
+  line-height: 26px;
+  color: #2b2b2b;
+  margin: 0 0 0.6rem;
+}
+
+.footnote {
+  font-family: "besties", var(--label);
+  font-size: 0.9rem;
+  line-height: 26px;
+  color: #4a4a4a;
+  margin: 0;
+}
+
+.footnote a {
+  color: #1f21c4;
+  text-underline-offset: 2px;
+}
+
+/* ---------------------------------------------------------
+   the machine
+   --------------------------------------------------------- */
+
+.machine {
+  flex: 0 1 330px;
   max-width: 330px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  rotate: 0.8deg;
 }
-
-/* ---------------------------------------------------------
-   the tape
-   --------------------------------------------------------- */
 
 .tape-housing {
   width: 84%;
@@ -93,7 +336,6 @@ body {
   flex-direction: column;
 }
 
-/* the free end of the paper, torn across the top */
 .tape {
   background: linear-gradient(var(--paper-lo), var(--paper) 12%, var(--paper));
   font-family: var(--tape);
@@ -104,14 +346,19 @@ body {
   height: clamp(120px, 22vh, 190px);
   overflow-y: auto;
   overflow-x: hidden;
+  border-top: 2px dashed var(--rule);
   box-shadow:
     inset 0 8px 10px -8px rgba(60, 50, 30, 0.45),
     0 2px 5px rgba(0, 0, 0, 0.28);
-  /* a torn edge along the top */
-  -webkit-mask-image: linear-gradient(#000 0 0);
-  mask-image: linear-gradient(#000 0 0);
-  border-top: 2px dashed var(--rule);
-  scrollbar-width: thin;
+  /* the roll still scrolls, it just does not show a bar on the paper */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.tape::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
 }
 
 .tape p {
@@ -156,7 +403,6 @@ body {
   font-size: 0.7rem;
 }
 
-/* the slot the paper feeds through */
 .slot {
   height: 14px;
   background: linear-gradient(var(--plinth), #1d1a16);
@@ -165,10 +411,6 @@ body {
   position: relative;
   z-index: 2;
 }
-
-/* ---------------------------------------------------------
-   the body
-   --------------------------------------------------------- */
 
 .body {
   width: 100%;
@@ -182,7 +424,7 @@ body {
   box-shadow:
     inset 0 2px 0 rgba(255, 255, 255, 0.55),
     0 12px 0 var(--plinth),
-    0 20px 30px rgba(20, 14, 8, 0.45);
+    0 22px 32px rgba(20, 10, 4, 0.55);
 }
 
 .readout {
@@ -222,6 +464,8 @@ body {
   border-color: var(--equals);
 }
 
+/* right-aligned with flex, not direction:rtl — rtl aligns correctly but
+   reverses the visual order of the run, so "99 + 1" rendered as "1 + 99" */
 .expression {
   font-family: var(--readout);
   font-size: 0.72rem;
@@ -256,10 +500,6 @@ body {
   white-space: normal;
   line-height: 1.25;
 }
-
-/* ---------------------------------------------------------
-   the keypad
-   --------------------------------------------------------- */
 
 .keypad {
   display: grid;
@@ -326,10 +566,6 @@ body {
   opacity: 0.65;
 }
 
-/* ---------------------------------------------------------
-   plinth
-   --------------------------------------------------------- */
-
 .plinth {
   display: flex;
   align-items: center;
@@ -368,40 +604,22 @@ body {
   color: var(--paper);
 }
 
-/* ---------------------------------------------------------
-   page furniture
-   --------------------------------------------------------- */
-
-.hint {
-  max-width: 44ch;
-  text-align: center;
-  font-size: 0.82rem;
-  color: #efe7d6;
-  margin: 0.5rem 0 0;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
-}
-
-.hint kbd {
-  font-family: var(--readout);
-  font-size: 0.78em;
-  background: rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  border-radius: 3px;
-  padding: 0 0.28em;
-}
-
-.colophon {
-  font-size: 0.72rem;
-  color: #d6cbb5;
-}
-
-.colophon a {
-  color: #f3e6cc;
-  text-underline-offset: 2px;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .key {
     transition: none;
+  }
+}
+
+/* the two objects stack once there is no room to lie side by side */
+@media (max-width: 44rem) {
+  .notebook,
+  .machine {
+    rotate: 0deg;
+    margin-top: 1.6rem;
+  }
+
+  .notebook {
+    order: 2;
+    max-width: 330px;
   }
 }

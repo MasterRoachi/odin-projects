@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Coolculator — a printing adding machine that rolls every calculation out on paper tape."
+      content="Coolculator — a printing adding machine on a workbench, built for The Odin Project."
     />
     <title>Coolculator</title>
 
@@ -20,90 +20,122 @@
 
   <body>
     <main class="desk">
-      <div class="machine">
-        <!-- the tape rolls out of the top of the machine -->
-        <section class="tape-housing" aria-label="Paper tape">
-          <div class="tape" id="tape">
-            <p class="tape-note">COOLCULATOR &mdash; ready</p>
-          </div>
-          <div class="slot" aria-hidden="true"></div>
-        </section>
+      <h1 class="engraved">Coolculator</h1>
 
-        <div class="body">
-          <div class="readout" aria-live="polite">
-            <p class="flags">
-              <span class="flag" id="flag-memory" hidden>M</span>
-              <span class="flag flag-error" id="flag-error" hidden>E</span>
+      <div class="scene">
+        <!-- the notepad lying beside the machine -->
+        <aside class="notebook">
+          <div class="rings" aria-hidden="true">
+            <span class="binding"><span class="ring"></span><span class="hole"></span></span>
+            <span class="binding"><span class="ring"></span><span class="hole"></span></span>
+            <span class="binding"><span class="ring"></span><span class="hole"></span></span>
+            <span class="binding"><span class="ring"></span><span class="hole"></span></span>
+            <span class="binding"><span class="ring"></span><span class="hole"></span></span>
+            <span class="binding"><span class="ring"></span><span class="hole"></span></span>
+          </div>
+
+          <div class="page">
+            <h2 class="operation">Operation:</h2>
+
+            <ul class="acrostic">
+              <li><span class="letter">C</span><span class="word">craft</span></li>
+              <li><span class="letter">O</span><span class="word">our</span></li>
+              <li><span class="letter">O</span><span class="word">own</span></li>
+              <li><span class="letter">L</span><span class="word">lovely</span></li>
+              <li><span class="letter">C</span><span class="word">calculator</span></li>
+              <li><span class="letter">U</span><span class="word">using</span></li>
+              <li><span class="letter">L</span><span class="word">languages</span></li>
+              <li><span class="letter">A</span><span class="word">and</span></li>
+              <li><span class="letter">T</span><span class="word">tools</span></li>
+              <li><span class="letter">O</span><span class="word">obtained</span></li>
+              <li><span class="letter">R</span><span class="word">recently</span></li>
+            </ul>
+
+            <p class="scrawl">
+              Keys work. So does the keyboard &mdash; digits, + &minus; * /,
+              Enter to total, Backspace to delete, Esc to clear.
             </p>
-            <p class="expression" id="expression">&nbsp;</p>
-            <p class="result" id="result">0</p>
+
+            <p class="footnote">
+              My calculator project for
+              <a href="https://www.theodinproject.com/">The Odin Project.</a>
+            </p>
           </div>
+        </aside>
 
-          <div class="keypad" id="keypad">
-            <button class="key key-fn" data-key="MC" type="button">MC</button>
-            <button class="key key-fn" data-key="MR" type="button">MR</button>
-            <button class="key key-fn" data-key="M+" type="button">M+</button>
-            <button class="key key-fn" data-key="M-" type="button">M&minus;</button>
-            <button class="key key-clear" data-key="C" type="button">C</button>
+        <div class="machine">
+          <!-- the tape rolls out of the top of the machine -->
+          <section class="tape-housing" aria-label="Paper tape">
+            <div class="tape" id="tape">
+              <p class="tape-note">COOLCULATOR &mdash; ready</p>
+            </div>
+            <div class="slot" aria-hidden="true"></div>
+          </section>
 
-            <button class="key key-num" data-key="7" type="button">7</button>
-            <button class="key key-num" data-key="8" type="button">8</button>
-            <button class="key key-num" data-key="9" type="button">9</button>
-            <button class="key key-op" data-key="/" type="button" aria-label="Divide">
-              &divide;
-            </button>
-            <button class="key key-fn" data-key="back" type="button" aria-label="Backspace">
-              &#9003;
-            </button>
+          <div class="body">
+            <div class="readout" aria-live="polite">
+              <p class="flags">
+                <span class="flag" id="flag-memory" hidden>M</span>
+                <span class="flag flag-error" id="flag-error" hidden>E</span>
+              </p>
+              <p class="expression" id="expression">&nbsp;</p>
+              <p class="result" id="result">0</p>
+            </div>
 
-            <button class="key key-num" data-key="4" type="button">4</button>
-            <button class="key key-num" data-key="5" type="button">5</button>
-            <button class="key key-num" data-key="6" type="button">6</button>
-            <button class="key key-op" data-key="*" type="button" aria-label="Multiply">
-              &times;
-            </button>
-            <button class="key key-fn" data-key="%" type="button" aria-label="Percent">
-              %
-            </button>
+            <div class="keypad" id="keypad">
+              <button class="key key-fn" data-key="MC" type="button">MC</button>
+              <button class="key key-fn" data-key="MR" type="button">MR</button>
+              <button class="key key-fn" data-key="M+" type="button">M+</button>
+              <button class="key key-fn" data-key="M-" type="button">M&minus;</button>
+              <button class="key key-clear" data-key="C" type="button">C</button>
 
-            <button class="key key-num" data-key="1" type="button">1</button>
-            <button class="key key-num" data-key="2" type="button">2</button>
-            <button class="key key-num" data-key="3" type="button">3</button>
-            <button class="key key-op" data-key="-" type="button" aria-label="Subtract">
-              &minus;
-            </button>
-            <button class="key key-fn" data-key="sign" type="button" aria-label="Change sign">
-              &plusmn;
-            </button>
+              <button class="key key-num" data-key="7" type="button">7</button>
+              <button class="key key-num" data-key="8" type="button">8</button>
+              <button class="key key-num" data-key="9" type="button">9</button>
+              <button class="key key-op" data-key="/" type="button" aria-label="Divide">
+                &divide;
+              </button>
+              <button class="key key-fn" data-key="back" type="button" aria-label="Backspace">
+                &#9003;
+              </button>
 
-            <button class="key key-num key-zero" data-key="0" type="button">0</button>
-            <button class="key key-num" data-key="." type="button" aria-label="Decimal point">
-              .
-            </button>
-            <button class="key key-op" data-key="+" type="button" aria-label="Add">+</button>
-            <button class="key key-equals" data-key="=" type="button" aria-label="Equals">
-              =
-            </button>
-          </div>
+              <button class="key key-num" data-key="4" type="button">4</button>
+              <button class="key key-num" data-key="5" type="button">5</button>
+              <button class="key key-num" data-key="6" type="button">6</button>
+              <button class="key key-op" data-key="*" type="button" aria-label="Multiply">
+                &times;
+              </button>
+              <button class="key key-fn" data-key="%" type="button" aria-label="Percent">
+                %
+              </button>
 
-          <div class="plinth">
-            <p class="nameplate">Coolculator</p>
-            <button class="tear" id="tear" type="button">Tear off tape</button>
+              <button class="key key-num" data-key="1" type="button">1</button>
+              <button class="key key-num" data-key="2" type="button">2</button>
+              <button class="key key-num" data-key="3" type="button">3</button>
+              <button class="key key-op" data-key="-" type="button" aria-label="Subtract">
+                &minus;
+              </button>
+              <button class="key key-fn" data-key="sign" type="button" aria-label="Change sign">
+                &plusmn;
+              </button>
+
+              <button class="key key-num key-zero" data-key="0" type="button">0</button>
+              <button class="key key-num" data-key="." type="button" aria-label="Decimal point">
+                .
+              </button>
+              <button class="key key-op" data-key="+" type="button" aria-label="Add">+</button>
+              <button class="key key-equals" data-key="=" type="button" aria-label="Equals">
+                =
+              </button>
+            </div>
+
+            <div class="plinth">
+              <p class="nameplate">Coolculator</p>
+              <button class="tear" id="tear" type="button">Tear off tape</button>
+            </div>
           </div>
         </div>
       </div>
-
-      <p class="hint">
-        Type on the keyboard as well: digits, <kbd>+</kbd> <kbd>&minus;</kbd>
-        <kbd>*</kbd> <kbd>/</kbd>, <kbd>Enter</kbd> to total,
-        <kbd>Backspace</kbd> to delete, <kbd>Esc</kbd> to clear.
-      </p>
-
-      <footer class="colophon">
-        Built for
-        <a href="https://www.theodinproject.com/">The Odin Project</a>
-        Foundations.
-      </footer>
     </main>
 
     <script src="./script.js"></script>

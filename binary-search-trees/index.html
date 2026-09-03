@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Two Trees — a binary search tree, balanced and not</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="visual.css" />
+  </head>
+  <body>
+    <div class="sheet">
+      <header class="masthead">
+        <p class="stamp">DWG. 04 — BINARY SEARCH TREE</p>
+        <h1>Two&nbsp;Trees</h1>
+        <p class="lede">
+          The same values, twice. On the left, built by taking the middle value as the root and
+          repeating. On the right, built by inserting the values one at a time in sorted order —
+          which is a linked list wearing a tree costume.
+        </p>
+        <p class="lede">
+          Search both at once and count the comparisons. That gap is the entire reason
+          <code>isBalanced</code> and <code>rebalance</code> exist.
+        </p>
+      </header>
+
+      <section class="controls" aria-label="Controls">
+        <div class="row">
+          <label class="field">
+            <span>values</span>
+            <select id="count">
+              <option value="15">15</option>
+              <option value="31" selected>31</option>
+              <option value="63">63</option>
+            </select>
+          </label>
+
+          <button id="reroll" class="quiet" type="button">new set</button>
+
+          <label class="field">
+            <span>find</span>
+            <input id="target" type="number" inputmode="numeric" placeholder="—" />
+          </label>
+
+          <button id="search" class="primary" type="button">search both</button>
+          <button id="lucky" class="quiet" type="button">pick one for me</button>
+          <button id="missing" class="quiet" type="button">search a value that is not there</button>
+        </div>
+        <p class="hint" id="hint" role="status" aria-live="polite"></p>
+      </section>
+
+      <section class="scoreboard" aria-label="Comparison count">
+        <div class="score" id="score-balanced">
+          <p class="score-label">balanced</p>
+          <p class="score-value"><span data-count>0</span><span class="score-unit">comparisons</span></p>
+          <p class="score-meta" data-meta>height 0</p>
+        </div>
+        <div class="verdict" id="verdict"><span>ready</span></div>
+        <div class="score" id="score-skewed">
+          <p class="score-label" id="label-b">degenerate</p>
+          <p class="score-value"><span data-count>0</span><span class="score-unit">comparisons</span></p>
+          <p class="score-meta" data-meta>height 0</p>
+        </div>
+      </section>
+
+      <section class="panels">
+        <figure class="panel">
+          <figcaption>
+            <span class="cap-title">A — buildTree(values)</span>
+            <span class="cap-note">middle value as root, recursively</span>
+          </figcaption>
+          <div class="frame" id="frame-balanced"><svg id="svg-balanced"></svg></div>
+          <p class="scroll-note" data-note-balanced></p>
+        </figure>
+
+        <figure class="panel">
+          <figcaption>
+            <span class="cap-title" id="cap-b-title">B — insert() in sorted order</span>
+            <span class="cap-note" id="cap-b-note">every value is larger than the last, so every value goes right</span>
+          </figcaption>
+          <div class="frame" id="frame-skewed"><svg id="svg-skewed"></svg></div>
+          <p class="scroll-note" data-note-skewed></p>
+        </figure>
+      </section>
+
+      <section class="titleblock">
+        <div class="tb-cell">
+          <p class="tb-label">structure</p>
+          <p class="tb-value">Binary search tree</p>
+        </div>
+        <div class="tb-cell">
+          <p class="tb-label">search, balanced</p>
+          <p class="tb-value">O(log n)</p>
+        </div>
+        <div class="tb-cell">
+          <p class="tb-label">search, degenerate</p>
+          <p class="tb-value">O(n)</p>
+        </div>
+        <div class="tb-cell wide">
+          <p class="tb-label">notes</p>
+          <p class="tb-value">
+            Both trees hold identical values and both obey the search rule. Only the shape differs.
+            Press <b>rebalance</b> to rebuild B from its own in-order traversal.
+          </p>
+        </div>
+        <div class="tb-cell action">
+          <button id="rebalance" class="primary" type="button">rebalance B</button>
+        </div>
+      </section>
+
+      <footer class="colophon">
+        <p>
+          <a href="../">← back to the projects</a> · The Odin Project, Binary Search Trees ·
+          <a href="./README.md">README</a>
+        </p>
+      </footer>
+    </div>
+
+    <script type="module" src="visual.js"></script>
+  </body>
+</html>

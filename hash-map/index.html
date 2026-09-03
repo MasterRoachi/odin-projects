@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="A hash map you can watch fill up, collide, and double." />
+    <title>Buckets</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap"
+    />
+    <link rel="stylesheet" href="./visual.css" />
+  </head>
+  <body>
+    <main class="page">
+      <header class="masthead">
+        <p class="eyebrow">The Odin Project · HashMap</p>
+        <h1>Buckets</h1>
+        <p class="lede">
+          Every column is a bucket. Each tile is a key–value pair, coloured by
+          its own hash, so the same key is always the same colour. A column with
+          more than one tile is a collision. Fill it past three-quarters and
+          watch the whole thing double and redeal.
+        </p>
+      </header>
+
+      <section class="readout" id="readout"></section>
+
+      <section class="controls">
+        <div class="row">
+          <label class="field">
+            <span>key</span>
+            <input id="key" type="text" placeholder="mango" spellcheck="false" />
+          </label>
+          <label class="field">
+            <span>value</span>
+            <input id="value" type="text" placeholder="orange" spellcheck="false" />
+          </label>
+          <button class="primary" id="set" type="button">set</button>
+          <button class="quiet" id="remove" type="button">remove</button>
+        </div>
+        <div class="row">
+          <button class="quiet" id="fill" type="button">fill with the brief's twelve</button>
+          <button class="quiet" id="moon" type="button">set('moon', 'silver')</button>
+          <button class="quiet" id="random" type="button">add a random key</button>
+          <button class="quiet" id="clear" type="button">clear</button>
+        </div>
+        <p class="hint" id="hint"></p>
+      </section>
+
+      <section class="chart-wrap">
+        <div class="chart" id="chart"></div>
+      </section>
+
+      <section class="log-wrap">
+        <h2>What happened</h2>
+        <ol class="log" id="log"></ol>
+      </section>
+
+      <footer class="colophon">
+        Buckets are the linked list from the
+        <a href="../linked-lists/README.md">Linked Lists</a> project, imported
+        rather than rewritten. Built for
+        <a href="https://www.theodinproject.com/">The Odin Project</a>.
+      </footer>
+    </main>
+
+    <script type="module" src="./visual.js"></script>
+  </body>
+</html>

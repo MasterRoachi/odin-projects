@@ -174,6 +174,21 @@ export class LinkedList {
     return removed.value;
   }
 
+  /**
+   * Yields each value in order, so the list works with for...of and spread.
+   *
+   * Added for the HashMap project, whose buckets are linked lists: it needs
+   * to walk a bucket comparing keys, and doing that through at(i) would
+   * restart from the head on every step.
+   */
+  *[Symbol.iterator]() {
+    let current = this.#head;
+    while (current !== null) {
+      yield current.value;
+      current = current.nextNode;
+    }
+  }
+
   /* ------------------------------------------------------ */
 
   /** Walks to a node, or null if the index is not in the list. */

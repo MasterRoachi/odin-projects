@@ -374,30 +374,52 @@ body {
 }
 
 .verdict {
-  text-align: center;
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
-  padding-bottom: 1.5rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding-bottom: 1rem;
+  min-height: 7.5rem;
 }
 
+/* the verdict is a caption card, not a line of text: ink border, hard
+   offset shadow, and a slight tilt so it reads as a pinned-up placard */
 .verdict-line {
   font-family: var(--display);
-  font-weight: 700;
-  font-size: clamp(1rem, 2.7vw, 1.35rem);
-  line-height: 1.18;
+  font-weight: 800;
+  font-size: clamp(0.9rem, 2.3vw, 1.2rem);
+  line-height: 1.15;
   color: var(--ink);
   text-wrap: balance;
   margin: 0;
-  min-height: 2.6em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  padding: 0.55rem 0.95rem 0.6rem;
+  background: var(--wood-face);
+  border: var(--stroke) solid var(--ink);
+  border-radius: 12px;
+  box-shadow: 0 5px 0 var(--ink);
+  rotate: -1.4deg;
+  max-width: 100%;
+  animation: pop 240ms cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.verdict-line.won { color: var(--won); }
-.verdict-line.lost { color: var(--lost); }
-.verdict-line.final { font-size: clamp(1.2rem, 3.4vw, 1.7rem); }
+.verdict-line.won {
+  background: #b7e08a;
+  color: #23491f;
+  rotate: 1.4deg;
+}
+
+.verdict-line.lost {
+  background: #f0a79a;
+  color: #6d221a;
+}
+
+.verdict-line.final {
+  font-size: clamp(1.05rem, 3vw, 1.5rem);
+  padding: 0.75rem 1.15rem 0.8rem;
+  rotate: -2.2deg;
+  box-shadow: 0 7px 0 var(--ink);
+}
 
 .round-no {
   font-family: var(--mono);
@@ -570,6 +592,11 @@ body {
   100% { scale: 1; filter: none; }
 }
 
+@keyframes pop {
+  0% { scale: 0.86; opacity: 0; }
+  100% { scale: 1; opacity: 1; }
+}
+
 @keyframes deal {
   from { opacity: 0; scale: 0.8; }
   to { opacity: 1; scale: 1; }
@@ -585,6 +612,7 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .verdict-line,
   .stage img,
   .stage .waiting,
   .stage img.dealt,

@@ -338,6 +338,12 @@ function renderVerdict(text, outcome, isFinal) {
   els.verdict.className = "verdict-line";
   if (outcome) els.verdict.classList.add(outcome);
   if (isFinal) els.verdict.classList.add("final");
+
+  // the element persists between rounds, so the pop has to be restarted
+  // by hand — clearing it and forcing a reflow before letting it run again
+  els.verdict.style.animation = "none";
+  void els.verdict.offsetWidth;
+  els.verdict.style.animation = "";
 }
 
 function renderRoundNumber() {

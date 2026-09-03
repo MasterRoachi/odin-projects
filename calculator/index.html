@@ -3,145 +3,109 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <meta
+      name="description"
+      content="Coolculator — a printing adding machine that rolls every calculation out on paper tape."
+    />
+    <title>Coolculator</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Courier+Prime:wght@400;700&family=Share+Tech+Mono&display=swap"
+    />
     <link rel="stylesheet" href="./style.css" />
   </head>
+
   <body>
-    <div class="big-container">
-      <div class="small-container">
-        <div class="calculator-body">~
-          <div class="screen">
-            <p id="screen">0</p>
+    <main class="desk">
+      <div class="machine">
+        <!-- the tape rolls out of the top of the machine -->
+        <section class="tape-housing" aria-label="Paper tape">
+          <div class="tape" id="tape">
+            <p class="tape-note">COOLCULATOR &mdash; ready</p>
           </div>
-          <div class="button-container">
-            <div class="clears">
-              <button id="clear-button" class="clear">Clear</button>
-            </div>
-            <div class="main-buttons">
-              <div class="numbers">
-                <button class="function">1/x</button>
-                <button class="function">x²</button>
-                <button class="function">²√</button>
-                <button class="number">1</button>
-                <button class="number">2</button>
-                <button class="number">3</button>
-                <button class="number">4</button>
-                <button class="number">5</button>
-                <button class="number">6</button>
-                <button class="number">7</button>
-                <button class="number">8</button>
-                <button class="number">9</button>
-                <button class="function">±</button>
-                <button class="number">0</button>
-                <button class="decimal">.</button>
-              </div>
-              <div class="operators">
-                <button class="back">⌫</button>
-                <button class="operator">÷</button>
-                <button class="operator">×</button>
-                <button class="operator">+</button>
-                <button class="operator">-</button>
-              </div>
-            </div>
-            <div class="equals">
-              <button id="equals-button" class="function">=</button>
-            </div>
+          <div class="slot" aria-hidden="true"></div>
+        </section>
+
+        <div class="body">
+          <div class="readout" aria-live="polite">
+            <p class="flags">
+              <span class="flag" id="flag-memory" hidden>M</span>
+              <span class="flag flag-error" id="flag-error" hidden>E</span>
+            </p>
+            <p class="expression" id="expression">&nbsp;</p>
+            <p class="result" id="result">0</p>
           </div>
-        </div>
-        <div class="info-container">
-          <div class="heading-container">
-            <h1 id="heading">Coolculator</h1>
+
+          <div class="keypad" id="keypad">
+            <button class="key key-fn" data-key="MC" type="button">MC</button>
+            <button class="key key-fn" data-key="MR" type="button">MR</button>
+            <button class="key key-fn" data-key="M+" type="button">M+</button>
+            <button class="key key-fn" data-key="M-" type="button">M&minus;</button>
+            <button class="key key-clear" data-key="C" type="button">C</button>
+
+            <button class="key key-num" data-key="7" type="button">7</button>
+            <button class="key key-num" data-key="8" type="button">8</button>
+            <button class="key key-num" data-key="9" type="button">9</button>
+            <button class="key key-op" data-key="/" type="button" aria-label="Divide">
+              &divide;
+            </button>
+            <button class="key key-fn" data-key="back" type="button" aria-label="Backspace">
+              &#9003;
+            </button>
+
+            <button class="key key-num" data-key="4" type="button">4</button>
+            <button class="key key-num" data-key="5" type="button">5</button>
+            <button class="key key-num" data-key="6" type="button">6</button>
+            <button class="key key-op" data-key="*" type="button" aria-label="Multiply">
+              &times;
+            </button>
+            <button class="key key-fn" data-key="%" type="button" aria-label="Percent">
+              %
+            </button>
+
+            <button class="key key-num" data-key="1" type="button">1</button>
+            <button class="key key-num" data-key="2" type="button">2</button>
+            <button class="key key-num" data-key="3" type="button">3</button>
+            <button class="key key-op" data-key="-" type="button" aria-label="Subtract">
+              &minus;
+            </button>
+            <button class="key key-fn" data-key="sign" type="button" aria-label="Change sign">
+              &plusmn;
+            </button>
+
+            <button class="key key-num key-zero" data-key="0" type="button">0</button>
+            <button class="key key-num" data-key="." type="button" aria-label="Decimal point">
+              .
+            </button>
+            <button class="key key-op" data-key="+" type="button" aria-label="Add">+</button>
+            <button class="key key-equals" data-key="=" type="button" aria-label="Equals">
+              =
+            </button>
           </div>
-          <div class="notebook">
-            <div class="rings">
-              <div class="binding-point">
-                <div class="ring"></div>
-                <div class="hole"></div>
-              </div>
-              <div class="binding-point">
-                <div class="ring"></div>
-                <div class="hole"></div>
-              </div>
-              <div class="binding-point">
-                <div class="ring"></div>
-                <div class="hole"></div>
-              </div>
-              <div class="binding-point">
-                <div class="ring"></div>
-                <div class="hole"></div>
-              </div>
-              <div class="binding-point">
-                <div class="ring"></div>
-                <div class="hole"></div>
-              </div>
-              <div class="binding-point">
-                <div class="ring"></div>
-                <div class="hole"></div>
-              </div>
-              <div class="binding-point">
-                <div class="ring"></div>
-                <div class="hole"></div>
-              </div>
-            </div>
-            <div class="text-container">
-              <div class="operation">
-                <h2>Operation:</h2>
-              </div>
-              <div class="codeword">
-                <div class="letter">C</div>
-                <div class="word">- craft</div>
-              </div>
-              <div class="codeword">
-                <div class="letter">O</div>
-                <div class="word">- our</div>
-              </div>
-              <div class="codeword">
-                <div class="letter">O</div>
-                <div class="word">- own</div>
-              </div>
-              <div class="codeword">
-                <div class="letter">L</div>
-                <div class="word">- lovely</div>
-              </div>
-              <div class="codeword">
-                <div class="letter">C</div>
-                <div class="word">- calculator</div>
-              </div>
-              <div class="codeword">
-                <div class="letter">U</div>
-                <div class="word">- using</div>
-              </div>
-              <div class="codeword">
-                <div class="letter">L</div>
-                <div class="word">- languages</div>
-              </div>
-              <div class="codeword">
-                <div class="letter">A</div>
-                <div class="word">- and</div>
-              </div>
-              <div class="codeword">
-                <div class="letter">T</div>
-                <div class="word">- tools</div>
-              </div>
-              <div class="codeword">
-                <div class="letter">O</div>
-                <div class="word">- obtained</div>
-              </div>
-              <div class="codeword">
-                <div class="letter">R</div>
-                <div class="word">- recently</div>
-              </div>
-              <div class="footnote">
-                <p>
-                  This is my calculator project for
-                  <a href="https://theodinproject.com">The Odin Project.</a>
-                </p>
-              </div>
-            </div>
+
+          <div class="plinth">
+            <p class="nameplate">Coolculator</p>
+            <button class="tear" id="tear" type="button">Tear off tape</button>
           </div>
         </div>
       </div>
-    </div>
-    <script src="./scripts.js"></script>
+
+      <p class="hint">
+        Type on the keyboard as well: digits, <kbd>+</kbd> <kbd>&minus;</kbd>
+        <kbd>*</kbd> <kbd>/</kbd>, <kbd>Enter</kbd> to total,
+        <kbd>Backspace</kbd> to delete, <kbd>Esc</kbd> to clear.
+      </p>
+
+      <footer class="colophon">
+        Built for
+        <a href="https://www.theodinproject.com/">The Odin Project</a>
+        Foundations.
+      </footer>
+    </main>
+
+    <script src="./script.js"></script>
   </body>
 </html>

@@ -1,0 +1,20 @@
+{
+  "name": "portfolio-db",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "A real SQLite database of this portfolio, queried from a terminal in the browser. The Odin Project.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "author": "Master Roachi",
+  "license": "ISC",
+  "dependencies": {
+    "sql.js": "^1.14.2"
+  },
+  "devDependencies": {
+    "vite": "^8.2.2"
+  }
+}

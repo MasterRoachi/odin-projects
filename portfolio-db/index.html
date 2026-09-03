@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>portfolio=# — a real database of this portfolio</title>
+    <meta
+      name="description"
+      content="SQLite compiled to WebAssembly, holding the twenty-two projects in this portfolio. Query it from a terminal, with exercises building up to a three-table join."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/src/styles/terminal.css" />
+  </head>
+  <body>
+    <a class="skip" href="#prompt">Skip to the prompt</a>
+
+    <div class="wrap">
+      <header class="masthead">
+        <h1>portfolio=#</h1>
+        <p>
+          Real SQLite, compiled to WebAssembly, holding the twenty-two projects in this portfolio.
+          Not a simulation — the same engine that runs on a server, with the file in memory. Type
+          <code>\help</code>, or <code>\ex 1</code> to start the exercises.
+        </p>
+      </header>
+
+      <main class="screen">
+        <div class="transcript" id="transcript" role="log" aria-label="Session transcript"></div>
+
+        <p class="status" id="status" role="status" aria-live="polite"></p>
+
+        <div class="entry">
+          <label class="visually-hidden" for="prompt">SQL, or a backslash command</label>
+          <span class="prompt" id="prompt-label" aria-hidden="true">portfolio=#</span>
+          <textarea
+            id="prompt"
+            class="input"
+            rows="1"
+            autocomplete="off"
+            autocapitalize="off"
+            autocorrect="off"
+            spellcheck="false"
+            placeholder="SELECT * FROM projects;"
+          ></textarea>
+        </div>
+      </main>
+
+      <footer class="foot">
+        <p>
+          Enter runs · Shift+Enter for a newline · Up and Down for history · Escape abandons a
+          half-typed statement
+        </p>
+        <p>
+          <a href="../../">Back to the projects</a> · <a href="../README.md">README</a> · built with
+          <a href="https://sql.js.org/">sql.js</a>
+        </p>
+      </footer>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

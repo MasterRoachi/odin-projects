@@ -28,6 +28,7 @@ Each project is stored in its own folder and has an individual README describing
 | [Weather](./weather-app/README.md)                               | A forecast that takes its colour from the conditions and local time.       |
 | [Tic-Tac-Toe](./tic-tac-toe/README.md)                            | Three in a row, built on factories and closures with nothing global.     |
 | [Things to do](./todo-list/README.md)                             | A todo list with projects, dates, checklists and keyboard control.          |
+| [portfolio=#](./portfolio-db/README.md)                           | This portfolio as a real SQLite database, queried from a terminal.      |
 | [Quarry Sign-up Form](./sign-up-form/README.md)                  | A sign-up form with live validation, for an invented service.                |
 
 ## Technologies Used

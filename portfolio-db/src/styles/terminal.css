@@ -1,0 +1,335 @@
+/* =========================================================
+   A terminal.
+
+   Phosphor-adjacent, but restrained: pure #0f0 on black is
+   a legibility disaster at small sizes and gives the classic
+   green-on-black eye strain. This uses a soft near-white for
+   what you read and keeps the green for the prompt and for
+   confirmations, where it carries meaning.
+
+   Measured on the rendered page, not estimated: body text
+   14.7:1, the green 12.0:1, the amber 11.5:1, the red 8.4:1,
+   the dim grey 6.3:1. The lowest thing anywhere is the status
+   line at 5.9:1, and no text sits on a gradient.
+   ========================================================= */
+
+:root {
+  --void: #0a0c0b;
+  --screen: #101413;
+  --screen-2: #161b19;
+  --edge: #263029;
+
+  --text: #dfe7e2;
+  --dim: #8b9a92;
+  --green: #6ee7a0;
+  --amber: #f0c674;
+  --red: #ff8f7a;
+  --cyan: #7fd6e8;
+
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--void);
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--cyan);
+  text-underline-offset: 3px;
+}
+
+button,
+textarea,
+input {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 2px;
+}
+
+code {
+  color: var(--green);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.skip {
+  position: fixed;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 50;
+  padding: 0.55rem 0.9rem;
+  background: var(--green);
+  color: var(--void);
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 3px;
+  /* transform with no transition, so it cannot fail to appear */
+  transform: translateY(-200%);
+}
+
+.skip:focus {
+  transform: translateY(0);
+}
+
+.wrap {
+  max-width: 68rem;
+  margin-inline: auto;
+  padding: clamp(1rem, 3.5vw, 2.5rem) clamp(0.75rem, 3vw, 1.75rem) 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* --- masthead --- */
+
+.masthead h1 {
+  margin: 0;
+  font-size: clamp(1.3rem, 4vw, 1.9rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--green);
+}
+
+.masthead p {
+  margin: 0.6rem 0 0;
+  max-width: 74ch;
+  color: var(--dim);
+  font-size: 0.88rem;
+}
+
+/* --- the screen --- */
+
+.screen {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--screen);
+  border: 1px solid var(--edge);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.transcript {
+  flex: 1;
+  min-height: 18rem;
+  overflow-y: auto;
+  padding: clamp(0.75rem, 2vw, 1.1rem);
+  scrollbar-width: thin;
+  scrollbar-color: var(--edge) transparent;
+}
+
+.transcript::-webkit-scrollbar {
+  width: 10px;
+}
+
+.transcript::-webkit-scrollbar-thumb {
+  background: var(--edge);
+  border-radius: 5px;
+}
+
+.line {
+  margin: 0 0 0.15rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-size: 0.88rem;
+}
+
+.line--dim {
+  color: var(--dim);
+}
+
+.line--head {
+  color: var(--amber);
+  font-weight: 600;
+  margin-top: 0.5rem;
+}
+
+.line--ok {
+  color: var(--green);
+}
+
+.line--err {
+  color: var(--red);
+}
+
+.line--echo {
+  margin-top: 0.6rem;
+  color: var(--text);
+}
+
+.echo-prompt {
+  color: var(--green);
+  font-weight: 600;
+}
+
+/* --- result tables ---
+   A real table, so it can be navigated as one. The monospace
+   and the hairlines are what make it read as terminal output.
+   --------------------------------------------------------- */
+
+.grid-wrap {
+  /* wide result sets scroll inside their own box; the page never does */
+  overflow-x: auto;
+  margin: 0.4rem 0 0.5rem;
+  border: 1px solid var(--edge);
+  border-radius: 4px;
+  background: var(--screen-2);
+}
+
+.grid {
+  border-collapse: collapse;
+  font-size: 0.83rem;
+  min-width: 100%;
+}
+
+.grid th,
+.grid td {
+  padding: 0.28rem 0.7rem;
+  text-align: left;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--edge);
+}
+
+.grid th {
+  position: sticky;
+  top: 0;
+  background: var(--screen-2);
+  color: var(--amber);
+  font-weight: 600;
+  border-bottom: 1px solid var(--dim);
+}
+
+.grid tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.grid tbody tr:hover td {
+  background: rgba(110, 231, 160, 0.06);
+}
+
+.grid td.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.grid td.null {
+  color: var(--dim);
+  font-style: italic;
+}
+
+/* --- status line ---
+   Separate from the transcript on purpose: this is the only
+   thing announced, so a screen reader hears "22 rows" rather
+   than the entire table read out cell by cell.
+   --------------------------------------------------------- */
+
+.status {
+  margin: 0;
+  padding: 0.3rem clamp(0.75rem, 2vw, 1.1rem);
+  min-height: 1.6em;
+  font-size: 0.76rem;
+  color: var(--dim);
+  border-top: 1px solid var(--edge);
+  background: var(--screen-2);
+}
+
+/* --- the prompt --- */
+
+.entry {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.6rem clamp(0.75rem, 2vw, 1.1rem) 0.7rem;
+  border-top: 1px solid var(--edge);
+  background: var(--screen-2);
+}
+
+.prompt {
+  flex: none;
+  padding-top: 0.15rem;
+  color: var(--green);
+  font-weight: 600;
+  font-size: 0.88rem;
+  user-select: none;
+}
+
+.input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  padding: 0.15rem 0;
+  background: none;
+  color: var(--text);
+  font-size: 0.88rem;
+  line-height: 1.5;
+  resize: none;
+  /* grows with the statement rather than scrolling a one-line box */
+  field-sizing: content;
+  max-height: 8lh;
+}
+
+.input:focus {
+  outline: none;
+}
+
+.input::placeholder {
+  color: var(--dim);
+  opacity: 0.7;
+}
+
+/* --- foot --- */
+
+.foot {
+  font-size: 0.76rem;
+  color: var(--dim);
+}
+
+.foot p {
+  margin: 0 0 0.3rem;
+}
+
+@media (max-width: 40rem) {
+  .foot p:first-child {
+    display: none;
+  }
+
+  .masthead p {
+    font-size: 0.82rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,276 @@
+/* =========================================================
+   The CV itself — Swiss typographic.
+
+   One sans doing all the work, a strict two-column grid with
+   dates in a fixed left column so every entry lines up down
+   the page, hairline rules, and one red used exactly twice.
+
+   Nothing here knows about the editor, and the print rules at
+   the bottom throw the editor away entirely.
+   ========================================================= */
+
+.cv {
+  --sheet: 52rem;
+  --col: 8.5rem;
+  --gap: 1.75rem;
+
+  width: 100%;
+  max-width: var(--sheet);
+  padding: clamp(2rem, 5vw, 3.5rem) clamp(1.5rem, 5vw, 3.5rem);
+  background: #fff;
+  color: #16181d;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.07), 0 8px 28px rgba(0, 0, 0, 0.08);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.cv:focus-visible {
+  outline: 2px solid #b3142c;
+  outline-offset: 4px;
+}
+
+/* --- masthead --- */
+
+.cv-head {
+  padding-bottom: 1.1rem;
+  border-bottom: 2px solid #16181d;
+}
+
+.cv-head h1 {
+  margin: 0;
+  font-size: clamp(1.9rem, 5vw, 2.6rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+
+.cv-title {
+  margin: 0.2rem 0 0;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #b3142c;
+}
+
+.cv-contact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem 1.1rem;
+  margin: 0.85rem 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.82rem;
+  color: #43474e;
+}
+
+/* a hairline between contact items, but not before the first */
+.cv-contact li + li {
+  position: relative;
+  padding-left: 1.1rem;
+}
+
+.cv-contact li + li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.42em;
+  bottom: 0.42em;
+  width: 1px;
+  background: #c3c3bf;
+}
+
+/* --- sections --- */
+
+.cv-section {
+  padding-top: 1.6rem;
+}
+
+.cv-section h2 {
+  margin: 0 0 0.9rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #62666d;
+}
+
+.cv-summary {
+  padding-top: 1.3rem;
+}
+
+.cv-summary p {
+  margin: 0;
+  max-width: 62ch;
+  font-size: 0.95rem;
+  color: #2b2f36;
+}
+
+/* --- entries --- */
+
+/*
+ * The date column is a fixed width rather than auto, so that every entry on
+ * the page shares one alignment. Auto sizing would let a long range in one
+ * job shift that job's text and nothing else, and the eye notices.
+ */
+.cv-entry {
+  display: grid;
+  grid-template-columns: var(--col) minmax(0, 1fr);
+  gap: 0 var(--gap);
+  padding-bottom: 1.15rem;
+}
+
+.cv-entry:last-child {
+  padding-bottom: 0;
+}
+
+.cv-when {
+  margin: 0;
+  padding-top: 0.12rem;
+  font-size: 0.78rem;
+  font-variant-numeric: tabular-nums;
+  color: #62666d;
+}
+
+.cv-entry--skill .cv-when {
+  font-weight: 600;
+  color: #16181d;
+}
+
+.cv-what h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.cv-place {
+  margin: 0.05rem 0 0;
+  font-size: 0.86rem;
+  color: #62666d;
+}
+
+.cv-points {
+  margin: 0.45rem 0 0;
+  padding-left: 1.05rem;
+}
+
+.cv-points li {
+  padding-left: 0.15rem;
+}
+
+.cv-points li::marker {
+  color: #b3142c;
+}
+
+.cv-plain {
+  margin: 0.4rem 0 0;
+  color: #2b2f36;
+}
+
+.cv-entry--skill .cv-plain {
+  margin-top: 0;
+}
+
+/* --- narrow: the date column stops being worth its width --- */
+
+@media (max-width: 34rem) {
+  .cv-entry {
+    grid-template-columns: 1fr;
+    gap: 0.15rem;
+  }
+
+  .cv-when {
+    order: 2;
+    padding-top: 0.2rem;
+  }
+
+  .cv-what {
+    order: 1;
+  }
+
+  .cv-entry--skill .cv-when {
+    order: 1;
+  }
+
+  .cv-entry--skill .cv-what {
+    order: 2;
+  }
+}
+
+/* =========================================================
+   Print.
+
+   The application is not part of the document. Everything but
+   the sheet is removed, the sheet loses its shadow and its
+   max-width, and the page margin comes from @page instead of
+   padding — so the browser knows where the text block is and
+   can break pages correctly.
+   ========================================================= */
+
+@page {
+  size: A4;
+  margin: 15mm 14mm;
+}
+
+@media print {
+  body {
+    background: #fff;
+  }
+
+  .bar,
+  .editor,
+  .skip {
+    display: none !important;
+  }
+
+  .app {
+    display: block;
+    min-height: 0;
+  }
+
+  .split {
+    display: block;
+  }
+
+  .preview-pane {
+    display: block;
+    overflow: visible;
+    max-height: none;
+    padding: 0;
+    border: 0;
+  }
+
+  .cv {
+    max-width: none;
+    width: auto;
+    padding: 0;
+    box-shadow: none;
+    font-size: 10.5pt;
+    line-height: 1.42;
+  }
+
+  .cv-head h1 {
+    font-size: 22pt;
+  }
+
+  .cv-section {
+    padding-top: 12pt;
+  }
+
+  /* never strand a heading at the foot of a page, or split one job in two */
+  .cv-section h2 {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  .cv-entry {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* ink is expensive and grey text photocopies badly */
+  .cv-when,
+  .cv-place,
+  .cv-contact {
+    color: #333;
+  }
+}

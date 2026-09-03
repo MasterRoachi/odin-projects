@@ -9,6 +9,7 @@ Each project is stored in its own folder and has an individual README describing
 | Project                                                          | Description                                                                  |
 | ---------------------------------------------------------------- | ---------------------------------------------------------------------------- |
 | [Admin Dashboard](./admin-dashboard/README.md)                   | A static dashboard interface built to practise complex CSS Grid layouts.     |
+| [CV Builder](./cv-builder/README.md)                              | A CV with a live preview, built in React. Prints to a clean page.        |
 | [Coolculator](./calculator/README.md)                            | A browser-based calculator with keyboard controls and chained operations.    |
 | [Etch-A-Sketch](./etch-a-sketch/README.md)                       | An interactive JavaScript drawing grid with custom sizing and drawing modes. |
 | [Odin Recipes](./odin-recipes/README.md)                         | A three-page recipe site built to practise structural HTML.                  |

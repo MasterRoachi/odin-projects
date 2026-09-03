@@ -6,7 +6,13 @@ A printing adding machine, built as part of [The Odin Project Foundations](https
 
 The final Foundations project asks for an on-screen calculator: functions for the four operators, an `operate` that dispatches between them, a display, and a keypad — with a long list of edge cases to get right.
 
-This build is a desktop adding machine. Every entry and every total rolls out on a paper tape above the keys, which turns calculation history from a bolted-on extra into the point of the object. The readout below shows the calculation in progress and the current value.
+This build is a desktop adding machine lying on a workbench. Every entry and every total rolls out on a paper tape above the keys, which turns calculation history from a bolted-on extra into the point of the object. The readout below shows the calculation in progress and the current value.
+
+Beside it sits the project notebook, open at the page where the name was worked out:
+
+> **Operation:** **C**raft **O**ur **O**wn **L**ovely **C**alculator **U**sing **L**anguages **A**nd **T**ools **O**btained **R**ecently
+
+The title is cut into the tabletop itself — two offset shadows, one dark up and left, one light down and right, which is what reads as an incision rather than a raised letter.
 
 ## Using it
 
@@ -33,7 +39,7 @@ Entries print right-aligned with the key that committed them, and totals print w
 ## Built With
 
 * HTML
-* CSS — Grid for the keypad, Flexbox for the machine
+* CSS — Grid for the keypad, Flexbox for the scene, and a procedural wood bench
 * JavaScript — no libraries, no build step, and **no `eval()` or `new Function()`**, which the lesson explicitly rules out
 
 ## Notes on the build
@@ -78,6 +84,10 @@ Entries print right-aligned with the key that committed them, and totals print w
 | `equals` | `#9C3B33` | The equals key, and error text |
 
 Barlow Condensed for the machine's labels, Courier Prime for the printed tape, Share Tech Mono for the readout.
+
+The scene keeps the project's own display faces: **The Last Trunks** for the title carved into the bench, **OverScribble** for the notebook heading and the acrostic letters, and **Estie Bestie** for the handwriting.
+
+The bench is CSS — knots with cathedral arcs curving around them, three grain passes at slightly different angles and spacings so the repeat never lines up into visible corduroy, and plank joins every 320px. The 2.4MB `images/wood.png` is left in the project but not loaded, since it is a lot of weight for a page that is otherwise image-free.
 
 ## What I Practiced
 

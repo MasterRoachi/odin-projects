@@ -3,87 +3,178 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Library</title>
+    <meta
+      name="description"
+      content="The Ark — a personal library kept as spines on a shelf."
+    />
+    <title>The Ark</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Inconsolata:wght@400;600&family=Jost:wght@400;500;600&display=swap"
+    />
     <link rel="stylesheet" href="./style.css" />
-    <script src="./script.js" defer></script>
   </head>
+
   <body>
-    <main>
-      <div class="header">
+    <header class="masthead">
+      <div class="brand">
         <h1>The Ark</h1>
-        <button id="new-book" type="button">Add Book</button>
+        <p class="strapline">As in the days of Noah.</p>
       </div>
-      <section id="bookshelf"></section>
-      <dialog id="dialog">
-        <form id="form" method="post">
-          <header class="dialog-header">
-            <h2>Add A New Book</h2>
-            <button type="button" id="close-dialog">x</button>
-          </header>
-          <div class="form-fields">
-              <div class="form-field">
-                <label for="title">Title:</label>
-                <input
-                  type="text"
-                  id="title"
-                  name="title"
-                  placeholder="What's the name of the book?"
-                  required
-                />
-              </div>
-              <div class="form-field">
-                <label for="author">Author:</label>
-                <input
-                  type="text"
-                  id="author"
-                  name="author"
-                  placeholder="Who wrote the book?"
-                  required
-                />
-              </div>
-              <div class="form-field">
-                <label for="genre">Genre:</label>
-                <input
-                  type="text"
-                  id="genre"
-                  name="genre"
-                  placeholder="What kind of book is it?"
-                  required
-                />
-              </div>
-              <div class="form-field">
-                <label for="description">Description: </label>
-                <textarea
-                  type="text"
-                  id="description"
-                  name="description"
-                  placeholder="Briefly describe what the book is about..."
-                ></textarea>
-              </div>
-              <div class="form-field">
-                <label for="pages">How many pages does the book have?</label>
-                <input type="number" id="pages" name="pages" min="1" />
-              </div>
-              <div class="checkbox-field">
-                <label for="read">I've read this!:</label>
-                <input type="checkbox" id="read" name="read" />
-              </div>
-              <div class="cover-field">
-                <label for="cover">Cover:</label>
-                <input
-                  type="text"
-                  id="cover"
-                  name="cover"
-                  placeholder="https://example.com/cover.jpg"
-                />
-              </div>
+
+      <div class="toolbar">
+        <label class="search">
+          <span class="sr-only">Search the shelves</span>
+          <input id="search" type="search" placeholder="Search title or author" />
+        </label>
+
+        <label class="pick">
+          <span class="sr-only">Sort by</span>
+          <select id="sort">
+            <option value="added">Recently added</option>
+            <option value="title">Title</option>
+            <option value="author">Author</option>
+            <option value="pages">Length</option>
+          </select>
+        </label>
+
+        <label class="pick">
+          <span class="sr-only">Filter</span>
+          <select id="filter">
+            <option value="all">Everything</option>
+            <option value="reading">Currently reading</option>
+            <option value="unread">Unread</option>
+            <option value="read">Read</option>
+          </select>
+        </label>
+
+        <button class="primary" id="new-book" type="button">Add a book</button>
+      </div>
+    </header>
+
+    <main class="stacks">
+      <p class="tally" id="tally" aria-live="polite"></p>
+      <div class="spines" id="spines"></div>
+      <p class="empty" id="empty" hidden>Nothing on these shelves yet.</p>
+    </main>
+
+    <footer class="colophon">
+      <p>
+        An Arkitecture project. Built for
+        <a href="https://www.theodinproject.com/">The Odin Project</a>.
+        Cover art and book data from
+        <a href="https://openlibrary.org/">Open Library</a>.
+      </p>
+    </footer>
+
+    <!-- ============ the pulled-out book ============ -->
+    <dialog class="sheet" id="book-sheet">
+      <form method="dialog" class="sheet-close">
+        <button class="ghost" aria-label="Close">&times;</button>
+      </form>
+
+      <div class="sheet-body">
+        <div class="cover" id="sheet-cover"></div>
+
+        <div class="sheet-detail">
+          <p class="sheet-kicker" id="sheet-kicker"></p>
+          <h2 id="sheet-title"></h2>
+          <p class="sheet-author" id="sheet-author"></p>
+          <p class="sheet-blurb" id="sheet-blurb"></p>
+
+          <div class="progress" id="sheet-progress">
+            <label class="progress-label" for="sheet-page">
+              Page
+              <input id="sheet-page" type="number" min="0" step="1" />
+              <span id="sheet-of"></span>
+            </label>
+            <div class="bar"><span class="bar-fill" id="sheet-bar"></span></div>
+            <p class="progress-note" id="sheet-percent"></p>
           </div>
-          <div class="form-buttons">
-          <button type="submit" id="submit-book">Submit</button>
-          <button type="button" id="cancel">Cancel</button>
+
+          <div class="sheet-actions">
+            <button class="primary" id="sheet-toggle" type="button"></button>
+            <button class="danger" id="sheet-remove" type="button">Remove</button>
+          </div>
+        </div>
+      </div>
+    </dialog>
+
+    <!-- ============ add a book ============ -->
+    <dialog class="sheet" id="add-sheet">
+      <form method="dialog" class="sheet-close">
+        <button class="ghost" aria-label="Close">&times;</button>
+      </form>
+
+      <div class="add-body">
+        <h2>Add a book</h2>
+
+        <div class="lookup">
+          <label for="lookup-input">Look it up</label>
+          <div class="lookup-row">
+            <input
+              id="lookup-input"
+              type="search"
+              placeholder="Title, or title and author"
+              autocomplete="off"
+            />
+            <button class="secondary" id="lookup-go" type="button">Search</button>
+          </div>
+          <p class="lookup-status" id="lookup-status" aria-live="polite"></p>
+          <ul class="results" id="lookup-results"></ul>
+        </div>
+
+        <p class="or">or fill it in yourself</p>
+
+        <form id="add-form" novalidate>
+          <div class="form-grid">
+            <label class="f">
+              Title
+              <input id="f-title" name="title" type="text" required />
+            </label>
+
+            <label class="f">
+              Author
+              <input id="f-author" name="author" type="text" required />
+            </label>
+
+            <label class="f f-short">
+              Pages
+              <input id="f-pages" name="pages" type="number" min="1" step="1" required />
+            </label>
+
+            <label class="f f-short">
+              Year
+              <input id="f-year" name="year" type="number" min="0" step="1" />
+            </label>
+
+            <label class="f">
+              Cover image URL <span class="hint">optional</span>
+              <input id="f-cover" name="cover" type="url" />
+            </label>
+
+            <label class="f">
+              Status
+              <select id="f-status" name="status">
+                <option value="unread">Unread</option>
+                <option value="reading">Currently reading</option>
+                <option value="read">Read</option>
+              </select>
+            </label>
+          </div>
+
+          <p class="form-error" id="form-error" aria-live="polite"></p>
+
+          <div class="sheet-actions">
+            <button class="primary" type="submit">Add to the Ark</button>
           </div>
         </form>
-      </dialog>
-    </main>
+      </div>
+    </dialog>
+
+    <script src="./script.js"></script>
   </body>
 </html>

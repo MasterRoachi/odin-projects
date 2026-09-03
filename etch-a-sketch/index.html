@@ -3,22 +3,138 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Etch-A-Sketch — a browser sketchpad with working knobs, built for The Odin Project."
+    />
     <title>Etch-A-Sketch | Master Roachi</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap"
+    />
     <link rel="stylesheet" href="./style.css" />
   </head>
-  <body>
-    <h1>Etch-A-Sketch</h1>
 
-    <!-- Controls -->
-    <div class="button-container">
-      <button id="refresh">Refresh</button>
-      <button id="rainbow">Rainbow</button>
-      <button id="opacity">Opacity</button>
+  <body>
+    <div class="page">
+      <h1 class="title">Etch-A-Sketch</h1>
+
+      <div class="toy">
+        <div class="shell" id="shell">
+          <div class="bezel">
+            <!-- the grid itself is built in JavaScript -->
+            <div
+              class="screen"
+              id="screen"
+              role="img"
+              aria-label="Sketch grid. Use the knobs, or the arrow keys, to draw."
+            ></div>
+          </div>
+
+          <div class="deck">
+            <button
+              class="knob knob-x"
+              id="knob-x"
+              type="button"
+              aria-label="Left knob: move the cursor left and right"
+            >
+              <span class="knob-face"><span class="knob-notch"></span></span>
+              <span class="knob-label">Left · Right</span>
+            </button>
+
+            <p class="plate">Master&nbsp;Roachi</p>
+
+            <button
+              class="knob knob-y"
+              id="knob-y"
+              type="button"
+              aria-label="Right knob: move the cursor up and down"
+            >
+              <span class="knob-face"><span class="knob-notch"></span></span>
+              <span class="knob-label">Up · Down</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <fieldset class="group">
+          <legend>Mode</legend>
+          <div class="segmented" role="group">
+            <button class="seg" id="mode-knobs" type="button" aria-pressed="true">
+              Knobs
+            </button>
+            <button class="seg" id="mode-free" type="button" aria-pressed="false">
+              Free draw
+            </button>
+          </div>
+        </fieldset>
+
+        <fieldset class="group">
+          <legend>Tool</legend>
+          <div class="segmented" role="group">
+            <button class="seg" data-tool="pen" type="button" aria-pressed="true">Pen</button>
+            <button class="seg" data-tool="rainbow" type="button" aria-pressed="false">
+              Rainbow
+            </button>
+            <button class="seg" data-tool="shade" type="button" aria-pressed="false">
+              Shade
+            </button>
+            <button class="seg" data-tool="eraser" type="button" aria-pressed="false">
+              Eraser
+            </button>
+          </div>
+        </fieldset>
+
+        <fieldset class="group group-ink">
+          <legend>Ink</legend>
+          <label class="swatch">
+            <input type="color" id="ink" value="#1d1b17" />
+            <span class="swatch-chip" id="ink-chip" aria-hidden="true"></span>
+            <span class="swatch-text">Pick</span>
+          </label>
+        </fieldset>
+
+        <fieldset class="group group-size">
+          <legend>Grid</legend>
+          <label class="slider">
+            <input
+              type="range"
+              id="size"
+              min="2"
+              max="100"
+              step="1"
+              value="16"
+              aria-describedby="size-value"
+            />
+            <output class="slider-value" id="size-value">16 &times; 16</output>
+          </label>
+        </fieldset>
+
+        <fieldset class="group group-actions">
+          <legend>Pad</legend>
+          <div class="segmented" role="group">
+            <button class="seg" id="shake" type="button">Shake</button>
+            <button class="seg" id="save" type="button">Save PNG</button>
+          </div>
+        </fieldset>
+      </div>
+
+      <p class="hint" id="hint">
+        Drag a knob to steer the line, or use the arrow keys. Switch to free
+        draw to sketch by moving over the screen.
+      </p>
+
+      <footer class="colophon">
+        Built for
+        <a href="https://www.theodinproject.com/">The Odin Project</a>
+        Foundations.
+      </footer>
     </div>
 
-    <!-- Grid goes in here: Made in JS -->
-    <div class="container"></div>
-    
-    <script src="./scripts.js"></script>
+    <script src="./script.js"></script>
   </body>
 </html>

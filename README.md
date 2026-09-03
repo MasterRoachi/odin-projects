@@ -15,6 +15,7 @@ Each project is stored in its own folder and has an individual README describing
 | [Landing Page](./landing-page/README.md)                          | A personal landing page built from the Odin design brief.                    |
 | [Quartz, Parchment, Shears](./Quartz-Parchment-Shears/README.md) | A themed browser-based Rock Paper Scissors game.                             |
 | [The Ark](./library/README.md)                                    | A personal library kept as spines on a shelf.                               |
+| [Linked Lists](./linked-lists/README.md)                         | A singly linked list with head, tail and size kept in step.               |
 | [Recursion](./recursion/README.md)                               | Fibonacci and merge sort, recursively. Command line only.                 |
 | [Testing Practice](./testing-practice/README.md)                 | Five functions and 58 tests, verified by breaking the code on purpose.     |
 | [Weather](./weather-app/README.md)                               | A forecast that takes its colour from the conditions and local time.       |

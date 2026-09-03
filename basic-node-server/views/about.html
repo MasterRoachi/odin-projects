@@ -1,0 +1,31 @@
+<section class="hold">
+  <h1>{{title}}</h1>
+  <p class="lead">{{lead}}</p>
+
+  <h2>What happened</h2>
+  <ol class="steps">
+    <li>Your browser opened a socket and sent a method, a path and some headers.</li>
+    <li><code>createServer</code> handed that to one function as <code>req</code>.</li>
+    <li>The path was looked up in a table of three routes.</li>
+    <li>A status code was chosen, a content type set, and a body written.</li>
+  </ol>
+
+  <h2>The codes this server sends</h2>
+  <table class="grid">
+    <thead><tr><th scope="col">Code</th><th scope="col">When</th></tr></thead>
+    <tbody>
+      <tr><td>200</td><td>One of the three pages, fetched with GET</td></tr>
+      <tr><td>400</td><td>You posted the contact form with an empty message</td></tr>
+      <tr><td>403</td><td>A static path that tried to climb out of public/</td></tr>
+      <tr><td>404</td><td>Any path not in the table</td></tr>
+      <tr><td>405</td><td>A real path, wrong method — and it tells you which are allowed</td></tr>
+      <tr><td>413</td><td>A request body over 10kB</td></tr>
+      <tr><td>415</td><td>Posting something that is not form encoding</td></tr>
+      <tr><td>500</td><td>The handler threw</td></tr>
+    </tbody>
+  </table>
+
+  <h2>This request</h2>
+  {{{facts}}}
+  {{{extra}}}
+</section>

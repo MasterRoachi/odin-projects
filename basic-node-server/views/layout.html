@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{title}} · http.createServer</title>
+    <link rel="stylesheet" href="/public/styles.css" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="bar">
+      <p class="mark">http.createServer</p>
+      <nav aria-label="Main">
+        <a href="/">Home</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+        <a href="/nowhere">A 404</a>
+      </nav>
+      <p class="code" aria-label="Response status">{{status}}</p>
+    </header>
+    <main id="main" tabindex="-1">{{{body}}}</main>
+    <footer class="foot">
+      <p>Node's http module and nothing else. No Express, no dependencies.</p>
+      <p><a href="../../">Back to the projects</a> · <a href="../README.md">README</a></p>
+    </footer>
+  </body>
+</html>

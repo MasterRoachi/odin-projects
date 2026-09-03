@@ -6,7 +6,7 @@
     <title>Master Roachi — The Odin Project, rebuilt</title>
     <meta
       name="description"
-      content="Twenty-three projects from The Odin Project, each rebuilt from scratch: games, tools, visualisers and data structures. Twenty in plain HTML, CSS and JavaScript, and three in React."
+      content="Twenty-four projects from The Odin Project, each rebuilt from scratch: games, tools, visualisers and data structures. Twenty in plain HTML, CSS and JavaScript, and three in React."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -22,25 +22,25 @@
     <header class="masthead">
       <div class="wrap">
         <p class="eyebrow">The Odin Project · Foundations &amp; Full Stack JavaScript</p>
-        <h1>Twenty-three projects, <em>rebuilt from nothing</em>.</h1>
+        <h1>Twenty-four projects, <em>rebuilt from nothing</em>.</h1>
         <p class="standfirst">
           I went back to the start of the curriculum and built every project again — not to repeat
           the exercises, but to do them <strong>properly</strong>. Twenty of them are hand-written
           HTML, CSS and JavaScript with no framework at all; three are React.
-          Everything opens in a browser except the two that belong in a terminal.
+          Everything opens in a browser except the two that belong in a terminal and the servers, which run locally.
         </p>
         <dl class="facts">
           <div>
             <dt>Projects</dt>
-            <dd>23</dd>
+            <dd>24</dd>
           </div>
           <div>
             <dt>Sections</dt>
-            <dd>6</dd>
+            <dd>7</dd>
           </div>
           <div>
             <dt>Tests passing</dt>
-            <dd>224</dd>
+            <dd>243</dd>
           </div>
           <div>
             <dt>Frameworks</dt>
@@ -746,6 +746,58 @@
                 </ul>
                 <p class="foot"><a href="./portfolio-db/README.md">Notes</a></p>
               </article>
+      <!-- ============ NodeJS ============ -->
+      <section class="room" aria-labelledby="room-node">
+        <div class="wrap">
+          <div class="room-head">
+            <h2 id="room-node">NodeJS</h2>
+            <p>
+              Servers. These run locally with <code>npm start</code> rather than opening at a URL —
+              GitHub Pages serves static files only.
+            </p>
+          </div>
+        </div>
+        <div class="wrap">
+          <ul class="works">
+            <li class="work">
+              <article>
+                <div class="plate">
+                  <span class="mark" aria-hidden="true">
+                    <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="5" y="9" width="30" height="9" rx="2" />
+                      <rect x="5" y="22" width="30" height="9" rx="2" />
+                      <circle cx="10.5" cy="13.5" r="1.4" fill="currentColor" stroke="none" />
+                      <circle cx="10.5" cy="26.5" r="1.4" fill="currentColor" stroke="none" />
+                      <path d="M16 13.5h13M16 26.5h9" />
+                    </svg>
+                  </span>
+                  <span class="cat">24</span>
+                </div>
+                <h3>A server, by hand</h3>
+                <p>
+                  Four pages on the raw <code>http</code> module, each documenting the request that
+                  fetched it. No Express and no dependencies — 19 tests on <code>node:test</code>.
+                </p>
+                <ul class="tags">
+                  <li>node:http</li>
+                  <li>Status codes</li>
+                  <li>Escaping</li>
+                </ul>
+                <p class="foot">
+                  <a href="./basic-node-server/README.md">Notes</a>
+                  <span class="terminal">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M4 17l6-5-6-5M13 19h7" />
+                    </svg>
+                    runs locally
+                  </span>
+                </p>
+              </article>
+            </li>
+          </ul>
+        </div>
+      </section>
+
             </li>
           </ul>
         </div>

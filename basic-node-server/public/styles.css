@@ -1,0 +1,311 @@
+/* =========================================================
+   Served from public/ by the same server, with the content
+   type worked out from the file extension.
+
+   Plain and documentary: this project is about HTTP, so the
+   page gets out of the way of the numbers.
+
+   Measured: body 12.6:1, muted 5.6:1, the blue 6.2:1, the red
+   5.4:1. Nothing below 5.4:1 and no text on a gradient.
+   ========================================================= */
+
+:root {
+  --paper: #f7f7f5;
+  --panel: #ffffff;
+  --ink: #1a1c1f;
+  --ink-2: #3f434a;
+  --muted: #61656c;
+  --line: #dedfdc;
+  --line-2: #c8cac6;
+  --blue: #2c5aa0;
+  --red: #a33227;
+  --mono: ui-monospace, "SFMono-Regular", "Cascadia Mono", Consolas, monospace;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 16px/1.6 var(--mono);
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--blue);
+  text-underline-offset: 3px;
+}
+
+:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
+.skip {
+  position: fixed;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 20;
+  padding: 0.55rem 0.9rem;
+  background: var(--blue);
+  color: #fff;
+  text-decoration: none;
+  border-radius: 3px;
+  transform: translateY(-200%);
+}
+
+.skip:focus {
+  transform: translateY(0);
+}
+
+/* --- bar --- */
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem 1.5rem;
+  flex-wrap: wrap;
+  padding: 0.85rem clamp(1rem, 4vw, 2rem);
+  background: var(--panel);
+  border-bottom: 1px solid var(--line);
+}
+
+.mark {
+  margin: 0;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.bar nav {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.88rem;
+}
+
+.code {
+  margin: 0 0 0 auto;
+  padding: 0.15rem 0.55rem;
+  border: 1px solid var(--line-2);
+  border-radius: 3px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink-2);
+  background: var(--paper);
+}
+
+/* --- content --- */
+
+.hold {
+  max-width: 62rem;
+  margin-inline: auto;
+  padding: clamp(1.5rem, 5vw, 3rem) clamp(1rem, 4vw, 2rem) 4rem;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(1.4rem, 4vw, 2.1rem);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+h2 {
+  margin: 2.25rem 0 0.85rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.lead {
+  margin: 1rem 0 0;
+  max-width: 62ch;
+  color: var(--ink-2);
+}
+
+.note {
+  margin: 1.25rem 0 0;
+  max-width: 68ch;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+.note--bad {
+  color: var(--red);
+}
+
+code {
+  padding: 0.05em 0.3em;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  font-size: 0.92em;
+}
+
+/* --- the request facts --- */
+
+.facts {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+  gap: 0;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--panel);
+  overflow: hidden;
+}
+
+.facts > div {
+  display: grid;
+  grid-template-columns: 10rem minmax(0, 1fr);
+  gap: 1rem;
+  padding: 0.5rem 0.85rem;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.85rem;
+}
+
+.facts dt {
+  color: var(--muted);
+}
+
+.facts dd {
+  margin: 0;
+  /* header values can be long and have no spaces to break on */
+  word-break: break-word;
+}
+
+/* --- steps and tables --- */
+
+.steps {
+  margin: 0;
+  padding-left: 1.4rem;
+  max-width: 66ch;
+  color: var(--ink-2);
+}
+
+.steps li {
+  margin-bottom: 0.4rem;
+}
+
+.grid {
+  border-collapse: collapse;
+  width: 100%;
+  max-width: 44rem;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  font-size: 0.85rem;
+}
+
+.grid th,
+.grid td {
+  padding: 0.4rem 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+}
+
+.grid th {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.grid td:first-child {
+  font-weight: 600;
+  width: 5rem;
+}
+
+.grid tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+/* --- form --- */
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.4rem;
+  margin-top: 1.5rem;
+  max-width: 34rem;
+}
+
+label {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+textarea {
+  width: 100%;
+  padding: 0.6rem;
+  font: inherit;
+  font-size: 0.9rem;
+  background: var(--panel);
+  border: 1px solid var(--line-2);
+  border-radius: 3px;
+  resize: vertical;
+}
+
+textarea:focus {
+  outline: none;
+  border-color: var(--blue);
+  box-shadow: 0 0 0 2px rgba(44, 90, 160, 0.18);
+}
+
+button {
+  margin-top: 0.35rem;
+  padding: 0.5rem 1.1rem;
+  font: inherit;
+  font-size: 0.88rem;
+  color: #fff;
+  background: var(--blue);
+  border: 1px solid var(--blue);
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #24497f;
+  border-color: #24497f;
+}
+
+.echo {
+  margin: 0.75rem 0 0;
+  padding: 0.75rem 0.85rem;
+  max-width: 62rem;
+  overflow-x: auto;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--blue);
+  border-radius: 3px;
+  font-size: 0.88rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* --- foot --- */
+
+.foot {
+  border-top: 1px solid var(--line);
+  padding: 1.5rem clamp(1rem, 4vw, 2rem) 2.5rem;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.foot p {
+  margin: 0 0 0.3rem;
+}
+
+@media (max-width: 34rem) {
+  .facts > div {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.1rem;
+  }
+
+  .code {
+    margin-left: 0;
+  }
+}

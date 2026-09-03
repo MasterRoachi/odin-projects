@@ -1,0 +1,15 @@
+<section class="hold">
+  <h1>{{title}}</h1>
+  <p class="lead">{{lead}}</p>
+
+  <form method="post" action="/contact">
+    <label for="message">Message</label>
+    <textarea id="message" name="message" rows="4" placeholder="Try &lt;script&gt;alert(1)&lt;/script&gt;"></textarea>
+    <button type="submit">Post it</button>
+  </form>
+
+  {{{extra}}}
+
+  <h2>This request</h2>
+  {{{facts}}}
+</section>

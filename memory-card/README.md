@@ -76,6 +76,16 @@ A single element with two faces, rotated in 3D:
 
 Worth noting: the **game advances on timers, not on `transitionend`**. That means the animation is genuinely decoration — where transitions are disabled or simply do not run, the cards change instantly and the game is unaffected. Tying game state to an animation event is how you end up with a board that locks forever because a transition never fired.
 
+## The object
+
+It is drawn as the device: red moulded shell, the blue lens and three status lights top-left, a recessed grey bezel around a dark screen, and the score and best on pale-green LCD panels down on the control deck. Card backs are the ball motif, and each card carries its national dex number.
+
+None of the chrome means anything, so the lens, lights, d-pad and speaker grille are all `aria-hidden`.
+
+The contrast pass here caught something worth remembering. The shell is a **gradient**, and a probe that reads `backgroundColor` sees `transparent`, walks up to the page behind it, and cheerfully reports a number for the wrong pair entirely — it told me the LCD digits were at 1.24:1 when they are fine, and told me the title was fine when it was not. Measured against the gradient's own colour stops, white on the shell sheen was **4.15:1**: a genuine failure, exactly where the title crosses the left edge where the sheen is lightest.
+
+The sheen is darker now, and the restart button darkens on hover rather than lightening, for the same reason. Worst pair on the object is 5.21:1.
+
 ## Verifying it
 
 The interesting paths here are the ones you cannot reach by playing normally, so both were forced:

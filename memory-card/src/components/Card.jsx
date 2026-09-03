@@ -21,6 +21,7 @@ export default function Card({ card, faceDown, locked, onPick }) {
               it is dealt, so deferring them only delays the picture the game is
               actually about */}
           <img src={card.image} alt="" decoding="async" width="180" height="180" />
+          <span className="entry">No.&nbsp;{String(card.id).padStart(3, "0")}</span>
           <span className="name">{card.name}</span>
         </span>
         <span className="face face--back" aria-hidden="true">

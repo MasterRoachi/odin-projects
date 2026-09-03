@@ -148,7 +148,7 @@ export default function App() {
       <Shell>
         <div className="system-state">
           <p className="system system--bad">{error}</p>
-          <button type="button" className="arcade-button" onClick={retry}>
+          <button type="button" className="dex-button" onClick={retry}>
             Try again
           </button>
         </div>
@@ -157,16 +157,18 @@ export default function App() {
   }
 
   return (
-    <Shell>
-      <Hud
-        score={score}
-        best={best}
-        level={level}
-        levels={LEVELS.length}
-        picked={picked.length}
-        total={cards.length}
-      />
-
+    <Shell
+      hud={
+        <Hud
+          score={score}
+          best={best}
+          level={level}
+          levels={LEVELS.length}
+          picked={picked.length}
+          total={cards.length}
+        />
+      }
+    >
       <Board
         cards={cards}
         faceDown={phase === "flipping"}
@@ -179,18 +181,52 @@ export default function App() {
   );
 }
 
-function Shell({ children }) {
+function Shell({ hud, children }) {
   return (
-    <div className="cabinet">
-      <div className="screen">
-        <header className="marquee">
-          <h1>
-            Don&rsquo;t Click <span>Twice</span>
-          </h1>
-          <p>Every card once. The board shuffles after every pick.</p>
-        </header>
-        {children}
+    <div className="dex">
+      <div className="dex-body">
+        <div className="dex-top">
+          {/* the lens, the three lights and the seams are what make the object
+              recognisable; none of them mean anything, so all of them are
+              hidden from assistive technology */}
+          <span className="lens" aria-hidden="true">
+            <i className="glint" />
+          </span>
+          <span className="lights" aria-hidden="true">
+            <i className="light light--red" />
+            <i className="light light--amber" />
+            <i className="light light--green" />
+          </span>
+          <header className="dex-label">
+            <h1>
+              Don&rsquo;t Click <span>Twice</span>
+            </h1>
+            <p>Every card once. The board shuffles after every pick.</p>
+          </header>
+        </div>
+
+        <div className="bezel">
+          <div className="screen">{children}</div>
+        </div>
+
+        <div className="deck">
+          {hud}
+          <div className="controls" aria-hidden="true">
+            <span className="dpad" />
+            <span className="knobs">
+              <i />
+              <i />
+            </span>
+            <span className="grille">
+              <i />
+              <i />
+              <i />
+              <i />
+            </span>
+          </div>
+        </div>
       </div>
+
       <footer className="plate">
         <p>
           <a href="../../">back to the projects</a> · <a href="../README.md">README</a> · data from{" "}

@@ -38,7 +38,7 @@ export default function Overlay({ phase, score, best, level, onRestart }) {
             <dd>{best}</dd>
           </div>
         </dl>
-        <button type="button" className="arcade-button" onClick={onRestart} autoFocus>
+        <button type="button" className="dex-button" onClick={onRestart} autoFocus>
           {won ? "Again" : "Insert coin"}
         </button>
       </div>
